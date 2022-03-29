@@ -110,7 +110,7 @@
 				
 					<div class="text-center mt30">
 						<a class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="수정" @click="fnApiKeyGenerateConfirm">생성</a>
-						<a href="#self" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
+						<a @click="fnClose" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
 					</div>
 				</div>
 			</div>

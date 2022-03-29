@@ -167,7 +167,7 @@
 
 					<div v-if="this.update == false" class="text-center mt30">
 						<a v-if="this.rowData.webSenderYn == '미사용'" @click="fnUpdate" class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="수정" >수정</a>
-						<a href="#self" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
+						<a @click="fnClose" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
 					</div>
                     <div v-if="this.update == true" class="text-center mt30">
 						<a @click="fnSave" class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="저장" >저장</a>
@@ -216,20 +216,21 @@ watch:{
             apiKey : this.apiKey,
             projectId : this.$parent.projectId,
         }
-
+		
         projectApi.selectApikeyManageList(params).then(response =>{
         this.rowData = response.data.data[0];
-
+		console.log(this.rowData)
 		if(this.rowData.ipChkYn == '사용' && this.ipList.length == 0){
 			this.ipList.push('')
 		}
-		else if(this.rowData.ipChkYn == '사용' && this.ipList != null){
+		else{
 			this.ipList = JSON.parse(this.rowData.ipList)
 		}
 		this.value  = this.rowData.tps
 
         });
 
+		console.log(this.ipList)
     }
 },
 methods:{
@@ -342,7 +343,8 @@ methods:{
 				rptYn	  : this.rowData.rptYn =='사용'? 'Y' : 'N',
 				dupChkYn  : this.rowData.dupChkYn =='사용'? 'Y' : 'N',
 				apikey    : this.rowData.apiKey,
-				pwdChk	  : this.newPwd == true ? 'Y' : 'N'
+				pwdChk	  : this.newPwd == true ? 'Y' : 'N',
+				projectId : this.projectId	
 			}
 
 
