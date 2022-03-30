@@ -249,6 +249,10 @@ watch:{
 },
 methods:{
     fnClose(){
+		this.newPwd = false
+		this.apikeyPwd = ''
+		this.apikeyNewPwd = ''
+		this.apikeyNewPwdChk = ''
         jQuery('#apikeyManageDetail').hide()
     },
     fnIpListPlus(){
