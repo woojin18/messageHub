@@ -109,7 +109,6 @@ export default {
 	  },
     fnApikeyDetail(data){
       this.detailCnt = this.detailCnt + 1
-      console.log(this.detailCnt)
       this.apiKey = data.apiKey
       jQuery('#apikeyManageDetail').show() 
     },

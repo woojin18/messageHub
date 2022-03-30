@@ -306,7 +306,18 @@ methods:{
     fnSave(){
 		const tps = parseInt(this.value.replaceAll(',',''))
     	const ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+		const apikeyNameChk = /[~!@#$%^&*()_+|<>?:{}]/;
 
+		if(this.rowData.apiKeyName == ''){
+			alert('API KEY명을 입력해 주세요')
+			return
+		} 
+
+		if(apikeyNameChk.test(this.rowData.apiKeyName)){
+			alert('API KEY명은 특수문자를 입력할 수 없습니다.')
+			return
+		}
+			
 		if(this.apikeyPwd == ''){
 			alert("API KEY 암호를 입력해 주세요.")
 			return
