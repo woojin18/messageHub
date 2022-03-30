@@ -142,7 +142,7 @@ export default {
   methods: {
     fnClose(){
 		this.fnInit()
-		jQuery('#apikeyGeneration').modal('hide')
+		jQuery('#apikeyGeneration').hide()
     },
 	fnIpListPlus(){
 		if(this.ipList.length > 9){
@@ -287,7 +287,7 @@ export default {
 				let result = response.data
 				if(result.success) {
 					this.$parent.fnApikeyManageList()
-					jQuery('#apikeyGeneration').modal('hide')
+					jQuery('#apikeyGeneration').hide()
 					confirm.fnAlert('', 'API KEY 생성을 성공하였습니다.')
 					this.fnInit()
 				} else {

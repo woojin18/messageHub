@@ -308,10 +308,17 @@
 		<if test='pwdChk == "Y"'>
 				API_PWD =#{apiNewPwd}
 		,		
-		</if>		
-				CPS = #{cps}
+		</if>	
+				API_KEY_NAME = #{apiKeyName}	
+		,		CPS = #{cps}
+		<if test='pwdChk == "Y"'>
+				API_PWD =#{apiNewPwd}
+		,		
+		</if>
 		,		IP_CHK_YN = #{ipChkYn}
-		,		IP_LIST = #{ipList}
+		<if test='ipChkYn == "Y"'>
+		, 		IP_LIST = #{ipList}
+		</if>	
 		,		STATUS = #{status}
 		,		RPT_YN = #{rptYn}
 		,		DUP_CHK_YN = #{dupChkYn}
