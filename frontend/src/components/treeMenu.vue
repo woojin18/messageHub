@@ -110,12 +110,12 @@ export default {
 			}, 2000);
 			
 			//외부 영역 클릭시 닫기
-			jQuery(document).click(function (e){
-				var sidebar = jQuery("#sidebar");
-				if(sidebar.has(e.target).length === 0)
-					jQuery(".depth2Lnb.thum").fadeOut('fast');
-				jQuery('#sidebar.thum > ul > li.active > a').css('background','#fff');
-			});
+			 jQuery(document).click(function (e){
+			 	var sidebar = jQuery("#sidebar");
+			 	if(sidebar.has(e.target).length === 0)
+			 		jQuery(".depth2Lnb.thum").fadeOut('fast');
+			 	jQuery('#sidebar.thum > ul > li.active > a').css('background','#fff');
+			 });
 			//외부 영역 클릭시 닫기
 			jQuery(document).click(function (e){
 				var container = jQuery(".consoleMenu");
@@ -176,20 +176,8 @@ export default {
 			});
 		},
 		fnOpenDepth2(event) {
-			var $this = event.currentTarget
-			if (jQuery('.SideMenuOff').is('visible') == true && jQuery($this).parent('li').hasClass('active')) {
-				return
-			}
-			if ($this.href.length > 0) {
-				jQuery('#sidebar > ul > li .depth2Lnb > ul li.active').removeClass('active')
-			}
-			jQuery('#sidebar > ul > li.active > a').next('.depth2Lnb').hide()
-			jQuery('#sidebar > ul > li.active').removeClass('active').children("a").find(".navArrow").removeClass("fa-chevron-up").addClass("fa-chevron-down")
-
-			jQuery($this).parent('li').addClass('active').children("a").find(".navArrow").removeClass("fa-chevron-down").addClass("fa-chevron-up")
-			if ($this.href.length == 0) {
-				jQuery($this).next('.depth2Lnb').show()
-			}
+		var $this = event.currentTarget
+			 jQuery($this).parent('li').toggleClass('active');
 		},
 		fnOpenDepth3(event, menuCd) {
 			if (menuCd == 'AC_SETTLE_MNG3' && this.corpInfo.feeType == 'POST' && jQuery('#M_subCnt').val() == '0') {

@@ -70,9 +70,19 @@
 
     <div class="row">
       <div class="col-xs-12 consolMarginTop">
+        <!-- 단축 URL+ 생성 -->
         <!-- 엑셀 다운로드 -->
         <div class="of_h inline">
           <div class="float-right">
+            <a
+              data-toggle="modal"
+              data-target="#shortened_URL_add"
+              class="btnStyle2 backBlack"
+              title="단축 URL+ 생성"
+              @click.prevent="initPop()" 
+              style="margin-right: 5px;"
+            >단축 URL+ 생성
+            </a>
             <a
               class="btnStyle2 borderGray" 
               title="엑셀 다운로드"
@@ -80,19 +90,6 @@
               @click.prevent="downloadExcel()" 
             >엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i>
             </a>
-          </div>
-        </div>
-
-        <!-- 단축 URL+ 생성 -->
-        <div class="of_h inline">
-          <div class="float-right">
-            <a
-              data-toggle="modal"
-              data-target="#shortened_URL_add"
-              class="float-right btnStyle1 backBlack"
-              title="단축 URL+ 생성"
-              @click.prevent="initPop()" 
-            >단축 URL+ 생성</a>
           </div>
         </div>
 
