@@ -182,7 +182,7 @@ export default {
   computed: {
     shortendUrl() {
       if(this.urlId)
-        return `https://m-hub.kr/#URL{${this.urlId}}`
+        return `https://url.${document.location.hostname}/#URL{${this.urlId}}`
       else
         return ''
     },
