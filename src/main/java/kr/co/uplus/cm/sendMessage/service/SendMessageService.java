@@ -3323,9 +3323,6 @@ public class SendMessageService {
 
 		params.put("recvInfoLstCnt", listSize);
 
-		// 단축URL 사용여부
-		apiMap.put("clickUrlYn", "Y");
-
 		while (toIndex < listSize) {
 			isDone = false;
 			isServerError = false;
