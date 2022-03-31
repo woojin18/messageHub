@@ -20,7 +20,7 @@
             <div class="inline-block" style="width:15%">
               <input type="text" class="inputStyle" title="제목 입력란" v-model="searchCond.title" @keydown.enter="goPage(1)">
             </div>
-            <h4 class="inline-block ml40" style="width:6%">단축URL+ ID</h4>
+            <h4 class="inline-block ml40" style="width:8%">단축URL+ ID</h4>
             <div class="inline-block" style="width:15%">
               <input type="text" class="inputStyle" title="단축URL+ ID 입력란" v-model="searchCond.urlId" @keydown.enter="goPage(1)">
             </div>
