@@ -665,4 +665,34 @@ public class ChannelController {
 		}
 		return rtn;
 	}
+	
+	// 하위고객 브랜드 설정 목록 리스트
+	@PostMapping("/selectRemoveSubCorpList")
+	public RestResult<?> selectRemoveSubCorpList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<?> rtn = new RestResult<Object>(true);
+		try {
+			rtn = channelService.selectRemoveSubCorpList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			e.printStackTrace();
+		}
+		return rtn;
+	}
+	
+	// 하위고객 브랜드 수신 제외
+	@PostMapping("/setRemoveBrand")
+	public RestResult<?> setRemoveBrand(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<?> rtn = new RestResult<Object>(true);
+		try { 
+			channelService.setRemoveBrand(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			e.printStackTrace();
+		}
+		return rtn;
+	}
 }

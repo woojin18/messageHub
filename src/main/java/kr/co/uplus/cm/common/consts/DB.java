@@ -148,7 +148,14 @@ public class DB {
 	public final static String QRY_SELECT_SUBCORP_BRAND_CONF_YN = "channel.selectSubcorpBrandConfYn";
 	public final static String QRY_UPDATE_SUBCORP_BRAND_CONF_YN = "channel.updateSubcorpBrandConfYn";
 	public final static String QRY_INSERT_SUBCORP_BRAND_CONF = "channel.insertSubcorpBrandConf";
-
+	public final static String QRY_DELETE_SUBCORP_REMOVE_BRAND = "channel.deleteRemoveBrandList";
+	public final static String QRY_INSERT_SUBCORP_REMOVE_BRAND = "channel.insertRemoveBrandList";
+	public final static String QRY_SELECT_REMOVE_BRAND_LIST = "channel.selectRemoveBrandList";
+	public final static String QRY_SELECT_REMOVE_BRAND_LIST_CNT = "channel.selectRemoveBrandListCnt";
+	public final static String QRY_SELECT_REMOVE_CHECK_BRAND_LIST = "channel.selectRemoveCheckBrandList";
+	public final static String QRY_DELETE_EXCEPT_BRAND = "channel.deleteExceptBrand";
+	public final static String QRY_INSERT_EXCEPT_BRAND = "channel.insertExceptBrand";
+	
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST_CNT = "channel.selectRcsRegTmpltListCount";
