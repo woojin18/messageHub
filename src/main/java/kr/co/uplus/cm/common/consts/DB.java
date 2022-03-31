@@ -143,6 +143,11 @@ public class DB {
 	public final static String QRY_DELETE_PROJECTCALLNUM= "channel.deleteProjectCallum";
 	public final static String QRY_SELECT_CONPROJECTLIST = "channel.selectConProjectList";
 	public final static String QRY_SELECT_CONPROJECTLISTCNT = "channel.selectConProjectListCnt";
+	public final static String QRY_SELECT_RECORPYN = "channel.selectReCorpYn";
+	public final static String QRY_SELECT_SUBCORP_BRAND_CONF_CNT = "channel.selectSubcorpBrandConfCnt";
+	public final static String QRY_SELECT_SUBCORP_BRAND_CONF_YN = "channel.selectSubcorpBrandConfYn";
+	public final static String QRY_UPDATE_SUBCORP_BRAND_CONF_YN = "channel.updateSubcorpBrandConfYn";
+	public final static String QRY_INSERT_SUBCORP_BRAND_CONF = "channel.insertSubcorpBrandConf";
 
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";

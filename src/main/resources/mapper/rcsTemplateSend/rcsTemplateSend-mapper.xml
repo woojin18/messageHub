@@ -11,7 +11,7 @@
 		AND		USE_YN = 'Y'
 		AND		JSON_EXTRACT(MESSAGEBASE_INFO , '$.cardType') = #{cardType}
 		AND		BRAND_ID = #{brandId}
-		AND		CORP_ID = #{corpId}
+<!-- 		AND		CORP_ID = #{corpId} -->
 		<if test="tmpltNm !='' and tmpltNm != null">
 		AND		TMPLT_NAME = #{tmpltNm}
 		</if>
@@ -167,7 +167,7 @@
 		INNER JOIN cm.CM_RCS_CHATBOT B 
 			ON	A.CHATBOT_ID  = B.CHATBOT_ID 
 		WHERE	B.BRAND_ID = #{brandId}
-		AND		B.CORP_ID = #{corpId}
+<!-- 		AND		B.CORP_ID = #{corpId} -->
 		AND		A.PROJECT_ID  = #{projectId}
 		AND		B.USE_YN = 'Y'
 		AND		B.APPROVAL_STATUS = #{approvalStatus}

@@ -1565,4 +1565,89 @@ public class ChannelService {
 		rtn.setData(rtnObj);
 		return rtn;
 	}
+
+	public RestResult<?> selectReCoprYn(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		
+		String reCorpYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_RECORPYN, params));
+		
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+		rtnObj.put("reCorpYn", reCorpYn);
+		rtn.setData(rtnObj);
+		return rtn;
+	}
+
+	public RestResult<?> selectSubCorpBrandConf(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+		
+		int subCorpCnt = generalDao.selectGernalCount(DB.QRY_SELECT_SUBCORP_BRAND_CONF_CNT, params);
+		String confYn = "N";
+		if(subCorpCnt > 0) {
+			confYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_SUBCORP_BRAND_CONF_YN, params));
+			rtnObj.put("subCorpInsert", "N");
+		} else {
+			rtnObj.put("subCorpInsert", "Y");
+		}
+		
+		rtnObj.put("confYn", confYn);
+		rtn.setData(rtnObj);
+		return rtn;
+	}
+
+	public void checkRbcCertify(Map<String, Object> params) throws Exception {
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+		headerMap.put("apiKey",		apiKey);
+		headerMap.put("apiId",		params.get("rbcLoginId"));
+		headerMap.put("apiSecret",	params.get("rbcApiKey"));
+		
+		Map<String, Object> result =  apiInterface.get("/console/v1/rcs/agency/auth", null, null, headerMap);
+		
+		// 성공인지 실패인지 체크 실패일경우 exception 처리 인증키는 사용하는 부분 없음.
+		if(!"10000".equals(result.get("code")) ) {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
+		} 
+	}
+
+	public void setSubCorpSync(Map<String, Object> params) throws Exception {
+		String confYn = CommonUtils.getString(params.get("confYn"));
+		String subCorpInsert = CommonUtils.getString(params.get("subCorpInsert"));
+		
+		// Y > 설정 해제, N > 설정 등록
+		if("Y".equals(confYn)) {
+			// 설정 해제 처리
+			params.put("setConfYn", "N");	// CONF_YN을 N으로 처리
+			generalDao.updateGernal(DB.QRY_UPDATE_SUBCORP_BRAND_CONF_YN, params);
+			
+		} else if("N".equals(confYn)) {
+			// 설정 등록 처리
+			params.put("setConfYn", "Y");	// CONF_YN을 Y으로 처리
+			// N일경우 설정 등록 update 처리, Y일경우 api 동기화 처리 및 insert 처리
+			if("Y".equals(subCorpInsert)) {
+				
+				Map<String, Object> headerMap = new HashMap<String, Object>();
+				String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+				headerMap.put("apiKey",		apiKey);
+				headerMap.put("apiId",		params.get("setRbcLoginId"));
+				headerMap.put("apiSecret",	params.get("setRbcApiKey"));
+				
+				Map<String, Object> result =  apiInterface.post("/console/v1/rcs/agency/brand/sync", null, null, headerMap);
+				
+				// 성공인지 실패인지 체크 실패일경우 exception 처리 인증키는 사용하는 부분 없음.
+				if(!"10000".equals(result.get("code")) ) {
+					String errMsg = CommonUtils.getString(result.get("message"));
+					throw new Exception(errMsg);
+				} 
+				
+				generalDao.updateGernal(DB.QRY_INSERT_SUBCORP_BRAND_CONF, params);
+			} else if("N".equals(subCorpInsert)) {
+				generalDao.updateGernal(DB.QRY_UPDATE_SUBCORP_BRAND_CONF_YN, params);
+			}
+			
+		}
+		
+	}
+	
 }

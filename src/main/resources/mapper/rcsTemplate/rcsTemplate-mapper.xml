@@ -169,8 +169,10 @@
 	<select id="selectCorpBrandCnt" resultType="int">
 		/* rcsTemplate.selectCorpBrandCnt */
 		SELECT	COUNT(*)
-		FROM	cm.CM_RCS_BRAND
-		WHERE	CORP_ID = #{corpId}
+		FROM	cm.CM_RCS_BRAND A
+		INNER JOIN cm_console.CM_PROJECT_BRAND B
+			ON	A.BRAND_ID = B.BRAND_ID
+		WHERE	B.PROJECT_ID = #{projectId}
 	</select>
 
 	<select id="selectBrandList" resultType="hashMap">
@@ -180,8 +182,10 @@
 		FROM	cm_console.CM_PROJECT_BRAND A
 		INNER JOIN cm.CM_RCS_BRAND B 
 			ON	A.BRAND_ID  = B.BRAND_ID 
+		INNER JOIN cm_console.CM_REGNO_BRAND C
+			ON	B.BRAND_ID = C.BRAND_ID
 		WHERE	A.PROJECT_ID = #{projectId}
-		AND		B.CORP_ID = #{corpId}
+		AND		C.REGNO = #{regNo}
 		AND		B.USE_YN = 'Y'
 		AND		B.APPROVAL_STATUS = '승인'
 	</select>
