@@ -90,7 +90,7 @@
 import urlInfoStatTab1 from "@/modules/urlInfo/views/tabs/urlInfoStatTab1"
 import urlInfoStatTab2 from "@/modules/urlInfo/views/tabs/urlInfoStatTab2"
 import urlInfoStatTab3 from "@/modules/urlInfo/views/tabs/urlInfoStatTab3"
-// import urlInfoStatTab4 from "@/modules/urlInfo/views/tabs/urlInfoStatTab4"
+import urlInfoStatTab4 from "@/modules/urlInfo/views/tabs/urlInfoStatTab4"
 
 export default {
   name: 'urlInfoStatDetail',
@@ -98,7 +98,7 @@ export default {
 		urlInfoStatTab1,
 		urlInfoStatTab2,
 		urlInfoStatTab3,
-		// urlInfoStatTab4,
+		urlInfoStatTab4,
 	},
   props: {
 		urlId: {
@@ -130,7 +130,7 @@ export default {
 				{tabNm: '유입채널'},
 				{tabNm: '타임라인(일)'},
 				{tabNm: '타임라인(시간)'},
-				// {tabNm: '클릭 수신자'},
+				{tabNm: '클릭 수신자'},
 			],
 			selTabId: 1,
     };

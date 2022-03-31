@@ -45,9 +45,9 @@
 						v-if="loaded" 
 						:chartData="chartData" 
 						:chartOptions="chartOptions" 
-						:height="70"/>
+						:height="60"/>
 				</div>
-			</div>			
+			</div>
 		</div>
 	</div>
 </template>
@@ -134,7 +134,7 @@ export default {
 					// 도넛 차트 생성
 					this.drawChart()
         } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
+          confirm.fnAlert(this.componentsTitle, result.message)
         }
       });
     },
@@ -144,12 +144,22 @@ export default {
 			const dataset = []
 
 			this.chartList.forEach((item) => {
-				if(item.ch === '-'){
-					item.ch = '발송실패 또는 처리중'
+				switch (item.ch) {
+					case '-':
+						item.ch = '발송실패 또는 처리중'	
+						break;
+					case 'SMS':
+						item.ch = '문자'	
+						break;
+					case 'KAKAO':
+						item.ch = '카카오'	
+						break;
+					default:
+						break;
 				}
 
 				labels.push(item.ch)
-				dataset.push(item.totCnt)
+				dataset.push(item.conCnt)
 			})
 
 			this.chartData = {

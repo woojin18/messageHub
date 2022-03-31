@@ -369,7 +369,8 @@ public class DB {
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART1		= "urlInfo.selectUrlInfoStatChart1";
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART2		= "urlInfo.selectUrlInfoStatChart2";
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART3		= "urlInfo.selectUrlInfoStatChart3";
-	public final static String QRY_SELECT_URL_INFO_STAT_CHART4		= "urlInfo.selectUrlInfoStatChart4";
+	public final static String QRY_SELECT_CLICK_RECV_LIST_CNT			= "urlInfo.selectClickRecvListCnt";
+	public final static String QRY_SELECT_CLICK_RECV_LIST					= "urlInfo.selectClickRecvList";
 	public final static String QRY_INSERT_URL_INFO 								= "urlInfo.insertUrlInfo";
 	public final static String QRY_DELETE_URL_INFO 								= "urlInfo.deleteUrlInfo";
 	public final static String QRY_EXCEL_DOWN_URL_INFO_STAT_LIST 	= "urlInfo.excelDownUrlInfoStatList";
