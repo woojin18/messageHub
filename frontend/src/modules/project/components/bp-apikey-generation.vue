@@ -110,7 +110,7 @@
 				
 					<div class="text-center mt30">
 						<a class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="수정" @click="fnApiKeyGenerateConfirm">생성</a>
-						<a href="#self" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
+						<a @click="fnClose" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
 					</div>
 				</div>
 			</div>
@@ -142,7 +142,7 @@ export default {
   methods: {
     fnClose(){
 		this.fnInit()
-		jQuery('#apikeyGeneration').modal('hide')
+		jQuery('#apikeyGeneration').hide()
     },
 	fnIpListPlus(){
 		if(this.ipList.length > 9){
@@ -287,7 +287,7 @@ export default {
 				let result = response.data
 				if(result.success) {
 					this.$parent.fnApikeyManageList()
-					jQuery('#apikeyGeneration').modal('hide')
+					jQuery('#apikeyGeneration').hide()
 					confirm.fnAlert('', 'API KEY 생성을 성공하였습니다.')
 					this.fnInit()
 				} else {

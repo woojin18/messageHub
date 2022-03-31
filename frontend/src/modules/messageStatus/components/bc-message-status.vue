@@ -103,8 +103,8 @@
                   <td class="text-center">{{data.reqCh}}</td>
                   <td class="text-center">{{data.finalCh}}</td>
                   <td class="text-center end">
-                    <span v-if="data.gwResultNm != '성공'"><a @click="fnResultDesc(data.gwResultDesc)"><u>{{data.gwResultNm}}</u></a></span>
-                    <span v-if="data.gwResultNm == '성공'">{{data.gwResultNm}}</span>
+                    <span v-if="data.gwResultNm == '실패'"><a @click="fnResultDesc(data.gwResultDesc)"><u>{{data.gwResultNm}}</u></a></span>
+                    <span v-if="data.gwResultNm != '실패'">{{data.gwResultNm}}</span>
                   </td>
               </tr>
               <tr v-if="datas.length == 0">

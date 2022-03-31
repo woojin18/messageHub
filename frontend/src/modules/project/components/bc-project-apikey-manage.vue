@@ -45,7 +45,7 @@
           </table>
       <!-- 리스트 -->
       <apikeyGeneration />
-      <apikeyDetail :apiKey="apiKey" />
+      <apikeyDetail :apiKey="apiKey" :detailCnt="detailCnt" />
               </div>
 		</article>
 
@@ -86,7 +86,8 @@ export default {
 			offset : 0,		// 페이지 시작점
 			projectId : this.$parent.projectId,
       rowData : {},
-      apiKey : ''
+      apiKey : '',
+      detailCnt : 0
 		}
 	},
 	mounted() {
@@ -107,6 +108,7 @@ export default {
         });
 	  },
     fnApikeyDetail(data){
+      this.detailCnt = this.detailCnt + 1
       this.apiKey = data.apiKey
       jQuery('#apikeyManageDetail').show() 
     },

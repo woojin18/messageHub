@@ -11,13 +11,23 @@
 
 					<div class="of_h mt10 text-center" style="padding:20px 0;">
 						<div class="of_h">
-							<div style="width:52%;" class="float-left color000"><h4 class="font-normal" style="margin-top: 12px;">API KEY 명</h4></div>
-							<div style="width:48%" class="float-right">
-								<h5 class="color4" style="margin-top: 12px;">{{rowData.apiKeyName}}</h5>
+							<div style="width:52%;" class="float-left color000"><h4 class="font-normal" style="margin-bottom: 16px;">API KEY 명</h4></div>
+							<div v-if="this.update == false" style="width:48%" class="float-right">
+								<h5 class="color4" style="margin-top: 30px;">{{apiKeyName}}</h5>
+							</div>
+							<div v-if="this.update == true" style="width:48%" class="float-right">
+								<input  class="inputStyle" v-model="rowData.apiKeyName" style="margin-top: 23px; width:182px;"/>
 							</div>
 						</div>
-						<div class="of_h">
-							<div style="width:52%;" class="float-left color000"><h4 class="font-normal" style="margin-top: 12px;">API KEY</h4></div>
+
+						<div v-if="this.update == false"  class="of_h">
+							<div style="width:52%;" class="float-left color000"><h4 class="font-normal" style="margin-top: 12px; margin-bottom: 10px;">API KEY</h4></div>
+							<div style="width:48%" class="float-right">
+								<h5 class="color4" style="margin-top: 12px;margin-bottom: 20px;">{{rowData.apiKey}}</h5>
+							</div>
+						</div>
+						<div v-if="this.update == true"  class="of_h">
+							<div style="width:52%;" class="float-left color000"><h4 class="font-normal" style="margin-top: 12px; margin-bottom: 10px;">API KEY</h4></div>
 							<div style="width:48%" class="float-right">
 								<h5 class="color4" style="margin-top: 12px">{{rowData.apiKey}}</h5>
 							</div>
@@ -68,10 +78,10 @@
 
 						</div>
                         <div class="of_h mt10" style="margin-bottom: 20px;">
-							<div style="width:52%;" class="float-left color000"><h4 class="font-normal" style="margin-bottom: 0px; margin-top: 15px;">라인타입</h4>
+							<div style="width:52%;" class="float-left color000"><h4 class="font-normal" style="margin-bottom: 0px; margin-top: 20px;">라인타입</h4>
                             </div>
 							<div style="width:48%" class="float-right">
-								<h5 class="color4" style="margin-top: 15px;">{{rowData.lineType}}</h5>
+								<h5 class="color4" style="margin-top: 15px;margin-bottom: 0px;">{{rowData.lineType}}</h5>
 								<font v-if="this.rowData.webSenderYn == '미사용'" style="font-size: 10px; color: red;">(라인타입 변경은 영업팀과 별도협의가 필요합니다.)</font>
 							</div>
 						</div>
@@ -167,10 +177,10 @@
 
 					<div v-if="this.update == false" class="text-center mt30">
 						<a v-if="this.rowData.webSenderYn == '미사용'" @click="fnUpdate" class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="수정" >수정</a>
-						<a href="#self" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
+						<a @click="fnClose" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
 					</div>
                     <div v-if="this.update == true" class="text-center mt30">
-						<a @click="fnSave" class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="저장" >저장</a>
+						<a @click="fnApiKeySaveConfirm" class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="저장" >저장</a>
 						<a @click="fnCancel" class="btnStyle3 black font14 ml5" title="취소">취소</a>						
 					</div>
 				</div>
@@ -188,16 +198,21 @@ import {eventBus} from "@/modules/commonUtil/service/eventBus"
 export default {
 
 props: {
-		apiKey: {
+		apiKey : {
 			type: String,
 			require: true
 		},
+		detailCnt : {
+			type : Number,
+			require : true
+		}
 	},
 mounted(){
      
 },
 data(){
     return{
+		apiKeyName      : '',
         rowData         : {},
         apikeyPwd       : '',
         apikeyNewPwd    : '',
@@ -211,19 +226,19 @@ data(){
     }
 },
 watch:{
-    apiKey(){
+    detailCnt(){
         let params = {
             apiKey : this.apiKey,
             projectId : this.$parent.projectId,
         }
-
+		
         projectApi.selectApikeyManageList(params).then(response =>{
         this.rowData = response.data.data[0];
-
+		this.apiKeyName = this.rowData.apiKeyName
 		if(this.rowData.ipChkYn == '사용' && this.ipList.length == 0){
 			this.ipList.push('')
 		}
-		else if(this.rowData.ipChkYn == '사용' && this.ipList != null){
+		else{
 			this.ipList = JSON.parse(this.rowData.ipList)
 		}
 		this.value  = this.rowData.tps
@@ -234,7 +249,11 @@ watch:{
 },
 methods:{
     fnClose(){
-        jQuery('#apikeyManageDetail').modal('hide')
+		this.newPwd = false
+		this.apikeyPwd = ''
+		this.apikeyNewPwd = ''
+		this.apikeyNewPwdChk = ''
+        jQuery('#apikeyManageDetail').hide()
     },
     fnIpListPlus(){
 		if(this.rowData.ipChkYn == '사용' && this.ipList == null){
@@ -259,7 +278,7 @@ methods:{
     fnIpValueChange(event){
 		const chkValue = event.target.value;
 			  if(chkValue == '사용' && this.ipList == null){
-				this.ipList = {}
+				this.ipList = []
 				this.ipList.push('')	
 			  }     
     },
@@ -280,10 +299,25 @@ methods:{
     fnCancel(){
         this.update = false
     },
+	fnApiKeySaveConfirm(){
+		  eventBus.$on('callbackEventBus', this.fnSave);
+          confirm.fnConfirm('입력한 내용으로 API KEY를 수정하시겠습니까?',"","수정")
+	},
     fnSave(){
 		const tps = parseInt(this.value.replaceAll(',',''))
     	const ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+		const apikeyNameChk = /[~!@#$%^&*()_+|<>?:{}]/;
 
+		if(this.rowData.apiKeyName == ''){
+			alert('API KEY명을 입력해 주세요')
+			return
+		} 
+
+		if(apikeyNameChk.test(this.rowData.apiKeyName)){
+			alert('API KEY명은 특수문자를 입력할 수 없습니다.')
+			return
+		}
+			
 		if(this.apikeyPwd == ''){
 			alert("API KEY 암호를 입력해 주세요.")
 			return
@@ -333,6 +367,7 @@ methods:{
 				return
 			}
 		let params = {
+				apiKeyName: this.rowData.apiKeyName,
 				apiPwd 	  : this.apikeyPwd,
 				apiNewPwd :	this.newPwd == true ? this.apikeyNewPwd : null,
 				cps   	  : this.value,
@@ -342,19 +377,23 @@ methods:{
 				rptYn	  : this.rowData.rptYn =='사용'? 'Y' : 'N',
 				dupChkYn  : this.rowData.dupChkYn =='사용'? 'Y' : 'N',
 				apikey    : this.rowData.apiKey,
-				pwdChk	  : this.newPwd == true ? 'Y' : 'N'
+				pwdChk	  : this.newPwd == true ? 'Y' : 'N',
+				projectId : this.projectId	
 			}
 
 
-		console.log(params)	
 		let result = {}
         projectApi.updateApikeyManage(params).then(response =>{
         result = response.data
-		console.log(result)
 			if(result.success){
 				confirm.fnAlert('', '수정 되었습니다.')
+				this.update = false
+				this.newPwd = false
+				this.apikeyPwd = ''
+				this.apikeyNewPwd = ''
+				this.apikeyNewPwdChk = ''
 				this.$parent.fnApikeyManageList()
-                jQuery('#apikeyManageDetail').modal('hide')
+                jQuery('#apikeyManageDetail').hide()
 			}else{
 			alert(result.message)
 			}
