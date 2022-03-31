@@ -141,7 +141,7 @@ export default {
         let params = {}
         params.title  = this.title
         params.orgUrl = this.orgUrl
-        params.expDt  = this.expDt
+        params.expDt  = this.expDt + ' 23:59:59'
 
         urlInfoApi.insertUrlInfo(params).then((res) => {
           const result = res.data;      
