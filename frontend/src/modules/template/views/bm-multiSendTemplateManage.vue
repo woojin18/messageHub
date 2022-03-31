@@ -698,18 +698,6 @@
 						<div class="of_h">
 							<div class="float-left" style="width:18%">
 								<h4>내용 *</h4>
-								<a 
-									class="btnStyle1 backBlack" 
-									style="margin-top:120px" 
-									title="단축 URL+" 
-									data-toggle="modal" 
-									data-target="#shortened_URL"
-									@click="selCh = 'rcs'"
-								>단축 URL+</a>
-								<!-- RCS(SMS) -->
-								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px" data="RCS(SMS)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
-								</i>
 							</div>
 							<div class="float-left" style="width:52%">
 								<textarea class="textareaStyle height190" maxlength="100" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsSMSContentId" @keyup="fnTextLength('내용', '#rcsSMSContentId', '#rcsSMSTextLength', '100')"></textarea>
@@ -775,9 +763,9 @@
 													title="단축 URL+" 
 													data-toggle="modal" 
 													data-target="#shortened_URL"
+													style="margin-bottom: 5px;"
 													@click="selCh = 'rcs_sms_btn'; selIdx = idx"
 												>단축 URL+</a>
-												<p>&nbsp;</p>
 												<a @click="addRowRcsButton('SMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> 
 												<a @click="removeRowRcsButton('SMS', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 											</td>
@@ -847,18 +835,6 @@
 						<div class="of_h">
 							<div class="float-left" style="width:18%">
 								<h4>내용 *</h4>
-								<a 
-									class="btnStyle1 backBlack" 
-									style="margin-top:120px" 
-									title="단축 URL+" 
-									data-toggle="modal" 
-									data-target="#shortened_URL"
-									@click="selCh = 'rcs'"
-								>단축 URL+</a>
-								<!-- RCS(LMS) -->
-								<i class="fas fa-question-circle toolTip ml5">
-									<span class="toolTipText" style="width:250px" data="RCS(LMS)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
-								</i>
 							</div>
 							<div class="float-left" style="width:52%">
 								<textarea class="textareaStyle height190" maxlength="1300" v-model="rowData.rcs0Content" :placeholder="rcsPlaceHoder" id="rcsLMSContentId" @keyup="fnTextLength('내용', '#rcsLMSContentId', '#rcsLMSTextLength', '1300')"></textarea>
@@ -928,9 +904,9 @@
 													title="단축 URL+" 
 													data-toggle="modal" 
 													data-target="#shortened_URL"
+													style="margin-bottom: 5px;"
 													@click="selCh = 'rcs_lms_btn'; selIdx = idx"
 												>단축 URL+</a>
-												<p>&nbsp;</p>
 												<a @click="addRowRcsButton('LMS')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 												<a @click="removeRowRcsButton('LMS', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 											</td>
@@ -1103,9 +1079,9 @@
 													title="단축 URL+" 
 													data-toggle="modal" 
 													data-target="#shortened_URL"
+													style="margin-bottom: 5px;"
 													@click="selCh = 'rcs_short_btn'; selIdx = idx"
 												>단축 URL+</a>
-												<p>&nbsp;</p>
 												<a @click="addRowRcsButton('SHORT')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> 
 												<a @click="removeRowRcsButton('SHORT', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 											</td>
@@ -1278,9 +1254,9 @@
 													title="단축 URL+" 
 													data-toggle="modal" 
 													data-target="#shortened_URL"
+													style="margin-bottom: 5px;"
 													@click="selCh = 'rcs_tall_btn'; selIdx = idx"
 												>단축 URL+</a>
-												<p>&nbsp;</p>
 												<a @click="addRowRcsButton('TALL')" title="추가버튼"><i class="far fa-plus channelBtn"></i></a> 
 												<a @click="removeRowRcsButton('TALL', idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 											</td>
@@ -1382,18 +1358,6 @@
 								<div class="of_h">
 									<div class="float-left" style="width:18%">
 										<h4>내용 *</h4>
-										<a 
-											class="btnStyle1 backBlack" 
-											style="margin-top:120px" 
-											title="단축 URL+" 
-											data-toggle="modal" 
-											data-target="#shortened_URL"
-											@click="selCh = 'rcsCShort'; selIdx = tabIdx"
-										>단축 URL+</a>
-										<!-- RCS(캐러셀 SHORT) -->
-										<i class="fas fa-question-circle toolTip ml5">
-											<span class="toolTipText" style="width:250px" data="RCS(캐러셀 SHORT)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
-										</i>
 									</div>
 									<div class="float-left" style="width:52%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCShortImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
@@ -1485,6 +1449,15 @@
 													</td>
 													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
 													<td class="text-center end">
+														<a
+															v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'"
+															class="btnStyle1 backBlack" 
+															title="단축 URL+" 
+															data-toggle="modal" 
+															data-target="#shortened_URL"
+															style="margin-bottom: 5px;"
+															@click="selCh = 'rcsCShort'; selTabIdx = tabIdx; selIdx = idx;"
+														>단축 URL+</a>
 														<a @click="addRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''))" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 														<a @click="removeRowRcsButton(fnCarouselString('CSHORT_TAB', tabIdx, ''), idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 													</td>
@@ -1595,18 +1568,6 @@
 								<div class="of_h">
 									<div class="float-left" style="width:18%">
 										<h4>내용 *</h4>
-										<a 
-											class="btnStyle1 backBlack" 
-											style="margin-top:120px" 
-											title="단축 URL+" 
-											data-toggle="modal" 
-											data-target="#shortened_URL"
-											@click="selCh = 'rcsCTall'; selIdx = tabIdx"
-										>단축 URL+</a>
-										<!-- RCS(캐러셀 Tall) -->
-										<i class="fas fa-question-circle toolTip ml5">
-											<span class="toolTipText" style="width:250px" data="RCS(캐러셀 Tall)">발송된 메시지의 단축URL+를 고객들이 클릭 해 보았는지 알 수 있도록 지원합니다.</span>
-										</i>
 									</div>
 									<div class="float-left" style="width:52%">
 										<textarea class="textareaStyle height190" v-model="rowData.rcsCTallImgInfoList[tabIdx].rcsContent" :placeholder="rcsPlaceHoder" :id="fnCarouselString('rcsCarouselTab', tabIdx, '')" @keyup="fnTextLength('내용', fnCarouselString('#rcsCarouselTab', tabIdx, ''), fnCarouselString('#rcsCarouselTab', tabIdx, 'TextLength'), '1300')"></textarea>
@@ -1698,13 +1659,15 @@
 													</td>
 													<td v-if="buttonInfo.action.postback.data=='set_by_chatbot_request_location_push'" class="text-center"><input v-model="buttonInfo.action.mapAction.requestLocationPush" type="text" class="inputStyle" disabled></td>
 													<td class="text-center end">
-														<!-- <a
+														<a
+															v-if="buttonInfo.action.postback.data=='set_by_chatbot_open_url'"
 															class="btnStyle1 backBlack" 
 															title="단축 URL+" 
 															data-toggle="modal" 
 															data-target="#shortened_URL"
-															@click="selCh = 'kakaotalk'; selIdx = idx"
-														>단축 URL+</a>  -->
+															style="margin-bottom: 5px;"
+															@click="selCh = 'rcsCTall'; selIdx = idx"
+														>단축 URL+</a>
 														<a @click="addRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''))" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 														<a @click="removeRowRcsButton(fnCarouselString('CTALL_TAB', tabIdx, ''), idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 													</td>
@@ -1868,9 +1831,9 @@
 													title="단축 URL+" 
 													data-toggle="modal" 
 													data-target="#shortened_URL"
+													style="margin-bottom: 5px;"
 													@click="selCh = 'kakaotalk'; selIdx = idx"
 												>단축 URL+</a>
-												<p>&nbsp;</p>
 												<a @click="addRowFriendTalk" title="추가버튼"><i class="far fa-plus channelBtn"></i></a>
 												<a @click="removeRowFriendTalk(idx)" title="삭제버튼"><i class="far fa-minus channelBtn"></i></a>
 											</td>
@@ -2497,6 +2460,7 @@ export default {
 
 			buttonDSDescription : '카카오 메세지에 택배사 명과 송장번호를 기재한 후, 배송 조회 버튼을 추가하시면 메세지에서 택배사 명과 송장번호를 추출하여 배송 조회 카카오 검색페이지 링크가 자동으로 생성됩니다. 카카오에서 지원하는 택배사명과 운송장번호가 알림톡 메시지 내에 포함된 경우에만 배송조회 버튼이 표시됩니다. 배송 조회가 가능한 택배사는 <span style="color:#e11d21"><strong>카카오와 해당 택배사와의 계약 관계에 의해 변동될 수 있음을 유의해주시기 바랍니다.</strong></span>',
 			selCh: null,
+			selTabIdx: null,
 			selIdx: null,
 		}
 	},
@@ -5164,36 +5128,24 @@ export default {
 					}
 
 					this.$set(this.rowData, 'rcs0Content', shortendUrl)
-				} else if(this.selCh === 'rcsCShort') {				// RCS(캐러셀 SHORT)
-					if(this.selIdx !== null && rcsCShortImgInfoList && rcsCShortImgInfoList[this.selIdx]){
-						if(rcsCShortImgInfoList[this.selIdx].rcsContent && rcsCShortImgInfoList[this.selIdx].rcsContent.length > 0){
-							rcsCShortImgInfoList[this.selIdx].rcsContent += '\n'
-							shortendUrl = rcsCShortImgInfoList[this.selIdx].rcsContent + shortendUrl
-						}
-
-						this.$set(rcsCShortImgInfoList[this.selIdx], 'rcsContent', shortendUrl)
-					}
-				} else if(this.selCh === 'rcsCTall') {				// RCS(캐러셀 Tall)
-					if(this.selIdx !== null && rcsCTallImgInfoList && rcsCTallImgInfoList[this.selIdx]){
-						if(rcsCTallImgInfoList[this.selIdx].rcsContent && rcsCTallImgInfoList[this.selIdx].rcsContent.length > 0){
-							rcsCTallImgInfoList[this.selIdx].rcsContent += '\n'
-							shortendUrl = rcsCTallImgInfoList[this.selIdx].rcsContent + shortendUrl
-						}
-
-						this.$set(rcsCTallImgInfoList[this.selIdx], 'rcsContent', shortendUrl)
-					}
 				} else if(this.selCh === 'rcs_sms_btn') {				// RCS(SMS) 버튼
 					if(rcsSMSButtons.length > 0 && this.selIdx !== null && rcsSMSButtons[this.selIdx])
 						this.$set(rcsSMSButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
 				} else if(this.selCh === 'rcs_lms_btn') {				// RCS(LMS) 버튼
 					if(rcsLMSButtons.length > 0 && this.selIdx !== null && rcsLMSButtons[this.selIdx])
 						this.$set(rcsLMSButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
-				} else if(this.selCh === 'rcs_short_btn') {			// RCS(캐러셀 Short) 버튼
+				} else if(this.selCh === 'rcs_short_btn') {			// RCS(세로형 Short) 버튼
 					if(rcsShortButtons.length > 0 && this.selIdx !== null && rcsShortButtons[this.selIdx])
 						this.$set(rcsShortButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
-				} else if(this.selCh === 'rcs_tall_btn') {			// RCS(캐러셀 Tall) 버튼
+				} else if(this.selCh === 'rcs_tall_btn') {			// RCS(세로형 Tall) 버튼
 					if(rcsTallButtons.length > 0 && this.selIdx !== null && rcsTallButtons[this.selIdx])
 						this.$set(rcsTallButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
+				} else if(this.selCh === 'rcsCShort') {					// RCS(캐러셀 SHORT) 버튼
+					if(rcsCShortImgInfoList.length > 0 && this.selTabIdx !== null && rcsCShortImgInfoList[this.selTabIdx] && this.selIdx !== null && rcsCShortImgInfoList[this.selTabIdx].rcsButtons[this.selIdx])
+						this.$set(rcsCShortImgInfoList[this.selTabIdx].rcsButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
+				} else if(this.selCh === 'rcsCTall') {					// RCS(캐러셀 Tall) 버튼
+					if(rcsCTallImgInfoList.length > 0 && this.selTabIdx !== null && rcsCTallImgInfoList[this.selTabIdx] && this.selIdx !== null && rcsCTallImgInfoList[this.selTabIdx].rcsButtons[this.selIdx])
+						this.$set(rcsCTallImgInfoList[this.selTabIdx].rcsButtons[this.selIdx].action.urlAction.openUrl, 'url', shortendUrl)
 				} else if(this.selCh === 'kakaotalk') {					// KakaoTalk
 					// 버튼 입력
 					if(friendTalkButtons.length > 0 && this.selIdx !== null && friendTalkButtons[this.selIdx]){

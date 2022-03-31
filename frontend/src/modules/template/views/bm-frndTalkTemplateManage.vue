@@ -153,9 +153,9 @@
                           title="단축 URL+" 
                           data-toggle="modal" 
                           data-target="#shortened_URL"
+                          style="margin-bottom: 5px;"
                           @click="selIdx = idx"
                         >단축 URL+</a>
-                        <p>&nbsp;</p>
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray">삭제</a>
                       </td>
                     </tr>
