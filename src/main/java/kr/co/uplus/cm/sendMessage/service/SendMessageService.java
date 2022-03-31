@@ -1642,6 +1642,20 @@ public class SendMessageService {
                 String json = gson.toJson(tempList);
                 List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
                 requestData.setButtons(buttons);
+
+                for(KkoButtonInfo button : buttons) {
+                	if("WL".equals(button.getLinkType())){
+                		String linkPc = button.getLinkPc();
+                		String linkMo = button.getLinkMo();
+
+                		// 단축URL 여부 체크
+                	    if(
+                	    	(linkPc != null && linkPc.contains("#URL{")) ||
+                	    	(linkMo != null && linkMo.contains("#URL{"))
+                	    )
+                	    	requestData.setClickUrlYn("Y");
+                	}
+                }
             }
         }
 
@@ -1681,10 +1695,6 @@ public class SendMessageService {
             requestData.setFbInfoLst(fbInfoLst);
             requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
-
-        // 단축URL 여부 체크
-	    if(frndTalkContent.contains("#URL{"))
-	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -3313,6 +3323,9 @@ public class SendMessageService {
 
 		params.put("recvInfoLstCnt", listSize);
 
+		// 단축URL 사용여부
+		apiMap.put("clickUrlYn", "Y");
+
 		while (toIndex < listSize) {
 			isDone = false;
 			isServerError = false;
@@ -3324,7 +3337,7 @@ public class SendMessageService {
 					apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
 				}
 				jsonString = gson.toJson(apiMap);
-				
+
 				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
 				isDone = isApiRequestAgain(responseBody, reSendCdList);
 				isAllFail = !isSendSuccess(responseBody);
@@ -3377,7 +3390,7 @@ public class SendMessageService {
 				log.error("{}.sendRCSMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
 			}
 		}
-		
+
 		// web insert시 전체 목록을 insert하기 위해서 apiMap에 insert용 object 세팅
 		apiMap.put("msgRecvInfoLst", recvInfoLst);
 		apiMap.put("msgFbInfoLst", fbInfoLst);
@@ -3415,9 +3428,9 @@ public class SendMessageService {
 	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
 
 	    	if(nightSendYn.equals("N")) {
-	    		
+
 	    		Map<String, Object> nightSendMap = commonService.selectNightSendTime();
-	    		
+
 	    		String nightSendLimitSt = CommonUtils.getString(nightSendMap.get("nightSendSthh")) + CommonUtils.getString(nightSendMap.get("nightSendStmm"));
 	    		String nightSendLimitEd = CommonUtils.getString(nightSendMap.get("nightSendEdhh")) + CommonUtils.getString(nightSendMap.get("nightSendEdmm"));
 

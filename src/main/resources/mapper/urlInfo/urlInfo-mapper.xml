@@ -103,31 +103,52 @@
 
     <select id="selectUrlInfoStatChart1" parameterType="hashmap" resultType="camel">
     	/* urlInfo.selectUrlInfoStatChart1 - 단축URL 통계 / 유입채널 조회 */
-    	SELECT
-    		A.*,
-    		CASE
-    			WHEN TOT_CNT = 0
-    		THEN 0
-    		ELSE
-    			ROUND(CON_CNT / TOT_CNT, 2) * 100
-    		END AS PER
-    	FROM (
-	        SELECT
-				CH,
-	            SUM(TOT_CNT) AS TOT_CNT,
-	            SUM(CON_CNT) AS CON_CNT
-	        FROM
-	        	cm_console.CM_URL_INFO A
-		   	INNER JOIN
-		   		cm.CM_STAT_URL B
-		   	ON
-		   		A.URL_ID = B.URL_ID
-			WHERE A.URL_ID	= #{urlId}
-            AND PROJECT_ID 	= #{projectId}
-            AND CORP_ID 		= #{corpId}
-	        GROUP BY
-	        	CH
-	    ) A
+	    SELECT
+			CH,
+			SUM(TOT_CNT) TOT_CNT,
+			SUM(CON_CNT) CON_CNT,
+			SUM(PER) PER
+		FROM (
+			SELECT
+				A.*,
+				CASE
+					WHEN TOT_CNT = 0
+				THEN 0
+				ELSE
+					ROUND(CON_CNT / TOT_CNT, 2) * 100
+				END AS PER
+			FROM (
+			    SELECT
+					CASE
+					WHEN (CH = 'SMS' OR CH = 'MMS') THEN 'SMS'
+					WHEN (CH = 'ALIMTALK' OR CH = 'FRIENDTALK') THEN 'KAKAO'
+					ELSE CH
+					END AS CH,
+			        SUM(TOT_CNT) TOT_CNT,
+			        SUM(CON_CNT) CON_CNT
+			    FROM
+			    	cm_console.CM_URL_INFO A
+			   	INNER JOIN
+			   		cm.CM_STAT_URL B
+			   	ON
+			   		A.URL_ID = B.URL_ID
+				WHERE
+					A.URL_ID			= #{urlId}
+	            AND PROJECT_ID 	= #{projectId}
+	            AND CORP_ID 		= #{corpId}
+			    GROUP BY
+			    	CH
+			) A
+			UNION SELECT '-' AS CH, 0 AS TOT_CNT, 0 AS CON_CNT, 0 AS PER FROM DUAL
+			UNION SELECT 'SMS' AS CH, 0 AS TOT_CNT, 0 AS CON_CNT, 0 AS PER FROM DUAL
+			UNION SELECT 'RCS' AS CH, 0 AS TOT_CNT, 0 AS CON_CNT, 0 AS PER FROM DUAL
+			UNION SELECT 'PUSH' AS CH, 0 AS TOT_CNT, 0 AS CON_CNT, 0 AS PER FROM DUAL
+			UNION SELECT 'KAKAO' AS CH, 0 AS TOT_CNT, 0 AS CON_CNT, 0 AS PER FROM DUAL
+		) B
+		GROUP BY
+			CH
+		ORDER BY
+			CH DESC
     </select>
 
     <select id="selectUrlInfoStatChart2" parameterType="hashmap" resultType="camel">
@@ -231,21 +252,17 @@
 			HH
     </select>
 
-    <select id="selectUrlInfoStatChart4" parameterType="hashmap" resultType="camel">
-    	/* urlInfo.selectUrlInfoStatChart4 - 단축URL 통계 / 클릭 수신자 */
-    	SELECT
-    		B.PHONE,
-			DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT,
-			B.FINAL_CH,
-			DATE_FORMAT(A.CON_DT, '%Y-%m-%d %H:%i:%s') AS CON_DT,
-			A.IS_MOBILE
-		FROM
+    <select id="selectClickRecvListCnt" parameterType="hashmap" resultType="int">
+    	/* urlInfo.selectClickRecvListCnt - 단축URL 통계 / 클릭 수신자 카운트 */
+        SELECT
+            COUNT(*) AS CNT
+        FROM
 			cm.CM_URL_MSG A
 		INNER JOIN
 			cm.CM_MSG B
 		ON
 			A.MSG_KEY = B.MSG_KEY
-		WHERE
+        WHERE
 			A.URL_ID = #{urlId}
 		<if test="recvTelNo != null and recvTelNo != ''">
 		AND B.PHONE = #{recvTelNo}
@@ -253,8 +270,39 @@
 		<if test="showClickOnlyYn != null and showClickOnlyYn eq 'Y'.toString()">
 		AND A.CON_DT IS NOT NULL
         </if>
-        ORDER BY
-        	REG_DT DESC
+    </select>
+
+    <select id="selectClickRecvList" parameterType="hashmap" resultType="camel">
+    	/* urlInfo.selectClickRecvList - 단축URL 통계 / 클릭 수신자 목록 */
+    	SELECT
+			@ROWNUM := @ROWNUM - 1 AS ROWNUM,
+			AA.*
+		FROM (
+	    	SELECT
+	    		B.PHONE,
+				DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT,
+				B.FINAL_CH,
+				DATE_FORMAT(A.CON_DT, '%Y-%m-%d %H:%i:%s') AS CON_DT,
+				A.IS_MOBILE
+			FROM
+				cm.CM_URL_MSG A
+			INNER JOIN
+				cm.CM_MSG B
+			ON
+				A.MSG_KEY = B.MSG_KEY
+			WHERE
+				A.URL_ID = #{urlId}
+			<if test="recvTelNo != null and recvTelNo != ''">
+			AND B.PHONE = #{recvTelNo}
+	        </if>
+			<if test="showClickOnlyYn != null and showClickOnlyYn eq 'Y'.toString()">
+			AND A.CON_DT IS NOT NULL
+	        </if>
+	        ORDER BY
+	        	REG_DT DESC
+	        LIMIT #{offset}, #{listSize}
+		) AA,
+		(SELECT @ROWNUM := #{totCnt} - #{offset} + 1) TMP
     </select>
 
 	<insert id="insertUrlInfo">
@@ -333,5 +381,31 @@
 	        ORDER BY
 	        	REG_DT DESC
 		) A
+    </select>
+
+    <select id="excelDownClickRecvList" parameterType="hashmap" resultType="camel">
+    	/* urlInfo.excelDownClickRecvList - 단축클릭수신자 엑셀 다운로드 */
+    	SELECT
+    		B.PHONE,
+			DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT,
+			B.FINAL_CH,
+			DATE_FORMAT(A.CON_DT, '%Y-%m-%d %H:%i:%s') AS CON_DT,
+			A.IS_MOBILE
+		FROM
+			cm.CM_URL_MSG A
+		INNER JOIN
+			cm.CM_MSG B
+		ON
+			A.MSG_KEY = B.MSG_KEY
+		WHERE
+			A.URL_ID = #{urlId}
+		<if test="recvTelNo != null and recvTelNo != ''">
+		AND B.PHONE = #{recvTelNo}
+        </if>
+		<if test="showClickOnlyYn != null and showClickOnlyYn eq 'Y'.toString()">
+		AND A.CON_DT IS NOT NULL
+        </if>
+        ORDER BY
+        	REG_DT DESC
     </select>
 </mapper>

@@ -38,6 +38,29 @@ const excelDownUrlInfoStatList = (params) => {
 		}
 	})
 }
+const excelDownClickRecvList = (params) => {
+	return httpClient.post('/uc/urlInfo/excelDownClickRecvList', params, 
+    { headers: {"show-layer": "No", "activity":"READ"}, responseType: 'arraybuffer' })
+  .then((res) => {
+		try {
+			let blob = new Blob([res.data], { type: res.headers['content-type'] })
+			let fileName = getFileName(res.headers['content-disposition'])
+			fileName = decodeURI(fileName)
+
+		if (window.navigator.msSaveOrOpenBlob) { // IE 10+
+			window.navigator.msSaveOrOpenBlob(blob, fileName)
+		} else { // not IE
+				let link = document.createElement('a')
+				link.href = window.URL.createObjectURL(blob)
+				link.target = '_self'
+				if (fileName) link.download = fileName
+				link.click()
+			}
+		} catch (e) {
+			console.error(e)
+		}
+	})
+}
 
 export default {
   selectUrlInfoList,
@@ -46,6 +69,7 @@ export default {
   insertUrlInfo,
   deleteUrlInfo,
   excelDownUrlInfoStatList,
+  excelDownClickRecvList,
 }
 
 function getFileName (contentDisposition) {

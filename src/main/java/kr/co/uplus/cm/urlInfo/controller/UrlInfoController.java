@@ -148,4 +148,31 @@ public class UrlInfoController {
 
 		return model;
 	}
+
+	/**
+	 * 클릭수신자 엑셀 다운로드
+	 * @param params
+	 * @return
+	 */
+	@PostMapping(path = "/excelDownClickRecvList")
+	public ModelAndView excelDownClickRecvList(@RequestBody Map<String, Object> params) throws Exception {
+		Object colDataList  = urlInfoService.excelDownClickRecvList(params).getData();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sheetTitle", 		"클릭수신자");
+		map.put("colLabels", 		new String[] {"수신자", "발송 일시", "발송 채널", "접속 일시", "모바일 여부"});
+		map.put("colIds", 			new String[] {"phone", "regDt", "finalCh", "conDt", "isMobile"});
+		map.put("numColIds", 		new String[] {});
+		map.put("figureColIds", 	new String[] {});
+		map.put("colDataList", 		colDataList);
+
+		List<Map<String, Object>> sheetList = new ArrayList<Map<String, Object>>();
+		sheetList.add(map);
+
+		ModelAndView model = new ModelAndView("commonXlsxView");
+		model.addObject("excelFileName", "ClickRecvList_"+DateUtil.getCurrentDate("yyyyMMddHHmmss"));
+		model.addObject("sheetList", sheetList);
+
+		return model;
+	}
 }

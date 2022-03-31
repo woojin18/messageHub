@@ -38,6 +38,17 @@
             >{{ item.name }}</a>
           </li>
 				</ul>
+        <div 
+					v-if="isDev"
+					class="inline-block">
+					<input 
+						type="checkbox" 
+						id="demo" 
+						class="checkStyle2" 
+						v-model="demo"
+					>
+					<label for="demo">Demo</label>
+				</div>
 				<a 
           href="#self" 
           class="btnStyle1 float-right"
@@ -121,7 +132,8 @@ export default {
         {val:7, name: '1주일'},
         {val:15, name: '15일'},
       ],
-      demo: true,
+      demo: false,
+      isDev: true,
     };
   },
   mounted() {
