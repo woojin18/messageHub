@@ -1359,7 +1359,7 @@
 							</div>
 						</div>
 						<div class="of_h">
-							<div class="float-right" style="width:87%">
+							<div class="float-right" style="width:82%">
 								<ul class="tab_s6" role="tablist">
 									<li role="presentation" class="active"><a href="#card91" aria-controls="card91" role="tab" data-toggle="tab" v-on:click="cShortTab=0">카드 1</a></li>
 									<li role="presentation"><a href="#card92" aria-controls="card92" role="tab" data-toggle="tab" v-on:click="cShortTab=1">카드 2</a></li>
@@ -1572,7 +1572,7 @@
 							</div>
 						</div>
 						<div class="of_h">
-							<div class="float-right" style="width:87%">
+							<div class="float-right" style="width:82%">
 								<ul class="tab_s6" role="tablist">
 									<li role="presentation" class="active"><a href="#card101" aria-controls="card101" role="tab" data-toggle="tab" v-on:click="cTallTab=0">카드 1</a></li>
 									<li role="presentation"><a href="#card102" aria-controls="card102" role="tab" data-toggle="tab" v-on:click="cTallTab=1">카드 2</a></li>
