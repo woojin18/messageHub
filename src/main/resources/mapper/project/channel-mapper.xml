@@ -1309,4 +1309,102 @@
 		)
 		
 	</insert>
+	
+	<delete id="deleteRemoveBrandList">
+		/* channel.deleteRemoveBrandList */
+		DELETE FROM cm_console.CM_SUBCORP_REMOVE_BRAND
+	</delete>
+	
+	<insert id="insertRemoveBrandList">
+		/* channel.insertRemoveBrandList */
+		INSERT cm_console.CM_SUBCORP_REMOVE_BRAND 
+		(
+				BRAND_ID
+		,		BRAND_NAME
+		) VALUES (
+				#{brandId}
+		,		#{brandName}
+		)
+	</insert>
+	
+	<select id="selectRemoveBrandList" resultType="hashMap">
+		/* channel.selectRemoveBrandList */
+		SELECT	A.BRAND_ID
+		,		A.BRAND_NAME
+		,		A.CHECK_FLAG
+		FROM	(
+				SELECT	BRAND_ID
+				,		BRAND_NAME
+				,		'Y'			AS CHECK_FLAG
+				FROM	cm_console.CM_SUBCORP_REMOVE_BRAND A
+				WHERE	BRAND_ID IN (SELECT BRAND_ID FROM cm_console.CM_EXCEPT_BRAND WHERE REGNO = #{regNo})
+				UNION ALL
+				SELECT	BRAND_ID
+				,		BRAND_NAME
+				,		'N'			AS CHECK_FLAG
+				FROM	cm_console.CM_SUBCORP_REMOVE_BRAND A
+				WHERE	BRAND_ID NOT IN (SELECT BRAND_ID FROM cm_console.CM_EXCEPT_BRAND WHERE REGNO = #{regNo})
+				) A
+		WHERE	1=1
+		<if test="srcBrandType == 'brandId' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		A.BRAND_ID = #{srcBrandText}
+		</if>
+		<if test="srcBrandType == 'brandName' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		A.BRAND_NAME LIKE CONCAT('%', #{srcBrandText}, '%')
+		</if>
+		<if test='pagingYn == "Y" '>
+		LIMIT #{offset}, #{listSize}
+		</if>
+	</select>
+	
+	<select id="selectRemoveCheckBrandList" resultType="hashMap">
+		/* channel.selectRemoveCheckBrandList */
+		SELECT	BRAND_ID
+		,		BRAND_NAME
+		FROM	cm_console.CM_SUBCORP_REMOVE_BRAND A
+		WHERE	BRAND_ID IN (SELECT BRAND_ID FROM cm_console.CM_EXCEPT_BRAND WHERE REGNO = #{regNo})
+		<if test="srcBrandType == 'brandId' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		BRAND_ID = #{srcBrandText}
+		</if>
+		<if test="srcBrandType == 'brandName' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		BRAND_NAME LIKE CONCAT('%', #{srcBrandText}, '%')
+		</if>
+		<if test='pagingYn == "Y" '>
+		LIMIT #{offset}, #{listSize}
+		</if>
+	</select>
+	
+	<select id="selectRemoveBrandListCnt" resultType="int">
+		/* channel.selectRemoveBrandListCnt */
+		SELECT	COUNT(*)
+		FROM	cm_console.CM_SUBCORP_REMOVE_BRAND
+		<if test="srcBrandType == 'brandId' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		BRAND_ID = #{srcBrandText}
+		</if>
+		<if test="srcBrandType == 'brandName' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		BRAND_NAME LIKE CONCAT('%', #{srcBrandText}, '%')
+		</if>
+	</select>
+	
+	<delete id="deleteExceptBrand">
+		/* channel.deleteExceptBrand */
+		DELETE FROM cm_console.CM_EXCEPT_BRAND
+		WHERE	REGNO = #{regNo}
+		AND		BRAND_ID = #{brandAllId}
+	</delete>
+	
+	<delete id="insertExceptBrand">
+		/* channel.insertExceptBrand */
+		INSERT cm_console.CM_EXCEPT_BRAND (
+				REGNO
+		,		BRAND_ID
+		,		REG_ID
+		,		REG_DT
+		) VALUES (
+				#{regNo}
+		,		#{brandId}
+		,		#{userId}
+		,		now()
+		)
+	</delete>
 </mapper>

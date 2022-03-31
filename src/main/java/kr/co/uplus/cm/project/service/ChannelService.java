@@ -1649,5 +1649,82 @@ public class ChannelService {
 		}
 		
 	}
+
+	public RestResult<?> selectRemoveSubCorpList(Map<String, Object> params) throws Exception {
+		RestResult<Object> rtn = new RestResult<Object>();
+		Map<String, Object> rtnObj = new HashMap<String, Object>();
+		
+		// 브랜드 리스트 가져오기 API
+		Map<String, Object> headerMap = new HashMap<String, Object>();
+		String apiKey = CommonUtils.getString(generalDao.selectGernalObject("channel.selectApikeyForApi",params));
+		headerMap.put("apiKey",		apiKey);
+		headerMap.put("apiId",		params.get("setRbcLoginId"));
+		headerMap.put("apiSecret",	params.get("setRbcApiKey"));
+		
+		Map<String, Object> result =  apiInterface.get("/console/v1/rcs/agency/brand/list", null, null, headerMap);
+		ArrayList<Map<String, Object>> resultList = null;
+		
+		// 성공인지 실패인지 체크 실패일경우 exception 처리 인증키는 사용하는 부분 없음.
+		if("10000".equals(result.get("code")) ) {
+			Map<String, Object> data = (Map<String, Object>) result.get("data");
+			resultList = (ArrayList<Map<String, Object>>) data.get("result");
+		} else {
+			String errMsg = CommonUtils.getString(result.get("message"));
+			throw new Exception(errMsg);
+		}
+		
+		// tempTable delete
+		generalDao.deleteGernal(DB.QRY_DELETE_SUBCORP_REMOVE_BRAND, null);
+		
+		// api통신으로 가져온 데이터를 tempTable에 insert
+		for(int i=0; i<resultList.size(); i++) {
+			Map<String, Object> insertMap = new HashMap<String, Object>();
+			insertMap.put("brandId" , resultList.get(i).get("brandId"));
+			insertMap.put("brandName" , resultList.get(i).get("brandName"));
+			generalDao.insertGernal(DB.QRY_INSERT_SUBCORP_REMOVE_BRAND, insertMap);
+		}
+		
+		Map<String, Object> pageInfo = (Map<String, Object>) params.get("pageInfo");
+		
+		if (params.containsKey("pageNo") && CommonUtils.isNotEmptyObject(params.get("pageNo"))
+				&& params.containsKey("listSize") && CommonUtils.isNotEmptyObject(params.get("listSize"))) {
+			rtn.setPageProps(params);
+			if (rtn.getPageInfo() != null) {
+				// 카운트 쿼리 실행
+				int listCnt = generalDao.selectGernalCount(DB.QRY_SELECT_REMOVE_BRAND_LIST_CNT, params);
+				rtn.getPageInfo().put("totCnt", listCnt);
+			}
+		}	
+		
+		List<Object> removeList = generalDao.selectGernalList(DB.QRY_SELECT_REMOVE_BRAND_LIST, params);
+		List<Object> checkBrandList = generalDao.selectGernalList(DB.QRY_SELECT_REMOVE_CHECK_BRAND_LIST, params);
+		rtnObj.put("data", removeList);
+		rtnObj.put("checkBrandList", checkBrandList);
+		rtn.setData(rtnObj);
+		return rtn;
+	}
+
+	public void setRemoveBrand(Map<String, Object> params) throws Exception {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		ArrayList<String> brandList = (ArrayList<String>) params.get("brandIdList");
+		ArrayList<String> barndAllList = (ArrayList<String>) params.get("brandIdAllList");
+		
+		paramMap.put("userId" , params.get("userId"));
+		paramMap.put("regNo" , params.get("regNo"));
+		
+		// 기존에 선택되어있던 해당 regNo의 제외 브랜드를 삭제
+			for(int i=0; i<barndAllList.size(); i++) {
+				paramMap.put("brandAllId" , barndAllList.get(i));
+				
+				generalDao.insertGernal(DB.QRY_DELETE_EXCEPT_BRAND, paramMap);
+			}
+		
+		// 선택한 제외브랜드로 다시 insert
+		for(int i=0; i<brandList.size(); i++) {
+			paramMap.put("brandId" , brandList.get(i));
+			
+			generalDao.insertGernal(DB.QRY_INSERT_EXCEPT_BRAND, paramMap);
+		}
+	}
 	
 }

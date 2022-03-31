@@ -128,6 +128,14 @@ const checkRbcCertify = (params) => {
 
 const setSubCorpSync = (params) => {
     return httpClient.post('/projectApi/channel/setSubCorpSync', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const selectRemoveSubCorpList = (params) => {
+    return httpClient.post('/projectApi/channel/selectRemoveSubCorpList', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const setRemoveBrand = (params) => {
+    return httpClient.post('/projectApi/channel/setRemoveBrand', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 }
 
 export default {
@@ -163,5 +171,7 @@ export default {
     selectReCoprYn,
     selectSubCorpBrandConf,
     checkRbcCertify,
-    setSubCorpSync
+    setSubCorpSync,
+    selectRemoveSubCorpList,
+    setRemoveBrand
 };

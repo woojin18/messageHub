@@ -28,7 +28,7 @@
                     </div>
                     <div class="of_h consolMarginTop">
                         <h5 class="inline-block" style="width:20%;">브랜드 제외</h5>
-                        <a @click.prevent="" class="btnStyle1 backGray" style="width:70%" title="닫기">하위고객 브랜드 수신 제외</a>
+                        <a @click.prevent="fnRemoveSubCorpList" class="btnStyle1 backGray" style="width:70%" title="닫기">하위고객 브랜드 수신 제외</a>
                     </div>
 					<div class="text-center mt20">
 						<a @click.prevent="fnSetRegi" v-if="confYn=='N'" class="btnStyle1 backRed mr20"  title="닫기">설정 등록</a>
@@ -38,17 +38,20 @@
 				</div>
 			</div>
 		</div>
+		<removeSubCorpPop :setRbcLoginId="setRbcLoginId" :setRbcApiKey="setRbcApiKey" :removeCorpPopCnt="removeCorpPopCnt"></removeSubCorpPop>
 	</div>
 </template>
 
 <script>
 import api from '../service/api'
 import confirm from '@/modules/commonUtil/service/confirm'
+import removeSubCorpPop from './bp-chan-removeSubCorpPop.vue';
 
 
 export default {
 	name: 'reCorpPop',
 	components: {
+		removeSubCorpPop
 	},
 	props: {
 		reCorpPopCnt: {
@@ -65,6 +68,7 @@ export default {
 	},
 	data() {
 		return {
+			removeCorpPopCnt : 0,
 			contentTitle : "하위고객 브랜드 수신 등록",
 			certify : false,			// RBC 인증 check
 			confYn : "N",				// N인경우 설정등록 버튼, Y인경우 설정 해제 버튼 출력
@@ -195,6 +199,20 @@ export default {
 					confirm.fnAlert(vm.contentTitle, result.message);
 				}
             });
+		},
+
+		// 하위고객 브랜드 수신 제외
+		fnRemoveSubCorpList() {
+			var vm = this;
+			var certify = vm.certify;
+			if(!certify) {
+				confirm.fnAlert(vm.contentTitle, "RBC 인증처리를 해주세요.");
+				return false;
+			}
+
+			this.removeCorpPopCnt = this.removeCorpPopCnt+1;
+      		jQuery("#removeSubCorpPop").modal("show");
+
 		}
 	}
 }

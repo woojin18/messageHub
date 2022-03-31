@@ -361,7 +361,9 @@
 		FROM    cm.CM_RCS_BRAND crb
 		INNER JOIN cm_console.CM_PROJECT_BRAND cpb
 		   ON   cpb.BRAND_ID  = crb.BRAND_ID 
-		WHERE   crb.CORP_ID = #{corpId}
+		INNER JOIN cm_console.CM_REGNO_BRAND C
+			on	crb.BRAND_ID = C.BRAND_ID
+		WHERE   C.REGNO = #{regNo}
 		AND    crb.USE_YN ='Y' 
 		AND    crb.APPROVAL_STATUS ='승인'
 		AND      cpb.PROJECT_ID = #{srcProjectId}
