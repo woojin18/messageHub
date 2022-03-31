@@ -713,13 +713,16 @@ input[type='radio']:checked, input[type='radio']:focus {appearance:none; width:1
 #sidebar > ul > li > a i {vertical-align:baseline}
 #sidebar > ul > li > a .navIcon {margin-right:10px}
 #sidebar > ul > li > a .navArrow {font-size:10px; position:absolute; top:27px; right:20px}
+#sidebar > ul > li > a .navArrow:before {content:"\f078"}
+#sidebar > ul > li.active > a .navArrow:before {content:"\f077"}
+
 /*#sidebar > ul > li.active > a, */#sidebar > ul > li.on > a, #sidebar > ul > li > a:hover {color:#000; font-weight:500; background:#F7F7F7}
-#sidebar > ul > li .depth2Lnb {display:none}
+#sidebar > ul > li .depth2Lnb {display:none !important}
 #sidebar > ul > li .depth2Lnb > ul {background:#F7F7F7; padding:0 10px 0 52px}
 #sidebar > ul > li .depth2Lnb > ul > li {}
 #sidebar > ul > li .depth2Lnb > ul > li a {display:block; font-size:14px; color:#707070; padding:7px 0; transition:0.3s}
 #sidebar > ul > li .depth2Lnb > ul > li.active a, #sidebar > ul > li .depth2Lnb > ul > li a:hover {color:#FD004E; font-weight:500}
-#sidebar > ul > li.active .depth2Lnb {display:block}
+#sidebar > ul > li.active .depth2Lnb {display:block !important}
 
 .depth2Lnb > ul > li .depth3Lnb {display:none}
 .depth2Lnb > ul > li .depth3Lnb > ul {background:#F7F7F7}
