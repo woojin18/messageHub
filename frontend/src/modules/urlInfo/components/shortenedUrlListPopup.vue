@@ -181,15 +181,10 @@ export default {
   props: {},
   computed: {
     shortendUrl() {
-      const nodeEnv = process.env.NODE_ENV
-      console.log('######## nodeEnv #######', nodeEnv);
-      let domain = 'url.msghub-qa.uplus.co.kr'
-      if(nodeEnv === 'production') {
-        domain = 'm-hub.kr'
-      }
-      
+      // PROD : m-hub.kr
+      // QA : url.msghub-qa.uplus.co.kr
       if(this.urlId)
-        return `https://${domain}/#URL{${this.urlId}}`
+        return `https://url.msghub-qa.uplus.co.kr/#URL{${this.urlId}}`
       else
         return ''
     },
