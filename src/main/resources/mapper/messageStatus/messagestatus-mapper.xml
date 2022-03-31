@@ -59,6 +59,7 @@
 		,		A.GW_RESULT_CODE /*결과*/
 		,		CASE
 					WHEN A.GW_RESULT_CODE = '10000' THEN '성공'
+					WHEN IFNULL(A.GW_RESULT_CODE, '') = '' THEN '발송중'
 					ELSE '실패'
 					END AS GW_RESULT_NM  /*결과명*/
 		,			A.PUSH_CUID /*push수신자ID*/
@@ -79,6 +80,7 @@
 		,			A.GW_RESULT_DESC
 		,			CASE
 					WHEN A.GW_RESULT_CODE = '10000' THEN '성공'
+					WHEN IFNULL(A.GW_RESULT_CODE, '') = '' THEN '발송중'
 					ELSE CONCAT('실패( ' , A.GW_RESULT_DESC , ' )')
 					END AS EXCEL_GW_RESULT_NM 
 		FROM	cm.CM_MSG A
