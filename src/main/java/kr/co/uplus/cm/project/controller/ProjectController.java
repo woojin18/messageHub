@@ -766,5 +766,19 @@ public class ProjectController {
 		return rtn;
 	}
 
-	
+	// API KEY 생성
+	@PostMapping("/deleteApikeyManage")
+	public RestResult<?> deleteApikeyManage(@RequestBody Map<String, Object> params) {
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+				projectService.deleteApikeyManage(params);
+			
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("삭제를 실패하였습니다.");
+		}
+
+		return rtn;
+	}
 }

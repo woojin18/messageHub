@@ -60,6 +60,7 @@
               </div>
             </div>
             <div class="float-right mb10">
+                <a v-if="reCorpYn == 'Y'" @click="fnReCorpBrandSet" class="btnStyle3 gray font13 minWidth120 mr10" activity="SAVE">하위고객 브랜드 수신 등록</a>
                 <a @click="fnRcsBrandCon" class="btnStyle3 gray font13 minWidth120 mr10" activity="SAVE">브랜드 연결</a>
 								<a @click="fnRcsBrandReg" class="btnStyle3 gray font13 minWidth120" activity="SAVE">브랜드 등록</a>
 							</div>
@@ -124,6 +125,7 @@
 				<!-- 페이징 -->
 				<div id="pageContent">
           <PageLayer @fnClick="fnSearch" :listTotalCnt="totCnt" :selected="listSize" :pageNum="pageNo" ref="updatePaging"></PageLayer>
+          <reCorpPop :projectId="projectId" :reCorpPopCnt="reCorpPopCnt"></reCorpPop>
           <rcsPop :projectId="projectId" :popCnt="popCnt"></rcsPop>
           <modalConProject :brandId="brandId" :popCnt="popCnt"></modalConProject>
         </div>
@@ -150,6 +152,7 @@ import SelectLayer from '@/components/SelectLayer.vue';
 import PageLayer from '@/components/PageLayer.vue';
 import confirm from "@/modules/commonUtil/service/confirm";
 import rcsPop from "./bp-chan-rscBranCon-detail.vue"
+import reCorpPop from "./bp-chan-reCorpPop.vue"
 import {eventBus} from "@/modules/commonUtil/service/eventBus";
 
 export default {
@@ -159,6 +162,7 @@ export default {
     modalTmplt,
     modalCallback,
     rcsPop,
+    reCorpPop,
     modalConProject
   },
   data() {
@@ -183,8 +187,12 @@ export default {
       callback_row_data : {},
       projectApiKey : "",
       popCnt : 0,
+      reCorpPopCnt : 0,
       row_brandId : {},
-      brandId : ''
+      brandId : '',
+
+      // 재판매 업체
+      reCorpYn : 'N'    // 재판매 업체 체크
     }
   },
   created(){
@@ -196,6 +204,7 @@ export default {
 
     this.fnSearch(1);
     this.fnFindApiKeyFromProject();
+    this.fnSetReCoprYn();
   },
   methods: {
     fnFindApiKeyFromProject(){
@@ -208,6 +217,17 @@ export default {
 				if(result.success) {
           this.projectApiKey = result.data;
 				}
+      });
+    },
+    fnSetReCoprYn() {
+      var params = {};
+      var vm = this;
+      Api.selectReCoprYn(params).then(response => {
+        var result = response.data;
+        if(result.success) {
+          var data = result.data;
+          vm.reCorpYn = data.reCorpYn;
+        }
       });
     },
 		// select 박스 선택시 리스트 재출력
@@ -380,6 +400,11 @@ export default {
     },
     fnPageNoResetSearch(){
       this.$refs.updatePaging.fnAllDecrease();
+    },
+
+    fnReCorpBrandSet() {
+      this.reCorpPopCnt = this.reCorpPopCnt+1;
+      jQuery("#reCorpPop").modal("show");
     }
   }
 }

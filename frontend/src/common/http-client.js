@@ -35,6 +35,10 @@ const setLoginInterceptor = config => {
 			if (config.data.projectId == null) {
 				config.data.projectId = utils.getCookie(consts.projectId);
 			}
+
+			if (config.data.regNo == null) {
+				config.data.regNo = tokenSvc.getToken().principal.regNo;
+			}
 		}
 	}
 	return config;

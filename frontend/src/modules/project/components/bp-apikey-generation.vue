@@ -53,7 +53,7 @@
 						<div class="of_h">
 							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">IP 체크</h4></div>
 							<div style="width:50%" class="float-right">
-						    	<input type="radio"  name="ipChkYn" value="Y" id="ipChkY" @change="fnIpValueChange($event)"> <label for="ipChkY" class="mt5 ml5">사용</label>
+						    	<input type="radio"  name="ipChkYn" value="Y" id="ipChkY" @change="fnIpValueChange($event)" checked> <label for="ipChkY" class="mt5 ml5">사용</label>
 						    	<input type="radio"  name="ipChkYn" value="N" id="ipChkN" @change="fnIpValueChange($event)"> <label for="ipChkN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
@@ -72,8 +72,8 @@
 						<div class="of_h mt10">
 							<div style="width:50%" class="float-left color000"><h4 class="font-normal" style="margin-top: 5px;margin-bottom: 16px;">상태</h4></div>
 							<div style="width:50%" class="float-right">
-								<input type="radio"  name="statusYn" value="USE" id="statsY"> <label for="statsY" class="mt5 ml5">사용</label>
-					        	<input type="radio"  name="statusYn" value="CANCEL" id="statsN"> <label for="statsN" class="mt5 ml50">미사용</label>
+								<input type="radio"  name="statusYn" value="USE" id="statusY" checked> <label for="statusY" class="mt5 ml5">사용</label>
+					        	<input type="radio"  name="statusYn" value="CANCEL" id="statusN"> <label for="statusN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
 						<div class="clear consolMarginTop">
@@ -87,7 +87,7 @@
                             </h4>
                             </div>
 							<div style="width:50%" class="float-right">
-					        	<input type="radio" name="rptYn" value="Y" id="rptY"> <label for="rptY" class="mt5 ml5">사용</label>
+					        	<input type="radio" name="rptYn" value="Y" id="rptY" checked> <label for="rptY" class="mt5 ml5">사용</label>
 						        <input type="radio"  name="rptYn" value="N" id="rptN"> <label for="rptN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
@@ -102,7 +102,7 @@
                                 </h4>
 							</div>
 							<div style="width:50%" class="float-right">
-					        	<input type="radio"  name="dupChkYn" value="Y" id="dupChkY"> <label for="dupChkY" class="mt5 ml5">사용</label>
+					        	<input type="radio"  name="dupChkYn" value="Y" id="dupChkY" checked> <label for="dupChkY" class="mt5 ml5">사용</label>
 						        <input type="radio"  name="dupChkYn" value="N" id="dupChkN"> <label for="dupChkN" class="mt5 ml50">미사용</label>
 							</div>
 						</div>
@@ -128,9 +128,9 @@ export default {
         apikeyName   : '',
         apikeyPwd    : '',
         apikeyPwdChk : '',
-        ipChkYn      : '',
+        ipChkYn      : 'Y',
         ipList       : [''],
-		value		 : '',
+		value		 : '50',
 		projectId : this.$parent.projectId,
     }
   },
@@ -177,25 +177,24 @@ export default {
       	this.apikeyPwd = ''
         this.apikeyPwdChk = ''
       	this.ipList = ['']
-		this.value = ''
-		jQuery('input:radio[name="ipChkYn"]:checked').prop('checked',false)
-		jQuery('input:radio[name="statusYn"]:checked').prop('checked',false)
-		jQuery('input:radio[name="rptYn"]:checked').prop('checked',false)
-		jQuery('input:radio[name="dupChkYn"]:checked').prop('checked',false)
+		this.value = '50'
+		jQuery('#ipChkY').prop('checked',true)
+		jQuery('#statusY').prop('checked',true)
+		jQuery('#rptY').prop('checked',true)
+		jQuery('#dupChkY').prop('checked',true)
 	},
 	fnApiKeyGenerateConfirm(){
 		  eventBus.$on('callbackEventBus', this.fnApikeyGeneration);
           confirm.fnConfirm('입력한 내용으로 API KEY를 생성하시겠습니까?',"","생성")
 	},
 	fnApikeyGeneration(){
-
+		
 		const ipChkYn = jQuery('input:radio[name="ipChkYn"]:checked').val()
 		const status = jQuery('input:radio[name="statusYn"]:checked').val()
 		const rptYn = jQuery('input:radio[name="rptYn"]:checked').val()
 		const dupChkYn = jQuery('input:radio[name="dupChkYn"]:checked').val()
 		const tps = parseInt(this.value.replaceAll(',',''))
 		const apikeyNameChk = /[~!@#$%^&*()_+|<>?:{}]/;
-
 		if(this.apikeyName == ''){
 			alert('API KEY명을 입력해 주세요')
 			return
