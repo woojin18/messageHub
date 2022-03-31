@@ -1216,4 +1216,22 @@ public class ProjectService {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<?> deleteApikeyManage(Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			generalDao.deleteGernal(DB.QRY_DELETE_APIKEY_MANAGE, params);
+			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
+			
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("삭제에 실패하였습니다.");		
+		}
+		return rtn;
+	}
+	
+	
 }

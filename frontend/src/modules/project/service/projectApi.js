@@ -102,6 +102,11 @@ const updateApikeyManage = (params) => {
     return httpClient.post('/projectApi/manage/updateApikeyManage', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
 }
 
+const deleteApikeyManage = (params) => {
+    return httpClient.post('/projectApi/manage/deleteApikeyManage', params, { headers: {"show-layer": "Yes", "activity": "SAVE" } });
+}
+
+
 export default {
     selectProjectList,
     checkProjectNameDuplicate,
@@ -131,5 +136,6 @@ export default {
     delCallNum,
     selectApikeyManageList,
     saveApikeyManageGenerate,
-    updateApikeyManage
+    updateApikeyManage,
+    deleteApikeyManage
 };

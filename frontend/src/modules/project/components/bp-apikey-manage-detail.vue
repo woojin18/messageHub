@@ -176,7 +176,8 @@
                      </div>	
 
 					<div v-if="this.update == false" class="text-center mt30">
-						<a v-if="this.rowData.webSenderYn == '미사용'" @click="fnUpdate" class="btnStyle3 white font14" data-toggle="modal" data-target="#correction" title="수정" >수정</a>
+						<a v-if="this.rowData.webSenderYn == '미사용'" @click="fnApiKeyDelketeConfirm" class="btnStyle3 black font14" data-toggle="modal" data-target="#correction" title="삭제" >삭제</a>
+						<a v-if="this.rowData.webSenderYn == '미사용'" @click="fnUpdate" class="btnStyle3 white font14 ml5" data-toggle="modal" data-target="#correction" title="수정" >수정</a>
 						<a @click="fnClose" class="btnStyle3 black font14 ml5" title="닫기">닫기</a>						
 					</div>
                     <div v-if="this.update == true" class="text-center mt30">
@@ -402,6 +403,27 @@ methods:{
     },
 	fnNewPwd(){
 		this.newPwd = !this.newPwd
+	},
+	fnApiKeyDelketeConfirm(){
+		  eventBus.$on('callbackEventBus', this.fnDelete);
+          confirm.fnConfirm('API KEY를 삭제하시겠습니까?',"","삭제")
+	},
+	fnDelete(){
+		let params = {
+			apiKey    : this.rowData.apiKey
+		}
+
+        projectApi.deleteApikeyManage(params).then(response =>{
+        const result = response.data
+		console.log(result)
+			if(result.success){
+				confirm.fnAlert('', '삭제 되었습니다.')
+				this.$parent.fnApikeyManageList()
+				jQuery('#apikeyManageDetail').hide()
+			}else{
+			alert('삭제를 실패하였습니다.')
+			}
+		})
 	}
 
 }

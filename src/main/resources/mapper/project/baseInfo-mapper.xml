@@ -326,4 +326,8 @@
 		WHERE API_KEY =#{apikey}
 	</update>
 
+	<delete id="deleteApiKeyManage">
+		DELETE FROM cm.CM_APIKEY 
+		WHERE API_KEY = #{apiKey} 
+	</delete>
 </mapper>

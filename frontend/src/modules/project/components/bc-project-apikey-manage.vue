@@ -3,7 +3,7 @@
 	<div>
 		<article>
 			<div class="row">
-				<div class="Dashboard01 pd0 of_h"><h4 class="inline-block">API KEY 관리</h4>
+				<div class="Dashboard01 pd0 of_h"><h4 class="inline-block">API KEY</h4>
                 <div class="float-right h4Button">
                 <a class="btnStyle2 borderGray" @click="fnApikeyGeneration">KEY 생성<i class="far fa-plus-circle ml10"></i></a></div>
                 <p style="opacity: 0.5;">* 프로젝트 API Key는 5개까지 발급받을 수 있으며, 서비스 이용 시 인증에 사용됩니다.</p>
