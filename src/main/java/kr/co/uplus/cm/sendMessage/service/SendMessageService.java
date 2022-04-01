@@ -27,7 +27,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -92,12 +91,6 @@ public class SendMessageService {
     private RcsTemplateSendService rcsTemplateSendSvc;
 
     private long second = 1000;
-
-    @Value("${night.send.st.hh}") String nightSendSthh;
-	@Value("${night.send.st.mm}") String nightSendStmm;
-	@Value("${night.send.ed.hh}") String nightSendEdhh;
-	@Value("${night.send.ed.mm}") String nightSendEdmm;
-
 
     /**
      * APP ID 리스트 조회
@@ -1649,6 +1642,20 @@ public class SendMessageService {
                 String json = gson.toJson(tempList);
                 List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
                 requestData.setButtons(buttons);
+
+                for(KkoButtonInfo button : buttons) {
+                	if("WL".equals(button.getLinkType())){
+                		String linkPc = button.getLinkPc();
+                		String linkMo = button.getLinkMo();
+
+                		// 단축URL 여부 체크
+                	    if(
+                	    	(linkPc != null && linkPc.contains("#URL{")) ||
+                	    	(linkMo != null && linkMo.contains("#URL{"))
+                	    )
+                	    	requestData.setClickUrlYn("Y");
+                	}
+                }
             }
         }
 
@@ -1688,10 +1695,6 @@ public class SendMessageService {
             requestData.setFbInfoLst(fbInfoLst);
             requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
-
-        // 단축URL 여부 체크
-	    if(frndTalkContent.contains("#URL{"))
-	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -2022,6 +2025,11 @@ public class SendMessageService {
             if(CollectionUtils.isNotEmpty(tempList)) {
                 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
                 String json = gson.toJson(tempList);
+
+                // 단축URL 여부 체크
+        	    if(json.contains("#URL{"))
+        	    	requestData.setClickUrlYn("Y");
+
                 List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
                 requestData.setButtons(buttons);
             }
@@ -2085,10 +2093,6 @@ public class SendMessageService {
             requestData.setFbInfoLst(fbInfoLst);
             requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
-
-        // 단축URL 여부 체크
-	    if(templateContent.contains("#URL{"))
-	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -3331,7 +3335,7 @@ public class SendMessageService {
 					apiMap.put("fbInfoLst", fbInfoLst.subList(fromIndex, toIndex));
 				}
 				jsonString = gson.toJson(apiMap);
-				
+
 				responseBody = apiInterface.sendMsg(ApiConfig.SEND_RCS_API_URI, headerMap, jsonString);
 				isDone = isApiRequestAgain(responseBody, reSendCdList);
 				isAllFail = !isSendSuccess(responseBody);
@@ -3384,7 +3388,7 @@ public class SendMessageService {
 				log.error("{}.sendRCSMsgAsync insertCmMsg Error ==> {}", this.getClass(), e);
 			}
 		}
-		
+
 		// web insert시 전체 목록을 insert하기 위해서 apiMap에 insert용 object 세팅
 		apiMap.put("msgRecvInfoLst", recvInfoLst);
 		apiMap.put("msgFbInfoLst", fbInfoLst);
@@ -3422,8 +3426,11 @@ public class SendMessageService {
 	    	String nightSendYn = CommonUtils.getString(generalDao.selectGernalObject(DB.QRY_SELECT_PROJECT_NIGHT_SEND_YN, params));
 
 	    	if(nightSendYn.equals("N")) {
-	    		String nightSendLimitSt = nightSendSthh + nightSendStmm;
-	    		String nightSendLimitEd = nightSendEdhh + nightSendEdmm;
+
+	    		Map<String, Object> nightSendMap = commonService.selectNightSendTime();
+
+	    		String nightSendLimitSt = CommonUtils.getString(nightSendMap.get("nightSendSthh")) + CommonUtils.getString(nightSendMap.get("nightSendStmm"));
+	    		String nightSendLimitEd = CommonUtils.getString(nightSendMap.get("nightSendEdhh")) + CommonUtils.getString(nightSendMap.get("nightSendEdmm"));
 
 		    	if(CommonUtils.getString(params.get("rsrvSendYn")).equals("Y")) {
 		    		//예약발송

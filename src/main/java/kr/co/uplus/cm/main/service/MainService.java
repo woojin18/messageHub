@@ -54,6 +54,7 @@ public class MainService {
         params = new HashMap<String, Object>();
         params.put("productCodes", new String[]{
                 Const.MsgProductCode.ALIMTALK.getCode()
+                , Const.MsgProductCode.ALIMTALK_IMAGE.getCode()
                 , Const.MsgProductCode.FRENDTALK_TEXT.getCode()
                 , Const.MsgProductCode.FRENDTALK_IMAGE.getCode()
                 , Const.MsgProductCode.FRENDTALK_WIDE.getCode()});

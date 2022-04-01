@@ -1,7 +1,10 @@
 <template>
 	<div role="tabpanel" class="tab-pane active" id="productCate1">
 		<div class="border-line2 pd10 consolMarginTop">
-			<p class="color4">* 발송 클릭 율 : 총 발송수에 대한 클릭률 로서 고객의 채널에 대한 반응을 비율로 확인 할 수 있습니다.</p>
+			<p class="color4">
+				* 발송 클릭 율 : 총 발송수에 대한 클릭률 로서 고객의 채널에 대한 반응을 비율로 확인 할 수 있습니다.<br>
+				* 발송 개수 및 클릭 수 등의 수치는 전일 기준 Data 입니다.
+			</p>
 		</div>
 		<div class="row">
 			<div class="col-xs-12 consolMarginTop">
@@ -24,7 +27,7 @@
 					</thead>
 					<tbody>
 						<tr
-							v-for="(item, idx) in chartList" :key="idx"
+							v-for="(item, idx) in itemList" :key="idx"
 						>
 							<td class="text-center">{{ item.ch }}</td>
 							<td class="text-center">{{ item.totCnt }}</td>
@@ -37,8 +40,14 @@
 
 				<!-- 차트 영역 -->
 				<h4 class="lc-1 text-left">채널 별 고객 클릭 반응 추이 (발송 클릭율)</h4>
-				<img src="common/images/chart210614_1.png" alt="차트210614_1" class="img_chart02 img-responsive mt20">
-			</div>			
+				<div class="Dashboard01 fl border-line">
+					<DoughnutChart 
+						v-if="loaded" 
+						:chartData="chartData" 
+						:chartOptions="chartOptions" 
+						:height="60"/>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -47,9 +56,13 @@
 import confirm from '@/modules/commonUtil/service/confirm.js'
 import urlInfoApi from '@/modules/urlInfo/service/urlInfoApi.js'
 
+import DoughnutChart from '@/components/DoughnutChart'
+
 export default {
   name: 'urlInfoStatTab1',
-  components: {},
+  components: {
+		DoughnutChart,
+	},
   props: {
 		urlId: {
       type: String,
@@ -68,10 +81,39 @@ export default {
 			componentsTitle: '단축 URL+ & 통계 > 유입채널',
       itemList: [],
 			chartList: [],
+			chartData: null,            
+			chartOptions: {
+				responsive: true,
+				legend: {
+					position: 'bottom',
+				},
+				title: {
+					display: false,
+					text: '채널 별 고객 클릭 반응 추이 (발송 클릭율)'
+				},
+				animation: {
+					animateScale: true,
+					animateRotate: true
+				},
+				tooltips: {
+					callbacks: {
+						label: (tooltipItem, data) => {
+							var dataset = data.datasets[tooltipItem.datasetIndex];
+							var total = dataset.data.reduce((previousValue, currentValue, /*currentIndex, array*/) => {
+									return previousValue + currentValue;
+							});
+							var currentValue = dataset.data[tooltipItem.index];
+							var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+							return percentage + "%";
+						}
+					}
+				}
+			},
+			loaded: false,
     };
   },
   mounted() {
-			this.selectUrlInfoStatDetail()
+		this.selectUrlInfoStatDetail()
   },
   methods: {
     async selectUrlInfoStatDetail() {
@@ -83,15 +125,63 @@ export default {
       await urlInfoApi.selectUrlInfoStatDetail(params).then((response) => {
         const result = response.data;
         if (result.success) {
-          this.itemList = result.data.chart1
-          this.chartList = result.data.chart1
+          this.itemList = [...result.data.chartData]
+          this.chartList = [...result.data.chartData]
 
+					// '전체' 행 생성
 					this.makeSumRow()
+
+					// 도넛 차트 생성
+					this.drawChart()
         } else {
-          confirm.fnAlert(this.componentsTitle, result.message);
+          confirm.fnAlert(this.componentsTitle, result.message)
         }
       });
     },
+		// 도넛차트 생성
+		drawChart() {
+			const labels = []
+			const dataset = []
+
+			this.chartList.forEach((item) => {
+				switch (item.ch) {
+					case '-':
+						item.ch = '발송실패 또는 처리중'	
+						break;
+					case 'SMS':
+						item.ch = '문자'	
+						break;
+					case 'KAKAO':
+						item.ch = '카카오'	
+						break;
+					default:
+						break;
+				}
+
+				labels.push(item.ch)
+				dataset.push(item.conCnt)
+			})
+
+			this.chartData = {
+				labels,
+				datasets: [
+					{
+						data: dataset,
+						backgroundColor: [
+							'rgb(255, 99, 132)',
+							'rgb(54, 162, 235)',
+							'rgb(255, 205, 86)',
+							'rgb(247, 153, 91)',
+							'rgb(52, 181, 121)',
+							'rgb(117, 63, 135)',
+						],
+						hoverOffset: 4,
+					}
+				]
+			}
+
+			this.loaded = true
+		},
 		makeSumRow() {
 			let conCntSum = 0
 			let totCntSum = 0

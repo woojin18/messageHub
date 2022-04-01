@@ -143,7 +143,19 @@ public class DB {
 	public final static String QRY_DELETE_PROJECTCALLNUM= "channel.deleteProjectCallum";
 	public final static String QRY_SELECT_CONPROJECTLIST = "channel.selectConProjectList";
 	public final static String QRY_SELECT_CONPROJECTLISTCNT = "channel.selectConProjectListCnt";
-
+	public final static String QRY_SELECT_RECORPYN = "channel.selectReCorpYn";
+	public final static String QRY_SELECT_SUBCORP_BRAND_CONF_CNT = "channel.selectSubcorpBrandConfCnt";
+	public final static String QRY_SELECT_SUBCORP_BRAND_CONF_YN = "channel.selectSubcorpBrandConfYn";
+	public final static String QRY_UPDATE_SUBCORP_BRAND_CONF_YN = "channel.updateSubcorpBrandConfYn";
+	public final static String QRY_INSERT_SUBCORP_BRAND_CONF = "channel.insertSubcorpBrandConf";
+	public final static String QRY_DELETE_SUBCORP_REMOVE_BRAND = "channel.deleteRemoveBrandList";
+	public final static String QRY_INSERT_SUBCORP_REMOVE_BRAND = "channel.insertRemoveBrandList";
+	public final static String QRY_SELECT_REMOVE_BRAND_LIST = "channel.selectRemoveBrandList";
+	public final static String QRY_SELECT_REMOVE_BRAND_LIST_CNT = "channel.selectRemoveBrandListCnt";
+	public final static String QRY_SELECT_REMOVE_CHECK_BRAND_LIST = "channel.selectRemoveCheckBrandList";
+	public final static String QRY_DELETE_EXCEPT_BRAND = "channel.deleteExceptBrand";
+	public final static String QRY_INSERT_EXCEPT_BRAND = "channel.insertExceptBrand";
+	
 	// RCS 등록 템플릿 조회
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST = "channel.selectRcsRegTmpltList";
 	public final static String QRY_SELECT_RCS_REGTMPLTLIST_CNT = "channel.selectRcsRegTmpltListCount";
@@ -303,9 +315,10 @@ public class DB {
 	public final static String QRY_SELECT_APIKEY_MAANAGE_LIST = "baseInfo.selectApikeyManageList";
 	public final static String QRY_INSERT_APIKEY_MAANAGE = "baseInfo.insertApikeyManage";
 	public final static String QRY_UPDATE_CMD_APIKEY = "baseInfo.updateCmdApikey";
+	public final static String QRY_UPDATE_APIKEY_MANAGE= "baseInfo.updateApikeyManage";
+	public final static String QRY_DELETE_APIKEY_MANAGE= "baseInfo.deleteApiKeyManage";
 	
-	
-	
+
 	// 프로젝트 멤버
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST_CNT = "member.selectProjectMemberListCnt";
 	public final static String QRY_SELECT_PROJECT_MEMBER_LIST = "member.selectProjectMemberList";
@@ -365,11 +378,14 @@ public class DB {
 	// URL+ (단축URL)
 	public final static String QRY_SELECT_URL_INFO_LIST_CNT				= "urlInfo.selectUrlInfoListCnt";
 	public final static String QRY_SELECT_URL_INFO_LIST 						= "urlInfo.selectUrlInfoList";
-//	public final static String QRY_SELECT_URL_INFO_STAT_LIST_CNT	= "urlInfo.selectUrlInfoStatListCnt";
 	public final static String QRY_SELECT_URL_INFO_STAT_LIST 			= "urlInfo.selectUrlInfoStatList";
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART1		= "urlInfo.selectUrlInfoStatChart1";
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART2		= "urlInfo.selectUrlInfoStatChart2";
 	public final static String QRY_SELECT_URL_INFO_STAT_CHART3		= "urlInfo.selectUrlInfoStatChart3";
+	public final static String QRY_SELECT_CLICK_RECV_LIST_CNT			= "urlInfo.selectClickRecvListCnt";
+	public final static String QRY_SELECT_CLICK_RECV_LIST					= "urlInfo.selectClickRecvList";
 	public final static String QRY_INSERT_URL_INFO 								= "urlInfo.insertUrlInfo";
 	public final static String QRY_DELETE_URL_INFO 								= "urlInfo.deleteUrlInfo";
+	public final static String QRY_EXCEL_DOWN_URL_INFO_STAT_LIST 	= "urlInfo.excelDownUrlInfoStatList";
+	public final static String QRY_EXCEL_DOWN_CLICK_RECV_LIST 		= "urlInfo.excelDownClickRecvList";
 }

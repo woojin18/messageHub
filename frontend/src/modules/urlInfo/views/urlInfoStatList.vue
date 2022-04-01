@@ -4,7 +4,11 @@
       <h2>LAB > {{ componentsTitle }}</h2>
     </div>
     <div class="border-line2 pd10">
-      <p class="color4">* 메시지에 링크된 단축URL+를 고객에게 보내고 고객이 클릭한 통계를 수치화하여 보여줍니다.<br>* [상세보기] 버튼을 누르면 유입 채널 별 그리고 타임라인  클릭 통계정보를 보실 수 있습니다.</p>
+      <p class="color4">
+        * 메시지에 링크된 단축URL+를 고객에게 보내고 고객이 클릭한 통계를 수치화하여 보여줍니다.<br>
+        * [상세보기] 버튼을 누르면 유입 채널 별 그리고 타임라인  클릭 통계정보를 보실 수 있습니다.<br>
+        * 발송 개수 및 클릭 수 등의 수치는 전일 기준 Data 입니다.
+      </p>
     </div>
 
     <!-- 본문 -->
@@ -16,7 +20,7 @@
             <div class="inline-block" style="width:15%">
               <input type="text" class="inputStyle" title="제목 입력란" v-model="searchCond.title" @keydown.enter="goPage(1)">
             </div>
-            <h4 class="inline-block ml40" style="width:6%">단축URL+ ID</h4>
+            <h4 class="inline-block ml40" style="width:8%">단축URL+ ID</h4>
             <div class="inline-block" style="width:15%">
               <input type="text" class="inputStyle" title="단축URL+ ID 입력란" v-model="searchCond.urlId" @keydown.enter="goPage(1)">
             </div>
@@ -40,18 +44,7 @@
                 classProps="datepicker inputStyle maxWidth160"
                 :initDate="searchCond.endDt"
               ></Calendar>
-              <!-- <input 
-                type="text" 
-                class="datepicker inputStyle hasDatepicker" 
-                title="시작날짜 입력란" id="dp1623916254295" style="width:48%">
-                  ~ 
-              <input 
-                type="text" 
-                class="datepicker inputStyle hasDatepicker" 
-                title="시작날짜 입력란" 
-                id="dp1623916254295" 
-                style="width:48%"> -->
-            </div>		
+            </div>
             <ul class="tab_s2 ml10">
               <li
                 v-for="(item, idx) in periodMonthList" 
@@ -77,25 +70,23 @@
 
     <div class="row">
       <div class="col-xs-12 consolMarginTop">
-        <div class="of_h mt20">
-          <a
-            class="float-right btnStyle1 backBlack"
-            data-toggle="modal"
-            data-target="#shortened_URL_add"
-            title="단축 URL 생성"
-            @click="initPop()"
-          >단축 URL+ 생성</a>
-        </div>
-
+        <!-- 단축 URL+ 생성 -->
         <!-- 엑셀 다운로드 -->
-        <div 
-          v-if="excelDownFlag"
-          class="of_h inline">
+        <div class="of_h inline">
           <div class="float-right">
             <a
-              href="#self" 
+              data-toggle="modal"
+              data-target="#shortened_URL_add"
+              class="btnStyle2 backBlack"
+              title="단축 URL+ 생성"
+              @click.prevent="initPop()" 
+              style="margin-right: 5px;"
+            >단축 URL+ 생성
+            </a>
+            <a
               class="btnStyle2 borderGray" 
               title="엑셀 다운로드"
+              activity="READ"
               @click.prevent="downloadExcel()" 
             >엑셀 다운로드 <i class="fal fa-arrow-to-bottom"></i>
             </a>
@@ -316,7 +307,6 @@ export default {
       periodMonthList: [3, 6, 12],
       componentsTitle: '단축 URL+ & 통계',
       itemList: [],
-      excelDownFlag: false,  // 엑셀 다운로드 사용유무
     };
   },
   mounted() {
@@ -350,10 +340,11 @@ export default {
       }
       this.$router.push({name: 'urlInfoStatDetail', params})
     },
-    // 엑셀 다운로드 (미구현)
-    downloadExcel() {
-      console.log('########## downloadExcel ########')
-    },
+    //엑셀 다운로드
+		downloadExcel() {			
+      const params = {...this.searchCond}
+			urlInfoApi.excelDownUrlInfoStatList(params);
+		},
     initPop() {
       this.$refs['shortenedUrlAddPopup'].initVal()
     },

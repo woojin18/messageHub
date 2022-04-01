@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -33,6 +34,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -1134,4 +1136,50 @@ public class CommonService {
 			return returnStr;
 		}
 	}
+	
+	 //야간발송 제한시간 조회
+  	@SuppressWarnings("unchecked")
+  	public Map<String, Object> selectNightSendTime() throws Exception {
+  		Map<String, Object> rtn = new HashMap<String, Object>();
+  		
+  		String rtnStr = CommonUtils.getString(generalDao.selectGernalObject("rcsTemplate.selectCmCommonCode", null));
+  		
+  		if(rtnStr != null){
+			try {
+				JSONParser parser = new JSONParser();
+				JSONObject rtnJo = (JSONObject) parser.parse(rtnStr);
+				String rtnJson = CommonUtils.getString(rtnJo.get("commonLst"));
+				
+				JSONArray ja = (JSONArray) parser.parse(rtnJson);
+				
+				for(int j=0; j<ja.size(); j++) {
+					Map<String, String> joMap = new HashMap<String, String>();
+					Iterator<String> keys = ((JSONObject)ja.get(j)).keySet().iterator();
+					JSONObject jo = (JSONObject) ja.get(j);
+					Map<String, String> map = null;
+					while(keys.hasNext()) {
+						String key = keys.next();
+						if(key.equals("fieldId")) {
+							String value = CommonUtils.getString(((JSONObject)ja.get(j)).get(key));
+							
+							if(value.equals("nightSndLimitStDt") || value.equals("nightSndLimitEdDt")) {
+								map = new ObjectMapper().readValue(jo.toString(), Map.class);
+								break;
+							}
+						}
+					}
+					if(map != null) {
+						rtn.put(map.get("fieldId").equals("nightSndLimitStDt") ? "nightSendSthh" : "nightSendEdhh"
+							, CommonUtils.getString(map.get("fieldValue")).length() < 2  ? "0"+CommonUtils.getString(map.get("fieldValue")) : CommonUtils.getString(map.get("fieldValue")));
+					}
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}		
+  		}
+  		
+  		rtn.put("nightSendStmm", "00");
+  		rtn.put("nightSendEdmm", "00");
+  		return rtn;
+  	}
 }

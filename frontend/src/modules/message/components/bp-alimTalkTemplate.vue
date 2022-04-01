@@ -17,7 +17,7 @@
                   <option value="G">그룹</option>
                 </select>
                 -->
-                <select class="selectStyle2" style="width:53%" v-model="searchData.senderKey" @change="fnChgSenderKey" :disabled="propSenderKey!=''">
+                <select class="selectStyle2" style="width:53%" v-show="propSenderKey==''" v-model="searchData.senderKey" @change="fnChgSenderKey" :disabled="propSenderKey!=''">
                   <option value="">선택하세요</option>
                   <option 
                     v-for="(senderKeyInfo, idx) in senderKeyList"
@@ -25,10 +25,25 @@
                     :value="senderKeyInfo.senderKey"
                   >{{senderKeyInfo.kkoChId}}</option>
                 </select>
+
+                <h4 v-if="propSenderKey!=''"><span>{{this.kkoChId}}</span></h4>
+
               </div>
             </div>
             <div class="row row-no-margin">
               <div class="col-xs-4 border-line2 pd20" style="height:569px">
+                <h4 style="margin-top: 10px;">템플릿 유형</h4>
+                <div>
+                  <input type="radio" id="tmpLtEmphasizeType_ALL" name="tmpLtEmphasizeType" value="" v-model="tmpLtEmphasizeType" >
+                  <label for="tmpLtEmphasizeType_ALL" class="mr10">전체</label>
+                  <input type="radio" id="tmpLtEmphasizeType_NONE" name="tmpLtEmphasizeType" value="NONE" v-model="tmpLtEmphasizeType" >
+                  <label for="tmpLtEmphasizeType_NONE" class="mr10">기본형</label>
+                  <input type="radio" id="tmpLtEmphasizeType_TEXT" name="tmpLtEmphasizeType" value="TEXT" v-model="tmpLtEmphasizeType" >
+                  <label for="tmpLtEmphasizeType_TEXT" class="mr10">강조표기형</label>
+                  <input type="radio" id="tmpLtEmphasizeType_IMAGE" name="tmpLtEmphasizeType" value="IMAGE" v-model="tmpLtEmphasizeType" >
+                  <label for="tmpLtEmphasizeType_IMAGE">이미지형</label>
+                </div>
+
                 <h4>템플릿 검색</h4>
                 <div>
                   <input type="text" class="inputStyle" style="width:75%" v-model="searchData.searchText" @keypress.enter="fnSearch">
@@ -38,7 +53,7 @@
                   <h4 class="inline-block">템플릿 명(템플릿 제목)</h4>
                   <h4 class="inline-block  float-right">총 {{totCnt}}건</h4>
                 </div>
-                <div class="border-line2" style="height:354px; overflow-y:scroll;">
+                <div class="border-line2" style="height:300px; overflow-y:scroll;">
                   <ul class="color4">
                     <li 
                       @click="fnGetTemplateInfo(idx, templateInfo.tmpltCode)"
@@ -52,7 +67,7 @@
               </div>
             
               <div class="col-xs-4 of_h">
-                <div class="of_h">
+                <div class="of_h" v-show="propSenderKey==''">
                   <h5 style="width:41%" class="float-left ml30">카카오 채널</h5>
                   <h5 style="width:40%" class="float-right ml30 color4 word-break-all">{{templateData.kkoChId}}</h5>
                 </div>
@@ -84,6 +99,11 @@
                       <div v-if="templateData.emphasizeType == 'TEXT'" class="text-sub-wrap" style="padding:10px;">
                         <p v-if="!$gfnCommonUtils.isEmpty(templateData.tmpltEmpsSubTitle)" class="text-sub_1">{{templateData.tmpltEmpsSubTitle}}</p>
                         <p v-if="!$gfnCommonUtils.isEmpty(templateData.tmpltEmpsTitle)" class="text-sub scroll-y3">{{templateData.tmpltEmpsTitle}}</p>
+                      </div>
+                      <div v-if="templateData.emphasizeType == 'IMAGE'">
+                          <div v-if="templateData.templateImageUrl != ''" class="phoneText2 mt10 text-center simulatorImg"
+                            :style="'padding:48px;border-radius:0px;background-image: url('+templateData.templateImageUrl+');'">
+                          </div>
                       </div>
                       <div class="text-sub-wrap" style="padding:10px;">
                         <span><pre>{{templateData.tmpltContent}}</pre></span>
@@ -149,7 +169,9 @@ export default {
         searchTmpltStatCodes: ['A'],
         pageNo : 1,
         listSize: 999999999
-      }
+      },
+      tmpLtEmphasizeType: '',
+      kkoChId:""
     }
   },
   watch: {
@@ -196,6 +218,7 @@ export default {
       sltData.tmpltEmpsSubTitle = tmpltInfo.templateSubtitle;
       sltData.tmpltContent = tmpltInfo.templateContent;
       sltData.buttonList = tmpltInfo.buttons;
+      sltData.templateImageUrl = tmpltInfo.templateImageUrl;
 
       this.templateData = Object.assign({}, sltData);
       this.templateData.tmpltInfo = '';
@@ -214,13 +237,14 @@ export default {
       }
     },
     async fnSearch(){
-      
+      var param = Object.assign({}, this.searchData);
       if(this.$gfnCommonUtils.isEmpty(this.searchData.senderKey)){
         confirm.fnAlert(this.componentsTitle, '카카오 채널 키를 선택해주세요.');
         return;
       }
+      param.tmpLtEmphasizeType = this.tmpLtEmphasizeType;
 
-      await templateApi.selectAlimTalkTmpltList(this.searchData).then(response =>{
+      await templateApi.selectAlimTalkTmpltList(param).then(response =>{
         const result = response.data;
         if(result.success) {
           this.templateList = result.data;
@@ -237,6 +261,11 @@ export default {
         const result = response.data;
         if(result.success) {
           this.senderKeyList = Object.assign([], result.data);
+          for(let i = 0 ; this.senderKeyList.length > i ; i++){
+            if(this.searchData.senderKey == this.senderKeyList[i].senderKey){
+              this.kkoChId = this.senderKeyList[i].kkoChId;
+            }
+          }
         } else {
           confirm.fnAlert(this.componentsTitle, result.message);
         }

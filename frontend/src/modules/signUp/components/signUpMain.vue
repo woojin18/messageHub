@@ -803,7 +803,14 @@ export default {
 						vm.selCorp = {};
 					}
 				} else{
-					confirm.fnAlert("", result.message);
+					if(!result.data){
+						//실서버가 아닌 경우 무조건 신규처리
+						confirm.fnAlert("", result.message + "\n\n실 서버가 아닌 장비에서 가입 진행중이므로 신규 고객사로 가입 진행합니다.");
+						vm.selCorpCnt = 0;
+						vm.selCorp = {};
+					}else{
+						confirm.fnAlert("", result.message);
+					}
 				}
 			});
 		},

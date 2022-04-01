@@ -212,19 +212,7 @@ export default {
 		},
 		fnOpenDepth2(event) {
 			var $this = event.currentTarget
-			if (jQuery('.SideMenuOff').is('visible') == true && jQuery($this).parent('li').hasClass('active')) {
-				return
-			}
-			if ($this.href.length > 0) {
-				jQuery('#sidebar > ul > li .depth2Lnb > ul li.active').removeClass('active')
-			}
-			jQuery('#sidebar > ul > li.active > a').next('.depth2Lnb').hide()
-			jQuery('#sidebar > ul > li.active').removeClass('active').children("a").find(".navArrow").removeClass("fa-chevron-up").addClass("fa-chevron-down")
-
-			jQuery($this).parent('li').addClass('active').children("a").find(".navArrow").removeClass("fa-chevron-down").addClass("fa-chevron-up")
-			if ($this.href.length == 0) {
-				jQuery($this).next('.depth2Lnb').show()
-			}
+			 jQuery($this).parent('li').toggleClass('active')
 		},
 		fnOpenDepth3(event) {
 			var $this = event.currentTarget

@@ -74,9 +74,9 @@
                     :key="idx"
                   >
                     <td class="text-center">{{ item.rownum }}</td>  <!-- NO -->
-                    <td class="text-center">{{ item.title }}</td>   <!-- 제목 -->
+                    <td class="text-center" style="word-break: break-all;">{{ item.title }}</td>   <!-- 제목 -->
                     <td class="text-center">{{ item.urlId }}</td>   <!-- URL ID -->
-                    <td class="text-left">{{ item.orgUrl }}</td>    <!-- 원본 URL -->
+                    <td class="text-left" style="word-break: break-all;">{{ item.orgUrl }}</td>    <!-- 원본 URL -->
                     <td class="text-center">{{ $moment(item.regDt).format('YYYY.MM.DD') }}</td>   <!-- 등록일 -->
                     <td class="text-center">{{ $moment(item.expDt).format('YYYY.MM.DD') }}</td>   <!-- 만료일 -->
                     <td class="text-center end">
@@ -181,6 +181,8 @@ export default {
   props: {},
   computed: {
     shortendUrl() {
+      // PROD : m-hub.kr
+      // QA : url.msghub-qa.uplus.co.kr
       if(this.urlId)
         return `https://m-hub.kr/#URL{${this.urlId}}`
       else

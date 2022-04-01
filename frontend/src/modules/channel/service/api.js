@@ -114,6 +114,30 @@ const selectApiKeyCode = (params) => {
     return httpClient.post('/projectApi/channel/selectApiKeyCode', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
 };
 
+const selectReCoprYn = (params) => {
+    return httpClient.post('/projectApi/channel/selectReCoprYn', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const selectSubCorpBrandConf = (params) => {
+    return httpClient.post('/projectApi/channel/selectSubCorpBrandConf', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const checkRbcCertify = (params) => {
+    return httpClient.post('/projectApi/channel/checkRbcCertify', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const setSubCorpSync = (params) => {
+    return httpClient.post('/projectApi/channel/setSubCorpSync', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const selectRemoveSubCorpList = (params) => {
+    return httpClient.post('/projectApi/channel/selectRemoveSubCorpList', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+};
+
+const setRemoveBrand = (params) => {
+    return httpClient.post('/projectApi/channel/setRemoveBrand', params, { headers: { "show-layer": "Yes", "activity": "SAVE" } });
+}
+
 export default {
     selectRcsBrandList,
     selectRcsRegTmpltList,
@@ -143,5 +167,11 @@ export default {
     deleteBrandDiscon,
     delKkoCh,
     selectConProjectList,
-    selectApiKeyCode
+    selectApiKeyCode,
+    selectReCoprYn,
+    selectSubCorpBrandConf,
+    checkRbcCertify,
+    setSubCorpSync,
+    selectRemoveSubCorpList,
+    setRemoveBrand
 };

@@ -109,6 +109,8 @@ export default {
   props: {},
   computed: {
     shortendUrl() {
+      // PROD : m-hub.kr
+      // QA : url.msghub-qa.uplus.co.kr
       if(this.urlId)
         return `https://m-hub.kr/#URL{${this.urlId}}`
       else
@@ -139,7 +141,7 @@ export default {
         let params = {}
         params.title  = this.title
         params.orgUrl = this.orgUrl
-        params.expDt  = this.expDt
+        params.expDt  = this.expDt + ' 23:59:59'
 
         urlInfoApi.insertUrlInfo(params).then((res) => {
           const result = res.data;      
@@ -151,10 +153,14 @@ export default {
               return item.selectUrlInfoList !== undefined
             })
 
-            if(filterList.length > 0)
-              filterList[0].selectUrlInfoList()
+            try {
+              if(filterList.length > 0)
+                filterList[0].selectUrlInfoList()
 
-              jQuery('#shortened_URL_add').modal('hide')
+              this.$parent.selectUrlInfoStatList()
+            } catch(e) {
+              // console.error(e)
+            }
           } else {
             confirm.fnAlert(this.componentsTitle, result.message);
           }

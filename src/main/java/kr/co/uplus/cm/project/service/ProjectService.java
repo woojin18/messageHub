@@ -817,6 +817,7 @@ public class ProjectService {
 		try {
 			generalDao.insertGernal("callnum.insertCallNum", params);
 			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+			commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
 		} catch (DataIntegrityViolationException e) {
 			throw new Exception("이미 등록되어 있는 발신번호입니다.");
 		}
@@ -846,6 +847,7 @@ public class ProjectService {
 		try {
 			generalDao.insertGernal("callnum.insertCallNum", params);
 			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+			commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
 		} catch (DataIntegrityViolationException e) {
 			throw new Exception("이미 등록되어 있는 발신번호입니다.");
 		}
@@ -887,6 +889,7 @@ public class ProjectService {
 	            params.put("callNum", callNum.replaceAll("-", ""));
 				generalDao.insertGernal("callnum.insertCallNum", params);
 				generalDao.insertGernal("callnum.insertProjectCallNum", params);
+				commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
 	        }
 		} catch (DataIntegrityViolationException e) {
 			throw new Exception("이미 등록되어 있는 발신번호입니다.");
@@ -929,6 +932,7 @@ public class ProjectService {
 		try {
 			generalDao.insertGernal("callnum.insertCallNum", params);
 			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+			commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
 		} catch (DataIntegrityViolationException e) {
 			throw new Exception("이미 등록되어 있는 발신번호입니다.");
 		}
@@ -1081,6 +1085,11 @@ public class ProjectService {
 			generalDao.insertGernal("callnum.insertProjectChatbot", saveMap);
 		}
 		
+		// redis 챗봇 테이블 동기화 처리
+		commonService.updateCmCmdForRedis("CM_PROJECT_CHATBOT");
+		commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
+		
+		
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);
 			rtn.setMessage("실패하였습니다.");
@@ -1141,9 +1150,10 @@ public class ProjectService {
 		params.put("apikey", apiKey);
 		
 		AesEncryptor encrypt = new AesEncryptor(); 
-		String apikeyPwd = encrypt.encrypt((String) params.get("apikeyPwd"));
+		SHA sha512 = new SHA(512);
+		String apikeyPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apikeyPwd")));
 		params.put("apikeyPwd", apikeyPwd);
-		
+		 
 		try {
 			generalDao.insertGernal(DB.QRY_INSERT_APIKEY_MAANAGE, params);
 			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
@@ -1152,6 +1162,84 @@ public class ProjectService {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<?> checkApiKeyPwd(Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		SHA sha512 = new SHA(512);
+
+		Map<String, Object> rtnList = null;
+		try {
+			rtnList = (Map<String, Object>)generalDao.selectGernalList(DB.QRY_SELECT_APIKEY_MAANAGE_LIST, params).get(0);
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+		}
+
+		String currentAikeyPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apiPwd")));
+		String previousApikeyPwd = rtnList.get("apiPwd").toString();
+
+		if(!currentAikeyPwd.equals(previousApikeyPwd)) {
+			rtn.setSuccess(false);
+			rtn.setMessage("API Key 암호가 일치하지 않습니다.");
+		}else {
+			try {
+				updateApikeyManage(params);
+			}catch(Exception e) {
+				rtn.setSuccess(false);
+				rtn.setMessage("수정에 실패하였습니다.");				
+			}
+			
+		}
+		
+		
+		return rtn;
+		
+
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<?> updateApikeyManage(Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		SHA sha512 = new SHA(512);
+		String apiNewPwd = sha512.encryptToBase64(CommonUtils.getString(params.get("apiNewPwd")));
+		params.put("apiNewPwd", apiNewPwd);
+		 
+		try {
+			generalDao.updateGernal(DB.QRY_UPDATE_APIKEY_MANAGE, params);
+			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
+			
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("수정에 실패하였습니다.");		
+		}
+		return rtn;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+	public RestResult<?> deleteApikeyManage(Map<String, Object> params) {
+		
+		RestResult<Object> rtn = new RestResult<Object>();
+
+		try {
+			generalDao.deleteGernal(DB.QRY_DELETE_APIKEY_MANAGE, params);
+			generalDao.updateGernal(DB.QRY_UPDATE_CMD_APIKEY, params);
+			
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage("삭제에 실패하였습니다.");		
+		}
+		return rtn;
 	}
 	
 	

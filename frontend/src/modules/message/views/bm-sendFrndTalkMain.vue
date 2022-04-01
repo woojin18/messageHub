@@ -182,15 +182,15 @@
                       <td v-else>
                       </td>
                       <td class="text-center end" :rowspan="buttonInfo.linkType == 'WL' || buttonInfo.linkType == 'AL' ? '2' : '1'">
-                        <!-- <a
+                        <a
 													v-if="buttonInfo.linkType === 'WL'"
 													class="btnStyle1 backBlack" 
 													title="단축 URL+" 
 													data-toggle="modal" 
 													data-target="#shortened_URL"
+                          style="margin-bottom: 5px;"
 													@click="selIdx = idx"
-												>단축 URL+</a> 
-                        <p>&nbsp;</p> -->
+												>단축 URL+</a>
                         <a @click="fnDelButton(idx)" class="btnStyle1 backLightGray" style="padding:0px 15px;">삭제</a>
                       </td>
                     </tr>

@@ -620,4 +620,79 @@ public class ChannelController {
 			HttpServletResponse response) throws Exception {
 		return channelService.selectApiKeyCode(params);
 	}
+	
+	// 재판매 업체 확인 return
+	@PostMapping("/selectReCoprYn")
+	public RestResult<?> selectReCoprYn(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return channelService.selectReCoprYn(params);
+	}
+	
+	// 하위고객 브랜드 수신 설정 확인
+	@PostMapping("/selectSubCorpBrandConf")
+	public RestResult<?> selectSubCorpBrandConf(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		return channelService.selectSubCorpBrandConf(params);
+	}
+	
+	// RBC 인증
+	@PostMapping("/checkRbcCertify")
+	public RestResult<?> checkRbcCertify(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<?> rtn = new RestResult<Object>(true);
+		try {
+			channelService.checkRbcCertify(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			e.printStackTrace();
+		}
+		return rtn;
+	}
+	
+	// 하위고객 브랜드 수신 등록 설정, 해제
+	@PostMapping("/setSubCorpSync")
+	public RestResult<?> setSubCorpSync(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<?> rtn = new RestResult<Object>(true);
+		try {
+			channelService.setSubCorpSync(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			e.printStackTrace();
+		}
+		return rtn;
+	}
+	
+	// 하위고객 브랜드 설정 목록 리스트
+	@PostMapping("/selectRemoveSubCorpList")
+	public RestResult<?> selectRemoveSubCorpList(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<?> rtn = new RestResult<Object>(true);
+		try {
+			rtn = channelService.selectRemoveSubCorpList(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			e.printStackTrace();
+		}
+		return rtn;
+	}
+	
+	// 하위고객 브랜드 수신 제외
+	@PostMapping("/setRemoveBrand")
+	public RestResult<?> setRemoveBrand(@RequestBody Map<String, Object> params, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RestResult<?> rtn = new RestResult<Object>(true);
+		try { 
+			channelService.setRemoveBrand(params);
+		} catch (Exception e) {
+			rtn.setSuccess(false);
+			rtn.setMessage(e.getMessage());
+			e.printStackTrace();
+		}
+		return rtn;
+	}
 }

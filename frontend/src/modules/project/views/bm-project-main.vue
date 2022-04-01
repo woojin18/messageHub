@@ -13,7 +13,7 @@
 					<li :class="{active:(selMainTab == 3)}" @click="selMainTab=3; selMidTab=1; selSubTab==1"><a>멤버관리</a></li>
 					<li :class="{active:(selMainTab == 4)}" @click="selMainTab=4; selMidTab=1; selSubTab==1"><a>채널관리</a></li>
 					<li :class="{active:(selMainTab == 5)}" @click="selMainTab=5; selMidTab=1; selSubTab==1"><a>발신번호관리</a></li>
-					<!-- <li :class="{active:(selMainTab == 6)}" @click="selMainTab=6; selMidTab=1; selSubTab==1"><a>API KEY 관리</a></li> -->
+					<li :class="{active:(selMainTab == 6)}" @click="selMainTab=6; selMidTab=1; selSubTab==1"><a>API KEY</a></li>
 				</ul>			
 			</div>
 			<ul v-if="selMainTab==4" class="tabStyle tab6 bgColor_tapGray">

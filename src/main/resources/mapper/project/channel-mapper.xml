@@ -22,16 +22,15 @@
 		FROM	(
 			<include refid="rcsBrandList"/>
 		) AA
-    LEFT JOIN (
+	LEFT JOIN (
       SELECT BRAND_ID, COUNT(1) AS CNT
         FROM (
        SELECT X.BRAND_ID, X.CHATBOT_ID 
          FROM cm.CM_RCS_CHATBOT X 
-        WHERE X.CORP_ID = #{corpId}
         UNION
        SELECT Y.BRAND_ID, Y.CHATBOT_ID 
          FROM cm.CM_RCS_CHATBOT_REQ Y 
-        WHERE Y.CORP_ID = #{corpId}) AS A GROUP BY BRAND_ID) AS CALLBACK
+        ) AS A GROUP BY BRAND_ID) AS CALLBACK
       ON CALLBACK.BRAND_ID = AA.BRAND_ID
 		LEFT OUTER JOIN  (
 			SELECT	*
@@ -61,21 +60,20 @@
 				FROM	(
 						select	'BRAND' AS TB_NAME
 						,		A.BRAND_ID 
-						,		A.PROJECT_ID  
-						,		A.CORP_ID 
+						,		B.PROJECT_ID  
+<!-- 						,		A.CORP_ID  -->
 						,		A.BRAND_NAME
 						,		'' as BRAND_DESC
 						,		A.BRAND_INFO
 						,		CASE
-									WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+									WHEN B.PROJECT_ID = 'ALL' THEN 'Y'
 									ELSE 'N'
 								END AS OTHER_PROJECT_USE_YN
 						,		( 	SELECT	COUNT(1) 
 									FROM	cm.CM_RCS_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID
-									  AND   CORP_ID   = A.CORP_ID
 								) AS TMPL_CNT
-						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인' ELSE '' END	AS APPROVAL_STATUS		
+						,		A.APPROVAL_STATUS
 						,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
 						,		DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REQ_DT
 						,		DATE_FORMAT(A.APPROVAL_DT, '%Y-%m-%d %H:%i:%s') AS APPROVAL_DT
@@ -111,7 +109,9 @@
 						from 	cm.CM_RCS_BRAND A
 						LEFT OUTER JOIN cm_console.CM_PROJECT_BRAND B 
 							ON	B.BRAND_ID = A.BRAND_ID 
-						WHERE 	A.CORP_ID = #{corpId}
+						INNER JOIN cm_console.CM_REGNO_BRAND C
+							ON	A.BRAND_ID = C.BRAND_ID 
+						WHERE 	C.REGNO = #{regNo}
 						AND  B.PROJECT_ID = #{projectId}
 						
 						UNION ALL
@@ -119,7 +119,7 @@
 						select	'BRAND_REQ' AS TB_NAME
 						,		A.BRAND_ID
 						,		A.PROJECT_ID  
-						,		A.CORP_ID 
+<!-- 						,		A.CORP_ID  -->
 						,		A.BRAND_NAME
 						,		A.BRAND_DESC
 						,		A.BRAND_INFO
@@ -130,7 +130,6 @@
 						,		( 	SELECT	COUNT(1) 
 									FROM	cm.CM_RCS_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID 
-                                      AND   CORP_ID   = A.CORP_ID
 								) AS TMPL_CNT
 						,		A.APPROVAL_STATUS
 						,		A.REG_DT
@@ -231,7 +230,6 @@
 		,		@ROWNUM := @ROWNUM + 1 AS ROWNUM
 		,		MESSAGEBASEFORM_ID
 		,		BRAND_ID
-		,		CORP_ID
 		,		TMPLT_NAME
 		,		PRODUCT_CODE
 		,		MESSAGEBASE_INFO
@@ -621,7 +619,7 @@
 						select	'BRAND' AS TB_NAME
 						,		A.BRAND_ID 
 						,		A.PROJECT_ID  
-						,		A.CORP_ID 
+<!-- 						,		A.CORP_ID  -->
 						,		A.BRAND_NAME
 						,		'' as BRAND_DESC
 						,		A.BRAND_INFO
@@ -648,15 +646,16 @@
 								END AS RANKING_DT 
 						]]>
 						from 	cm.CM_RCS_BRAND A
-						WHERE 	A.CORP_ID = #{corpId}
-						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+						INNER JOIN cm_console.CM_REGNO_BRAND B
+							ON	A.BRAND_ID = B.BRAND_ID
+							and	B.REGNO = #{regNo}
+							and	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
 		
 						UNION ALL
 		
 						select	'BRAND_REQ' AS TB_NAME
 						,		A.BRAND_ID
 						,		A.PROJECT_ID  
-						,		A.CORP_ID 
 						,		A.BRAND_NAME
 						,		A.BRAND_DESC
 						,		A.BRAND_INFO
@@ -685,7 +684,7 @@
 						) B
 							ON A.BRAND_ID = B.BRAND_ID
 						WHERE 	A.CORP_ID = #{corpId}
-						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+<!-- 						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' ) -->
 				) BRAND, (SELECT @vRank:=0, @vData:='') as r
 				ORDER BY BRAND.BRAND_ID, BRAND.RANKING_DT DESC
 			) A
@@ -742,7 +741,7 @@
 								]]>
 								from cm.CM_RCS_CHATBOT crc 
 								where 1=1
-								and crc.CORP_ID = #{corpId}
+								and crc.BRAND_ID = #{brandId}
 							) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
 							ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 					) A
@@ -770,7 +769,7 @@
 						select	'BRAND' AS TB_NAME
 						,		A.BRAND_ID 
 						,		A.PROJECT_ID  
-						,		A.CORP_ID 
+<!-- 						,		A.CORP_ID  -->
 						,		A.BRAND_NAME
 						,		'' as BRAND_DESC
 						,		A.BRAND_INFO
@@ -797,15 +796,17 @@
 								END AS RANKING_DT 
 						]]>
 						from 	cm.CM_RCS_BRAND A
-						WHERE 	A.CORP_ID = #{corpId}
-						and		(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' )
+						INNER JOIN cm_console.CM_REGNO_BRAND B
+							ON	A.BRAND_ID = B.BRAND_ID
+							and	B.REGNO = #{regNo}
+<!-- 							and	(A.PROJECT_ID = #{projectId} OR A.PROJECT_ID = 'ALL' ) -->
 		
 						UNION ALL
 		
 						select	'BRAND_REQ' AS TB_NAME
 						,		A.BRAND_ID
 						,		A.PROJECT_ID  
-						,		A.CORP_ID 
+<!-- 						,		A.CORP_ID  -->
 						,		A.BRAND_NAME
 						,		A.BRAND_DESC
 						,		A.BRAND_INFO
@@ -890,7 +891,7 @@
 										END AS RANKING_DT 
 								]]>
 								from cm.CM_RCS_CHATBOT crc 
-								WHERE	crc.CORP_ID = #{corpId}
+								WHERE	crc.BRAND_ID = #{brandId}
 							) CHATBOT, (SELECT @vRank:=0, @vData:='') as r
 							ORDER BY CHATBOT.CHATBOT_ID, CHATBOT.RANKING_DT DESC
 					) A
@@ -1069,7 +1070,9 @@
 			) AS MDN_CNT
 		,	DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
 		FROM	cm.CM_RCS_BRAND A
-		WHERE	A.CORP_ID = #{corpId} 
+		INNER JOIN cm_console.CM_REGNO_BRAND B
+			ON	A.BRAND_ID = B.BRAND_ID
+		WHERE	B.REGNO = #{regNo} 
 		AND 	A.USE_YN = 'Y'
 		AND 	A.APPROVAL_STATUS ='승인'
 		AND		A.BRAND_ID NOT IN (
@@ -1077,7 +1080,7 @@
 			FROM 	cm_console.CM_PROJECT_BRAND 
 			WHERE 	PROJECT_ID= #{projectId}
 			)
-		ORDER BY REG_DT DESC
+		ORDER BY A.REG_DT DESC
 		LIMIT #{offset}, #{listSize}
 	</select>
 	
@@ -1085,7 +1088,9 @@
 		/* channel.selectRcsBrandConListCnt */
 		SELECT	COUNT(*)
 		FROM	cm.CM_RCS_BRAND A
-		WHERE	A.CORP_ID = #{corpId} 
+		INNER JOIN cm_console.CM_REGNO_BRAND B
+			ON	A.BRAND_ID = B.BRAND_ID
+		WHERE	B.REGNO = #{regNo} 
 		AND 	A.USE_YN = 'Y'
 		AND 	A.APPROVAL_STATUS ='승인'
 		AND		A.BRAND_ID NOT IN (
@@ -1093,11 +1098,11 @@
 			FROM 	cm_console.CM_PROJECT_BRAND 
 			WHERE 	PROJECT_ID= #{projectId}
 			)
-		ORDER BY REG_DT DESC
+		ORDER BY A.REG_DT DESC
 	</select>
 	
 	
-		<insert id="insertRcsProjectBrand">
+	<insert id="insertRcsProjectBrand">
 		/* channel.insertRcsProjectBrand */
 		INSERT INTO cm_console.CM_PROJECT_BRAND (
 			PROJECT_ID
@@ -1111,18 +1116,17 @@
 		,	#{userId}
 		,	NOW()
 		)
-		</insert>
+	</insert>
 	
-		<select id="selectRcsChatbotId" resultType="string">
+	<select id="selectRcsChatbotId" resultType="string">
 		/* channel.selectRcsChatbotId*/
 		SELECT CHATBOT_ID 
 		FROM cm.CM_RCS_CHATBOT 
 		WHERE BRAND_ID = #{brandId}
-		AND CORP_ID = #{corpId}
 		AND APPROVAL_STATUS ='승인'
-		</select>
+	</select>
 		
-		<insert id="insertProjectChatbot">
+	<insert id="insertProjectChatbot">
 		/* channel.insertProjectChatbot */
 		INSERT INTO cm_console.CM_PROJECT_CHATBOT(
 			PROJECT_ID
@@ -1135,18 +1139,18 @@
 		,	#{userId}
 		,	NOW()
 		)
-		</insert>
+	</insert>
 	
-		<select id="selectCallNumCheck" resultType="int">
+	<select id="selectCallNumCheck" resultType="int">
 		/* channel.selectCallNumCheck */
 		SELECT count(*)
 		FROM cm_console.CM_CALL_NUM ccn 
 		INNER JOIN cm.CM_RCS_CHATBOT crc
 		ON ccn.CALL_NUM = crc.CHATBOT_ID 
 		where crc.CHATBOT_ID = #{chatbotId}
-		</select>
+	</select>
 		
-		<insert id="insertCallNum">
+	<insert id="insertCallNum">
 		INSERT INTO cm_console.CM_CALL_NUM(	
 				CORP_ID
 			, 	CALL_NUM
@@ -1169,9 +1173,9 @@
 			,	NOW()
 			,	NOW()
 			)
-		</insert>
+	</insert>
 		
-		<insert id="insertProjectCallNum">
+	<insert id="insertProjectCallNum">
 		/* channel.insertProjectCallNum */
 		INSERT INTO cm_console.CM_PROJECT_CALL_NUM(
 			PROJECT_ID
@@ -1187,39 +1191,38 @@
 		,	#{userId}
 		,	NOW()
 		)
-		</insert>
+	</insert>
 		
-		<update id="updateCallnumForCmd">
+	<update id="updateCallnumForCmd">
 		/* channel.updateCallnumForCmd */
 		UPDATE	cm.CM_CMD 
 		SET 	UPD_DT = NOW()
 		WHERE 	CMD_TGT = 'CM_CALL_NUM'
+	</update>
 		
-		</update>
-		
-		<delete id="deleteProjectbrand">
+	<delete id="deleteProjectbrand">
 		/* channel.deleteProjectbrand */
 		DELETE FROM cm_console.CM_PROJECT_BRAND 
 		WHERE PROJECT_ID = #{projectId} 
 		AND BRAND_ID = #{brandId}
-		</delete>
+	</delete>
 		
-		<delete id="deleteProjectchatbot">
+	<delete id="deleteProjectchatbot">
 		/* channel.deleteProjectchatbot */
 		DELETE from cm_console.CM_PROJECT_CHATBOT
 		WHERE CHATBOT_ID = #{chatbotId} 
 		AND PROJECT_ID = #{projectId}
-		</delete>
+	</delete>
 		
-		<delete id="deleteProjectCallum">
+	<delete id="deleteProjectCallum">
 		/* channel.deleteProjectCallum */
 		DELETE FROM cm_console.CM_PROJECT_CALL_NUM 
 		WHERE PROJECT_ID =#{projectId} 
 		AND CORP_ID = #{corpId} 
 		AND CALL_NUM =#{chatbotId}
-		</delete>
+	</delete>
 		
-		<select id="selectConProjectList" resultType="camel">
+	<select id="selectConProjectList" resultType="camel">
 		/* channel.selectConProjectList */
 		SELECT	cp.PROJECT_NAME
 		,		cp.PROJECT_ID
@@ -1230,9 +1233,9 @@
 		WHERE   cpb.BRAND_ID = #{brandId}
 		ORDER BY cp.REG_DT DESC
 		LIMIT #{offset}, #{listSize}
-		</select>
+	</select>
 		
-		<select id="selectConProjectListCnt" resultType="int">
+	<select id="selectConProjectListCnt" resultType="int">
 		/* channel.selectConProjectListCnt */
 		SELECT	count(*)
 		FROM    cm_console.CM_PROJECT_BRAND cpb
@@ -1240,9 +1243,9 @@
 		ON cpb.PROJECT_ID = cp.PROJECT_ID 
 		AND	 cp.DEL_YN = 'N'
 		WHERE   cpb.BRAND_ID = #{brandId}
-		</select>
+	</select>
 		
-		<select id="selectApiKeyList" resultType="camel">
+	<select id="selectApiKeyList" resultType="camel">
 		/* channel.selectApiKeyList */
 		SELECT	API_KEY
 		,		API_KEY_NAME
@@ -1250,6 +1253,156 @@
 		WHERE CORP_ID = #{corpId}
 		AND PROJECT_ID = #{projectId}
 		AND	WEB_SENDER_YN != 'Y'
-		</select>
+	</select>
 		
+	<select id="selectReCorpYn" resultType="String">
+		/* channel.selectReCorpYn */
+		SELECT	RE_CORP_YN
+		FROM	cm_console.CM_CORP
+		WHERE	CORP_ID = #{corpId}
+	</select>
+		
+	<select id="selectSubcorpBrandConfCnt" resultType="int">
+		/* channel.selectSubcorpBrandConfCnt */
+		SELECT	COUNT(*)
+		FROM	cm_console.CM_SUBCORP_BRAND_CONF
+		WHERE	REGNO = #{regNo}
+	</select>
+	
+	<select id="selectSubcorpBrandConfYn" resultType="String">
+		/* channel.selectSubcorpBrandConfYn */
+		SELECT	CONF_YN
+		FROM	cm_console.CM_SUBCORP_BRAND_CONF
+		WHERE	REGNO = #{regNo}
+	</select>
+	
+	<update id="updateSubcorpBrandConfYn">
+		/* channel.updateSubcorpBrandConfYn */
+		UPDATE	cm_console.CM_SUBCORP_BRAND_CONF
+		SET		CONF_YN = #{setConfYn}
+		,		UPD_ID = #{userId}
+		,		UPD_DT = NOW()
+		WHERE	REGNO = #{regNo}
+	</update>
+	
+	<insert id="insertSubcorpBrandConf">
+		/* channel.insertSubcorpBrandConf */
+		INSERT cm_console.CM_SUBCORP_BRAND_CONF
+		(
+				REGNO
+		,		PROJECT_ID
+		,		RBC_LOGIN_ID
+		,		RBC_API_KEY
+		,		CONF_YN
+		,		REG_ID
+		,		REG_DT
+		) VALUES (
+				#{regNo}
+		,		#{projectId}
+		,		#{setRbcLoginId}
+		,		#{setRbcApiKey}
+		,		#{setConfYn}
+		,		#{userId}
+		,		NOW()
+		)
+		
+	</insert>
+	
+	<delete id="deleteRemoveBrandList">
+		/* channel.deleteRemoveBrandList */
+		DELETE FROM cm_console.CM_SUBCORP_REMOVE_BRAND
+	</delete>
+	
+	<insert id="insertRemoveBrandList">
+		/* channel.insertRemoveBrandList */
+		INSERT cm_console.CM_SUBCORP_REMOVE_BRAND 
+		(
+				BRAND_ID
+		,		BRAND_NAME
+		) VALUES (
+				#{brandId}
+		,		#{brandName}
+		)
+	</insert>
+	
+	<select id="selectRemoveBrandList" resultType="hashMap">
+		/* channel.selectRemoveBrandList */
+		SELECT	A.BRAND_ID
+		,		A.BRAND_NAME
+		,		A.CHECK_FLAG
+		FROM	(
+				SELECT	BRAND_ID
+				,		BRAND_NAME
+				,		'Y'			AS CHECK_FLAG
+				FROM	cm_console.CM_SUBCORP_REMOVE_BRAND A
+				WHERE	BRAND_ID IN (SELECT BRAND_ID FROM cm_console.CM_EXCEPT_BRAND WHERE REGNO = #{regNo})
+				UNION ALL
+				SELECT	BRAND_ID
+				,		BRAND_NAME
+				,		'N'			AS CHECK_FLAG
+				FROM	cm_console.CM_SUBCORP_REMOVE_BRAND A
+				WHERE	BRAND_ID NOT IN (SELECT BRAND_ID FROM cm_console.CM_EXCEPT_BRAND WHERE REGNO = #{regNo})
+				) A
+		WHERE	1=1
+		<if test="srcBrandType == 'brandId' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		A.BRAND_ID = #{srcBrandText}
+		</if>
+		<if test="srcBrandType == 'brandName' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		A.BRAND_NAME LIKE CONCAT('%', #{srcBrandText}, '%')
+		</if>
+		<if test='pagingYn == "Y" '>
+		LIMIT #{offset}, #{listSize}
+		</if>
+	</select>
+	
+	<select id="selectRemoveCheckBrandList" resultType="hashMap">
+		/* channel.selectRemoveCheckBrandList */
+		SELECT	BRAND_ID
+		,		BRAND_NAME
+		FROM	cm_console.CM_SUBCORP_REMOVE_BRAND A
+		WHERE	BRAND_ID IN (SELECT BRAND_ID FROM cm_console.CM_EXCEPT_BRAND WHERE REGNO = #{regNo})
+		<if test="srcBrandType == 'brandId' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		BRAND_ID = #{srcBrandText}
+		</if>
+		<if test="srcBrandType == 'brandName' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		BRAND_NAME LIKE CONCAT('%', #{srcBrandText}, '%')
+		</if>
+		<if test='pagingYn == "Y" '>
+		LIMIT #{offset}, #{listSize}
+		</if>
+	</select>
+	
+	<select id="selectRemoveBrandListCnt" resultType="int">
+		/* channel.selectRemoveBrandListCnt */
+		SELECT	COUNT(*)
+		FROM	cm_console.CM_SUBCORP_REMOVE_BRAND
+		<if test="srcBrandType == 'brandId' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		BRAND_ID = #{srcBrandText}
+		</if>
+		<if test="srcBrandType == 'brandName' and srcBrandText != 'null' and srcBrandText != ''">
+		AND		BRAND_NAME LIKE CONCAT('%', #{srcBrandText}, '%')
+		</if>
+	</select>
+	
+	<delete id="deleteExceptBrand">
+		/* channel.deleteExceptBrand */
+		DELETE FROM cm_console.CM_EXCEPT_BRAND
+		WHERE	REGNO = #{regNo}
+		AND		BRAND_ID = #{brandAllId}
+	</delete>
+	
+	<delete id="insertExceptBrand">
+		/* channel.insertExceptBrand */
+		INSERT cm_console.CM_EXCEPT_BRAND (
+				REGNO
+		,		BRAND_ID
+		,		REG_ID
+		,		REG_DT
+		) VALUES (
+				#{regNo}
+		,		#{brandId}
+		,		#{userId}
+		,		now()
+		)
+	</delete>
 </mapper>

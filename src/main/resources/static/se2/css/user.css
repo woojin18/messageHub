@@ -477,7 +477,7 @@ p {letter-spacing:-0.5px}
 #NotFoundWrap section > .rightimg {float:right; margin-top:-25px}
 
 /* 반응형 */
-@media screen and (max-width:768px) {
+@media screen and (max-width:980px) {
 	#NotFoundWrap section {max-width:100%; padding:100px 0; text-align:center}
 	#NotFoundWrap section img {display:block; margin:0 auto}
 	#NotFoundWrap section > .logoimg {width:120px}
