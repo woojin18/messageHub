@@ -3,6 +3,7 @@
 
 <mapper namespace="webSend">
 	<sql id ="whereSelectWebSendList">
+		AND	A.STATUS != 'SEND_WAIT'
 		AND	A.CORP_ID = #{corpId}
 		AND	A.PROJECT_ID = #{projectId}
 		<if test="searchText != '' and searchText != null ">
@@ -37,7 +38,10 @@
 						WHEN A.SENDER_TYPE = 'S' THEN '스마트발송'
 					END												AS SENDER_TYPE_NM /*발송타입명*/
 			,		A.SENDER_CNT
-			,		DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s')		AS REG_DT /*발송일시*/
+			,		CASE WHEN A.RESV_SENDER_YN = 'Y' 
+						 THEN DATE_FORMAT(A.REQ_DT, '%Y.%m.%d %H:%i:%s') 
+						 ELSE DATE_FORMAT(A.REG_DT, '%Y.%m.%d %H:%i:%s') 
+					END		AS REG_DT /*발송일시*/
 			,		B.USER_NAME
 			FROM cm_console.CM_WEB_MSG A
 			LEFT OUTER JOIN	cm_console.CM_USER B
