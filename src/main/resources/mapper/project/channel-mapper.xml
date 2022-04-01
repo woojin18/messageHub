@@ -60,20 +60,20 @@
 				FROM	(
 						select	'BRAND' AS TB_NAME
 						,		A.BRAND_ID 
-						,		A.PROJECT_ID  
-						,		A.CORP_ID 
+						,		B.PROJECT_ID  
+<!-- 						,		A.CORP_ID  -->
 						,		A.BRAND_NAME
 						,		'' as BRAND_DESC
 						,		A.BRAND_INFO
 						,		CASE
-									WHEN A.PROJECT_ID = 'ALL' THEN 'Y'
+									WHEN B.PROJECT_ID = 'ALL' THEN 'Y'
 									ELSE 'N'
 								END AS OTHER_PROJECT_USE_YN
 						,		( 	SELECT	COUNT(1) 
 									FROM	cm.CM_RCS_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID
 								) AS TMPL_CNT
-						,		CASE WHEN A.APPROVAL_DT != '' AND APPROVAL_DT IS NOT NULL THEN '승인' ELSE '' END	AS APPROVAL_STATUS		
+						,		A.APPROVAL_STATUS
 						,		case when A.UPD_DT is null or A.UPD_DT='' then A.REG_DT else A.UPD_DT end AS REG_DT
 						,		DATE_FORMAT(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS REQ_DT
 						,		DATE_FORMAT(A.APPROVAL_DT, '%Y-%m-%d %H:%i:%s') AS APPROVAL_DT
@@ -119,7 +119,7 @@
 						select	'BRAND_REQ' AS TB_NAME
 						,		A.BRAND_ID
 						,		A.PROJECT_ID  
-						,		A.CORP_ID 
+<!-- 						,		A.CORP_ID  -->
 						,		A.BRAND_NAME
 						,		A.BRAND_DESC
 						,		A.BRAND_INFO
@@ -130,7 +130,6 @@
 						,		( 	SELECT	COUNT(1) 
 									FROM	cm.CM_RCS_MSGBASE
 									WHERE	BRAND_ID  = A.BRAND_ID 
-                                      AND   CORP_ID   = A.CORP_ID
 								) AS TMPL_CNT
 						,		A.APPROVAL_STATUS
 						,		A.REG_DT
@@ -1124,7 +1123,6 @@
 		SELECT CHATBOT_ID 
 		FROM cm.CM_RCS_CHATBOT 
 		WHERE BRAND_ID = #{brandId}
-		AND CORP_ID = #{corpId}
 		AND APPROVAL_STATUS ='승인'
 	</select>
 		
