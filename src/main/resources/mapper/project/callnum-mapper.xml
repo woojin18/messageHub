@@ -47,6 +47,14 @@
           FROM cm_console.CM_CALL_NUM a
           LEFT JOIN cm.CM_RCS_CHATBOT b
             ON b.CHATBOT_ID = a.CHATBOT_ID
+                AND EXISTS (
+                    SELECT 1 
+                    FROM   cm.CM_RCS_BRAND X
+                    INNER JOIN cm_console.CM_PROJECT_BRAND Y
+                       ON   Y.BRAND_ID = X.BRAND_ID
+                       AND Y.PROJECT_ID = #{projectId}
+                       AND X.USE_YN = 'Y'
+               )
              , cm_console.CM_PROJECT_CALL_NUM c
          WHERE a.CORP_ID       = c.CORP_ID 
            AND a.CALL_NUM      = c.CALL_NUM
@@ -64,9 +72,8 @@
                ) + (
         SELECT COUNT(1)
           FROM cm.CM_RCS_CHATBOT_REQ a
-             , cm_console.CM_PROJECT c
          WHERE a.CORP_ID       = #{corpId}
-           AND a.PROJECT_ID    = c.PROJECT_ID
+           AND a.PROJECT_ID    = #{projectId}
         <if test="srcCallNum != null and srcCallNum != ''">
            AND a.CHATBOT_ID LIKE CONCAT('%',#{srcCallNum},'%')
         </if>
@@ -100,6 +107,14 @@
           FROM cm_console.CM_CALL_NUM a 
           LEFT JOIN cm.CM_RCS_CHATBOT b
             ON b.CHATBOT_ID = a.CHATBOT_ID
+             AND EXISTS (
+                    SELECT 1 
+                    FROM   cm.CM_RCS_BRAND X
+                    INNER JOIN cm_console.CM_PROJECT_BRAND Y
+                       ON   Y.BRAND_ID = X.BRAND_ID
+                       AND Y.PROJECT_ID = #{projectId}
+                       AND X.USE_YN = 'Y'
+                    )
              , cm_console.CM_PROJECT_CALL_NUM c
          WHERE a.CORP_ID       = c.CORP_ID 
            AND a.CALL_NUM      = c.CALL_NUM
@@ -132,9 +147,8 @@
 		     , '' AS HANDLE_REASON
 		     , CHATBOT_ID
 		  FROM cm.CM_RCS_CHATBOT_REQ a
-		     , cm_console.CM_PROJECT c
 		 WHERE a.CORP_ID       = #{corpId}
-		   AND a.PROJECT_ID    = c.PROJECT_ID
+		   AND a.PROJECT_ID    = #{projectId}
         <if test="srcCallNum != null and srcCallNum != ''">
            AND a.CHATBOT_ID LIKE CONCAT('%',#{srcCallNum},'%')
         </if>
