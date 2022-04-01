@@ -356,7 +356,7 @@
 	<select id="selectCallbackManageApprovalBrandList" resultType="camel">
 		/* project.selectCallbackManageApprovalBrandList */
 		SELECT	crb.BRAND_NAME
-		,		crb.CORP_ID 
+<!-- 		,		crb.CORP_ID  -->
 		,		crb.BRAND_ID
 		FROM    cm.CM_RCS_BRAND crb
 		INNER JOIN cm_console.CM_PROJECT_BRAND cpb
