@@ -131,11 +131,25 @@ export default {
         ipChkYn      : 'Y',
         ipList       : [''],
 		value		 : '50',
-		projectId : this.$parent.projectId,
+		projectId 	 : this.$parent.projectId,
+		statusYn 	 : 'USE'
     }
   },
   components: {
 
+  },props: {
+		detailCnt : {
+			type : Number,
+			require : true
+		}
+  },
+  watch:{
+	  detailCnt(){
+		  jQuery('#ipChkY').prop('checked',true)
+		  jQuery('#statusY').prop('checked',true)
+		  jQuery('#rptY').prop('checked',true)
+		  jQuery('#dupChkY').prop('checked',true)
+	  }
   },
   mounted() {
   },

@@ -236,12 +236,13 @@ watch:{
         projectApi.selectApikeyManageList(params).then(response =>{
         this.rowData = response.data.data[0];
 		this.apiKeyName = this.rowData.apiKeyName
+		this.ipList = JSON.parse(this.rowData.ipList)
 		if(this.rowData.ipChkYn == '사용' && this.ipList.length == 0){
 			this.ipList.push('')
 		}
-		else{
-			this.ipList = JSON.parse(this.rowData.ipList)
-		}
+
+			
+		
 		this.value  = this.rowData.tps
 
         });
@@ -415,7 +416,6 @@ methods:{
 
         projectApi.deleteApikeyManage(params).then(response =>{
         const result = response.data
-		console.log(result)
 			if(result.success){
 				confirm.fnAlert('', '삭제 되었습니다.')
 				this.$parent.fnApikeyManageList()

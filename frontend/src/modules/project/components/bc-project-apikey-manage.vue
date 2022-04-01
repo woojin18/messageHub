@@ -44,7 +44,7 @@
             </tbody>
           </table>
       <!-- 리스트 -->
-      <apikeyGeneration />
+      <apikeyGeneration :detailCnt="detailCnt"/>
       <apikeyDetail :apiKey="apiKey" :detailCnt="detailCnt" />
               </div>
 		</article>
@@ -113,7 +113,7 @@ export default {
       jQuery('#apikeyManageDetail').show() 
     },
     fnApikeyGeneration(){
-
+      this.detailCnt = this.detailCnt + 1
       if(this.rowData.length > 4){
         confirm.fnAlert('', 'API KEY는 5개까지 발급받을 수 있습니다.')
         return
