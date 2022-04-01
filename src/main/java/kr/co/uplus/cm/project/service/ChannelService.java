@@ -1487,6 +1487,7 @@ public class ChannelService {
 				for(Object chatbotId : chatbotIdList) {
 					params.put("chatbotId", chatbotId);
 					generalDao.insertGernal(DB.QRY_INSERT_PROJECTCHATBOT, params);
+					commonService.updateCmCmdForRedis("CM_PROJECT_CHATBOT");
 					
  					int callNumCheck = generalDao.selectGernalCount(DB.QRY_SELECT_CALLNUMCHECK, params); //문자 발신번호에 챗봇 ID 있는지 체크
 					
@@ -1498,6 +1499,9 @@ public class ChannelService {
 					
 				}
 			}
+			
+			// redis 동기화 처리
+			commonService.updateCmCmdForRedis("CM_PROJECT_BRAND");
 		}catch(Exception e) {
 			rtn.setSuccess(false);
 			rtn.setMessage("브랜드 연결에 실패하였습니다.");
@@ -1514,13 +1518,30 @@ public class ChannelService {
 				try {
 					generalDao.deleteGernal(DB.QRY_DELETE_PROJECTBRAND, params);
 					
-
+					Map<String, Object> delParams = new HashMap<String, Object>();
+					
+					delParams.put("projectId", params.get("projectId"));
+					delParams.put("brandId", params.get("brandId"));
+					// redis 삭제 처리
+					commonService.updateCmCmdForRedisAPI("else", "CM_PROJECT_BRAND", delParams);
+					
 					List<Object> chatbotIdList = generalDao.selectGernalList(DB.QRY_SELECT_RCS_CAHTBOTID, params);
 					
 					for(Object chatbotId : chatbotIdList) {
 						params.put("chatbotId", chatbotId);
-						generalDao.deleteGernal(DB.QRY_DELETE_PROJECTCHATBOT, params);			
-						generalDao.deleteGernal(DB.QRY_DELETE_PROJECTCALLNUM, params);	
+						generalDao.deleteGernal(DB.QRY_DELETE_PROJECTCHATBOT, params);
+						// redis 삭제 처리
+						Map<String, Object> chatbotDelMap = new HashMap<String, Object>();
+						chatbotDelMap.put("projectId", params.get("projectId"));
+						chatbotDelMap.put("chatbotId", chatbotId);
+						commonService.updateCmCmdForRedisAPI("else", "CM_PROJECT_CHATBOT", chatbotDelMap);
+						generalDao.deleteGernal(DB.QRY_DELETE_PROJECTCALLNUM, params);
+						// redis 삭제 처리
+						Map<String, Object> callNumDelMap = new HashMap<String, Object>();
+						callNumDelMap.put("chatbotId", chatbotId);
+						callNumDelMap.put("projectId", params.get("projectId"));
+						callNumDelMap.put("corpId", params.get("corpId"));
+						commonService.updateCmCmdForRedisAPI("else", "CM_PROJECT_CALL_NUM", callNumDelMap);
 					}
 					
 				}

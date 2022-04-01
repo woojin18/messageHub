@@ -817,6 +817,7 @@ public class ProjectService {
 		try {
 			generalDao.insertGernal("callnum.insertCallNum", params);
 			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+			commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
 		} catch (DataIntegrityViolationException e) {
 			throw new Exception("이미 등록되어 있는 발신번호입니다.");
 		}
@@ -846,6 +847,7 @@ public class ProjectService {
 		try {
 			generalDao.insertGernal("callnum.insertCallNum", params);
 			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+			commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
 		} catch (DataIntegrityViolationException e) {
 			throw new Exception("이미 등록되어 있는 발신번호입니다.");
 		}
@@ -887,6 +889,7 @@ public class ProjectService {
 	            params.put("callNum", callNum.replaceAll("-", ""));
 				generalDao.insertGernal("callnum.insertCallNum", params);
 				generalDao.insertGernal("callnum.insertProjectCallNum", params);
+				commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
 	        }
 		} catch (DataIntegrityViolationException e) {
 			throw new Exception("이미 등록되어 있는 발신번호입니다.");
@@ -929,6 +932,7 @@ public class ProjectService {
 		try {
 			generalDao.insertGernal("callnum.insertCallNum", params);
 			generalDao.insertGernal("callnum.insertProjectCallNum", params);
+			commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
 		} catch (DataIntegrityViolationException e) {
 			throw new Exception("이미 등록되어 있는 발신번호입니다.");
 		}
@@ -1080,6 +1084,11 @@ public class ProjectService {
 			resultCnt = generalDao.insertGernal("callnum.insertProjectCallNum", saveMap);
 			generalDao.insertGernal("callnum.insertProjectChatbot", saveMap);
 		}
+		
+		// redis 챗봇 테이블 동기화 처리
+		commonService.updateCmCmdForRedis("CM_PROJECT_CHATBOT");
+		commonService.updateCmCmdForRedis("CM_PROEJCT_CALL_NUM");
+		
 		
 		if (resultCnt <= 0) {
 			rtn.setSuccess(false);
