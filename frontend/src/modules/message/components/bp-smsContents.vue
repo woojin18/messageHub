@@ -23,10 +23,9 @@
           <div class="of_h consolMarginTop">
             <div class="float-left" style="width:34%">
               <h5>내용</h5>
-              <span class="float-left color3 mt5"  v-if="sendData.msgKind == 'A' && sendData.senderType != 'SMS'">
+              <span class="float-left color3 mt5"  v-if="sendData.msgKind == 'A'">
                 광고성메시지 수신거부번호는<br>내용 하단에 포함됩니다.<br>또한 광고 표기는 제목 또는<br>내용에 포함되어 있어야 합니다.<br>
               </span>
-              <p class="color3">(광고) 문구가 내용 앞에 붙고<br>광고성메시지 수신거부번호는<br>내용 밑에 포함됩니다.</p>
 							<a class="btnStyle1 backBlack mt10"
                 title="단축 URL+"
                 data-toggle="modal"

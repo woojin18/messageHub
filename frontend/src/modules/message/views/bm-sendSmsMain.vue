@@ -47,11 +47,11 @@
               </div>
               <div>
                 <input type="radio" name="senderType" value="SMS" id="senderType_SMS" v-model="sendData.senderType">
-                <label for="senderType_SMS" class="mr30">SMS</label>
+                <label for="senderType_SMS" class="mr30" @click="fnContentAdAdd('','SMS')">SMS</label>
                 <input type="radio" name="senderType" value="LMS" id="senderType_LMS" v-model="sendData.senderType">
-                <label for="senderType_LMS" class="mr30">LMS</label>
+                <label for="senderType_LMS" class="mr30" @click="fnContentAdAdd('','LMS')">LMS</label>
                 <input type="radio" name="senderType" value="MMS" id="senderType_MMS" v-model="sendData.senderType">
-                <label for="senderType_MMS">MMS</label>
+                <label for="senderType_MMS" @click="fnContentAdAdd('','MMS','')">MMS</label>
               </div>
             </div>
             <div class="of_h">
@@ -60,9 +60,9 @@
               </div>
               <div>
                 <input type="radio" name="msgKind" value="A" id="msgKind_A" v-model="sendData.msgKind">
-                <label for="msgKind_A" class="mr30">광고성</label>
+                <label for="msgKind_A" class="mr30" @click="fnContentAdAdd('A','')">광고성</label>
                 <input type="radio" name="msgKind" value="I" id="msgKind_I" v-model="sendData.msgKind">
-                <label for="msgKind_I">정보성</label>
+                <label for="msgKind_I" @click="fnContentAdAdd('I','')">정보성</label>
               </div>
             </div>
           </div>
@@ -510,6 +510,9 @@ export default {
         params.rsrvSendYn = 'N';
       }
 
+      params.smsContent = params.smsTitle.replace("(광고)","");
+      params.smsContent = params.smsContent.replace("(광고)","");
+
       let fd = new FormData();
       if(this.sendData.cuInputType == 'EXCEL'){
         fd.append('file', this.tempFile[0]);
@@ -695,8 +698,7 @@ export default {
       }
       this.sendData.smsTitle = data.smsTitle;
       if(msgKind == "A" && this.sendData.senderType == "SMS") {
-
-          if(this.sendData.smsContent.indexOf("광고")== -1) {
+          if(data.smsContent.indexOf("광고")== -1) {
             this.sendData.smsContent = "(광고)" + data.smsContent;
           } else {
             this.sendData.smsContent = data.smsContent;
@@ -839,6 +841,21 @@ export default {
 				}
 			});
 		},
+    fnContentAdAdd(msgKind, senderType){
+      var smsContent = this.sendData.smsContent;
+      msgKind = msgKind == '' ? this.sendData.msgKind : msgKind;
+      senderType = senderType == '' ? this.sendData.senderType : senderType;
+
+      if( msgKind == 'A' && senderType == 'SMS' && smsContent != '' ){
+        this.sendData.smsContent = '(광고)'+this.sendData.smsContent.replace("(광고)","");
+      }else if(msgKind == 'A' && senderType != 'SMS' && smsContent != '' ){
+        this.sendData.smsContent = this.sendData.smsContent.replace("(광고)","");
+      }else if(msgKind != 'A' && senderType == 'SMS' && smsContent != '' ){
+        this.sendData.smsContent = this.sendData.smsContent.replace("(광고)","");
+      }else if(msgKind != 'A' && senderType != 'SMS' && smsContent != ''){
+        this.sendData.smsContent = this.sendData.smsContent.replace("(광고)","");
+      }
+    }
   }
 }
 </script>
