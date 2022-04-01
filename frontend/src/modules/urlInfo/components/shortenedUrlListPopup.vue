@@ -184,7 +184,7 @@ export default {
       // PROD : m-hub.kr
       // QA : url.msghub-qa.uplus.co.kr
       if(this.urlId)
-        return `https://url.msghub-qa.uplus.co.kr/#URL{${this.urlId}}`
+        return `https://m-hub.kr/#URL{${this.urlId}}`
       else
         return ''
     },

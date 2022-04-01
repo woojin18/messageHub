@@ -156,7 +156,7 @@ export default {
         {val:15, name: '15일'},
       ],
       demo: false,
-			isDev: true,
+			isDev: false,
     };
   },
   mounted() {
