@@ -271,35 +271,37 @@
     <select id="selectRcsCallNumCnt" resultType="int">
         /* callnum.selectRcsCallNumCnt - RCS발신번호 건수 조회 */
         SELECT COUNT(1) AS CNT 
-          FROM cm_console.CM_CALL_NUM a
-             , cm.CM_RCS_CHATBOT      b
-         WHERE a.CHATBOT_ID = b.CHATBOT_ID
-           AND a.CORP_ID       = #{corpId}
-           AND REG_WAY         = 'RCS'
-           AND NOT EXISTS (SELECT 1 
-               FROM cm_console.CM_PROJECT_CALL_NUM c
-              WHERE a.CORP_ID    = c.CORP_ID
-                AND a.CALL_NUM   = c.CALL_NUM
-                AND c.PROJECT_ID = #{projectId})
+		FROM   cm.CM_RCS_CHATBOT A
+		INNER JOIN cm.CM_RCS_BRAND B
+  		 ON   B.BRAND_ID = A.BRAND_ID 
+   		AND   B.USE_YN = 'Y'
+   		AND   B.APPROVAL_STATUS = '승인'
+		INNER JOIN cm_console.CM_PROJECT_BRAND C
+ 		  ON   C.BRAND_ID = B.BRAND_ID 
+		WHERE   A.USE_YN = 'Y'
+			AND      A.APPROVAL_STATUS = '승인'
+ 			AND      NOT EXISTS (SELECT 1 FROM cm_console.CM_PROJECT_CHATBOT X WHERE X.PROJECT_ID = 'PJTREMdO02' AND X.CHATBOT_ID = A.CHATBOT_ID)
+			AND      C.PROJECT_ID = #{projectId}
     </select>
     
     <select id="selectRcsCallNumList" resultType="camel">
         /* callnum.selectRcsCallNumList - RCS발신번호 목록 조회 */
-        SELECT a.CALL_NUM
-             , (SELECT BRAND_NAME FROM cm.CM_RCS_BRAND x WHERE x.BRAND_ID = b.BRAND_ID) AS BRAND
-             , DATE_FORMAT(a.REG_DT, '%Y-%m-%d')    AS REG_DT 
-             , b.CHATBOT_ID
-          FROM cm_console.CM_CALL_NUM a
-             , cm.CM_RCS_CHATBOT      b
-         WHERE a.CHATBOT_ID = b.CHATBOT_ID
-           AND a.CORP_ID       = #{corpId}
-           AND REG_WAY         = 'RCS'
-           AND NOT EXISTS (SELECT 1 
-               FROM cm_console.CM_PROJECT_CALL_NUM c
-              WHERE a.CORP_ID    = c.CORP_ID
-                AND a.CALL_NUM   = c.CALL_NUM
-                AND c.PROJECT_ID = #{projectId})
-         ORDER BY REG_DT DESC
+		SELECT   A.CHATBOT_ID AS CALL_NUM
+		,      B.BRAND_NAME AS BRAND
+		,      DATE_FORMAT(A.REG_DT, '%Y-%m-%d') AS REG_DT
+		,      A.CHATBOT_ID
+		FROM   cm.CM_RCS_CHATBOT A
+		INNER JOIN cm.CM_RCS_BRAND B
+  		 ON   B.BRAND_ID = A.BRAND_ID 
+   		AND   B.USE_YN = 'Y'
+   		AND   B.APPROVAL_STATUS = '승인'
+		INNER JOIN cm_console.CM_PROJECT_BRAND C
+ 		  ON   C.BRAND_ID = B.BRAND_ID 
+		WHERE   A.USE_YN = 'Y'
+			AND      A.APPROVAL_STATUS = '승인'
+ 			AND      NOT EXISTS (SELECT 1 FROM cm_console.CM_PROJECT_CHATBOT X WHERE X.PROJECT_ID = 'PJTREMdO02' AND X.CHATBOT_ID = A.CHATBOT_ID)
+			AND      C.PROJECT_ID = #{projectId}
+		ORDER BY A.REG_DT DESC
         <if test='pagingYn == "Y" '>
          LIMIT #{offset}, #{listSize}
         </if>
