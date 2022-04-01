@@ -311,10 +311,6 @@
 		</if>	
 				API_KEY_NAME = #{apiKeyName}	
 		,		CPS = #{cps}
-		<if test='pwdChk == "Y"'>
-				API_PWD =#{apiNewPwd}
-		,		
-		</if>
 		,		IP_CHK_YN = #{ipChkYn}
 		<if test='ipChkYn == "Y"'>
 		, 		IP_LIST = #{ipList}
@@ -327,6 +323,7 @@
 	</update>
 
 	<delete id="deleteApiKeyManage">
+	/* baseInfo.deleteApiKeyManage*/
 		DELETE FROM cm.CM_APIKEY 
 		WHERE API_KEY = #{apiKey} 
 	</delete>

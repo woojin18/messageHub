@@ -64,8 +64,8 @@
 							</div>
 							<div style="width:50%" class="float-right">
 							<div v-for="(ip,index) in ipList" :key="index">
-							<input class="inputStyle" style="margin-top: 3px;width:140px;" v-model="ipList[index]"/>
-							<a @click="fnIpListMinus(index)"><i class="far fa-minus channelBtn ml10" style="margin-bottom: 4px;"></i></a>
+							<input class="inputStyle" style="margin-bottom: 3px;width:140px;" v-model="ipList[index]"/>
+							<a @click="fnIpListMinus(index)"><i class="far fa-minus channelBtn ml10" style="margin-bottom: 8px;"></i></a>
 						    </div>
 							</div>
 						</div>
