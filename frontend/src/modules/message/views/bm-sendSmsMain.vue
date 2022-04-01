@@ -510,7 +510,7 @@ export default {
         params.rsrvSendYn = 'N';
       }
 
-      params.smsContent = params.smsTitle.replace("(광고)","");
+      params.smsTitle = params.smsTitle.replace("(광고)","");
       params.smsContent = params.smsContent.replace("(광고)","");
 
       let fd = new FormData();
