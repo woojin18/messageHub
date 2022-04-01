@@ -31,7 +31,7 @@
           </div>
           <div class="consolMarginTop">
             <h4 class="inline-block" style="width:6%">등록일</h4>
-            <div class="inline-block" style="width:25%">
+            <div class="inline-block" style="width:350px;">
               <Calendar
                 @update-date="(pickDate) => { searchCond.startDt = pickDate }"
                 calendarId="startDt"
