@@ -2025,6 +2025,11 @@ public class SendMessageService {
             if(CollectionUtils.isNotEmpty(tempList)) {
                 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
                 String json = gson.toJson(tempList);
+
+                // 단축URL 여부 체크
+        	    if(json.contains("#URL{"))
+        	    	requestData.setClickUrlYn("Y");
+
                 List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
                 requestData.setButtons(buttons);
             }
@@ -2088,10 +2093,6 @@ public class SendMessageService {
             requestData.setFbInfoLst(fbInfoLst);
             requestData.setCallback(CommonUtils.getStrValue(fbInfo, "callback"));
         }
-
-        // 단축URL 여부 체크
-	    if(templateContent.contains("#URL{"))
-	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
