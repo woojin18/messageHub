@@ -423,7 +423,7 @@
 			<RcsTemplatePopup :propBrandId.sync="sendData.brandId" :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
 			<RcsContentPopup :rcsContsOpen.sync="rcsContsOpen" :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
-			<RcsBtnPopup :rcsBtnOpen.sync="rcsBtnOpen" :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
+			<RcsBtnPopup :rcsBtnOpen.sync="rcsBtnOpen" :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" :rcsBtnInfo.sync="rcsBtnInfo" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
 			<RcsSenderPopup :sendData.sync="sendData" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
@@ -588,6 +588,7 @@ export default {
 			nightSendLimitYn : false,
 			rcsContsOpen: false,
 			rcsBtnOpen: false,
+			rcsBtnInfo:{}
     }
   },
   watch : {
@@ -864,6 +865,34 @@ export default {
 
 		this.rcsBtnOpen = !this.rcsBtnOpen;
 		// jQuery("#recipient").modal("show");
+
+		var params = {};
+		if(!this.carouSelType) {
+			if(this.sendData.btnCnt != 0){
+				params.btnCnt = this.sendData.btnCnt;
+				params.selectBtn = this.sendData.selectBtn;
+				params.btnNm = this.sendData.btnNm;
+				params.contents = this.sendData.contents;
+				params.calendarTitle = this.sendData.calendarTitle;
+				params.calendarDes = this.sendData.calendarDes;
+				params.initStartDate = this.sendData.initStartDate;
+				params.initEndDate = this.sendData.initEndDate;
+			}
+		} else {
+			if(this.sendData.carouselObj.btnArr.length > 0 && !(this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1] === undefined)){
+
+				params.btnCnt = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].btnCnt;
+				params.selectBtn = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].selectBtn;
+				params.btnNm = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].btnNm;
+				params.contents = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].contents;
+				params.calendarTitle = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].calendarTitle;
+				params.calendarDes = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].calendarDes;
+				params.initStartDate = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].initStartDate;
+				params.initEndDate = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].initEndDate;
+			}
+		}
+		this.rcsBtnInfo = params;
+
 	},
 	
 	fnOpenSenderPop() {

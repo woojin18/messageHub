@@ -108,10 +108,14 @@ export default {
 				default: 0
 		},
 		rcsBtnOpen: {
-      type: Boolean,
-      require: true,
-      default: false,
-    },
+				type: Boolean,
+				require: true,
+				default: false,
+		},
+		rcsBtnInfo:{
+				type: Object,
+				require: false
+		}
   },
   data() {
     return { 
@@ -129,8 +133,33 @@ export default {
 			selIdx: null,
     }
   },
-
+  watch:{
+	  rcsBtnOpen(){
+		  if(this.rcsBtnOpen)  this.fnInit();
+	  }
+  },
   methods: {
+	  	fnInit(){
+			if(this.rcsBtnInfo.btnCnt === undefined){
+				this.btnCnt = 1;
+				this.selectBtn = ["urlAction"];
+				this.btnNm = [""];
+				this.contents = [""];
+				this.calendarTitle = [""];
+				this.calendarDes = [""];
+				this.initStartDate = [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()];
+				this.initEndDate = [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()];
+			}else{
+				this.btnCnt = this.rcsBtnInfo.btnCnt;
+				this.selectBtn = this.rcsBtnInfo.selectBtn;
+				this.btnNm = this.rcsBtnInfo.btnNm;
+				this.contents = this.rcsBtnInfo.contents;
+				this.calendarTitle = this.rcsBtnInfo.calendarTitle;
+				this.calendarDes = this.rcsBtnInfo.calendarDes;
+				this.initStartDate = this.rcsBtnInfo.initStartDate;
+				this.initEndDate = this.rcsBtnInfo.initEndDate;
+			}
+		},
     // 추가 버튼 클릭 이벤트 처리  
 		fnClickAddBtn() {
 			var vm = this;
