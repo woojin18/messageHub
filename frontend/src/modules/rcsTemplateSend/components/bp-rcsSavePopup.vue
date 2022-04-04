@@ -15,8 +15,8 @@
 						</div>						
 					</div>	
 					<div class="text-center mt20">
-						<a @click.prevent="fnClose" href="#self" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>	
-						<a @click.prevent="fnSaveAdd" href="#self" class="btnStyle1 backBlack" data-dismiss="modal" title="저장">저장</a>										
+						<a @click.prevent="fnSaveAdd" href="#self" class="btnStyle1 backBlack" data-dismiss="modal" title="저장">저장</a>
+						<a @click.prevent="fnClose" href="#self" class="btnStyle1 backWhite" data-dismiss="modal" title="취소">취소</a>										
 					</div>
 				</div>				
 			</div>

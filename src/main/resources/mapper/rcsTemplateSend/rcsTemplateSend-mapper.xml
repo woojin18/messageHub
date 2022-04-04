@@ -65,7 +65,7 @@
 		,		#{corpId}
 		,		#{brandId}
 		,		#{msgBaseInfo}
-		,		#{adYn}
+		,		IFNULL(#{adYn}, 'N')
 		,		#{freeReceiveNum}
 		,		#{copyPossYn}
 		,		#{callback}
