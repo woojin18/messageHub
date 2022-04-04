@@ -1287,7 +1287,7 @@ export default {
 					vm.$set(vm.sendData.contents, i, data.contents[i]);
 					vm.$set(vm.sendData.calendarTitle, i, data.calendarTitle[i]);
 					vm.$set(vm.sendData.calendarDes, i, data.calendarDes[i]);
-					vm.$set(vm.sendData.initStartDate, i, data.initStartDate[i]);
+					vm.$set(vm.sendData.initStartDate, i, data.initDate[i]);
 					vm.$set(vm.sendData.initEndDate, i, data.initEndDate[i]);
 				}
 			} else {
