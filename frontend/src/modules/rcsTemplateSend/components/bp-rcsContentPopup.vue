@@ -10,7 +10,7 @@
                 <div class="float-left" style="width:24%;margin-left: 25px;"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" style="margin-left: 27px;" title="이미지 선택">이미지선택</a></div>
                   <ul class="float-right attachList" style="width: 61%; margin: 0px 0px 0px 0px;padding: 5px 15px; height: 30px;">
                     <li v-if="imgUrl">
-                      <a @click="fnDelImg">{{fnSubString(imgUrl, 0, 40)}} <i class="fal fa-times"></i></a>
+                      <a @click="fnDelImg">{{fnSubString(imgUrl, 0, 35)}} <i class="fal fa-times"></i></a>
                     </li>
                   </ul>
               </div>
