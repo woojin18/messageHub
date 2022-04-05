@@ -2673,6 +2673,19 @@ public class SendMessageService {
 				}
 			}
 		}
+
+		// 단축URL 사용여부
+		Gson gson = new Gson();
+		for(Map<String, Object> map : tmpltInfoList) {
+			Map<String, Object> data = (Map<String, Object>) map.get("data");
+			String json = gson.toJson(data);
+
+			if(json.contains("#URL{")) {
+				requestData.setClickUrlYn("Y");
+				break;
+			}
+		}
+
 		return requestData;
 	}
 
