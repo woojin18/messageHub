@@ -2025,13 +2025,22 @@ public class SendMessageService {
             if(CollectionUtils.isNotEmpty(tempList)) {
                 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
                 String json = gson.toJson(tempList);
-
-                // 단축URL 여부 체크
-        	    if(json.contains("#URL{"))
-        	    	requestData.setClickUrlYn("Y");
-
                 List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
                 requestData.setButtons(buttons);
+
+                for(KkoButtonInfo button : buttons) {
+                	if("WL".equals(button.getLinkType())){
+                		String linkPc = button.getLinkPc();
+                		String linkMo = button.getLinkMo();
+
+                // 단축URL 여부 체크
+                	    if(
+                	    	(linkPc != null && linkPc.contains("#URL{")) ||
+                	    	(linkMo != null && linkMo.contains("#URL{"))
+                	    )
+        	    	requestData.setClickUrlYn("Y");
+                	}
+                }
             }
         }
 
