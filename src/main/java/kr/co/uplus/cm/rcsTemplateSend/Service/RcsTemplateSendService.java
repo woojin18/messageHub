@@ -530,7 +530,6 @@ public class RcsTemplateSendService {
 				JSONArray jsonBtnArr = new JSONArray();
 				if(btnArr.size() > 0 && cnt < btnArr.size()) {
 					Map<String, Object> btnMap = btnArr.get(i);
-					Map<String, Object> btnObj = new HashMap<String, Object>();
 					
 					if(btnMap != null) {
 						int btnCnt = CommonUtils.getInt(btnMap.get("btnCnt"));
@@ -545,6 +544,7 @@ public class RcsTemplateSendService {
 							ArrayList<String> initEndDate	= (ArrayList<String>) btnMap.get("initEndDate");
 		
 							for(int j=0; j<btnCnt; j++) {
+								Map<String, Object> btnObj = new HashMap<String, Object>();
 								String selectBtnStr = selectBtn.get(j);
 								if("urlAction".equals(selectBtnStr)) {
 									Map<String, Object> urlActionMap = new HashMap<String, Object>();
