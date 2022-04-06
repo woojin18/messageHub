@@ -630,8 +630,8 @@ export default {
 		this.sendData.callbackFileId = "";
 		},
 		recvCnt (newval) {
-			if(newval>10000) {
-				confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 10000명을 넘길 수 없습니다.");
+			if(newval>30000) {
+				confirm.fnAlert(this.componentsTitle, "발송 최대 수신자 수는 30000명을 넘길 수 없습니다.");
 				this.fnRemoveRecvInfo();
 			}
 		},
