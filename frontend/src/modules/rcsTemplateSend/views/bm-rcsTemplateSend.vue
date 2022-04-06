@@ -1488,6 +1488,7 @@ export default {
 			freeReceiveNum, callback, senderType,
 			callbackContents, callbackTitle,
 			rplcSendType, recvInfoLst, cuInputType, 
+			btnNm, contents,
 		} = this.sendData
 
 		var templateRadioBtn = this.templateRadioBtn;
@@ -1596,6 +1597,24 @@ export default {
 				var excelFile = this.tempFile[0];
 				if(excelFile == null) {
 					confirm.fnAlert(this.componentsTitle, "수신자를 입력해 주세요.");
+					return false;
+				}
+			}
+		}
+
+		// 버튼 입력 체크
+		if(btnNm && btnNm.length > 0){
+			for(let btn of btnNm){
+				if(btn == null || btn ==""){
+					confirm.fnAlert(this.componentsTitle, "버튼명을 입력해 주세요.");
+					return false;
+				}
+			}
+		}
+		if(contents && contents.length > 0){
+			for(let content of contents){
+				if(content == null || content ==""){
+					confirm.fnAlert(this.componentsTitle, "버튼링크를 입력해 주세요.");
 					return false;
 				}
 			}

@@ -84,8 +84,8 @@
 </template>
 
 <script>
-// import confirm from "@/modules/commonUtil/service/confirm.js";
-import Calendar from "@/components/Calendar.vue";
+import confirm from "@/modules/commonUtil/service/confirm.js"
+import Calendar from "@/components/Calendar.vue"
 
 import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
 import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
@@ -134,12 +134,12 @@ export default {
     }
   },
   watch:{
-	  rcsBtnOpen(){
-		  if(this.rcsBtnOpen)  this.fnInit();
-	  }
+		rcsBtnOpen(){
+			if(this.rcsBtnOpen)  this.fnInit();
+		}
   },
   methods: {
-	  	fnInit(){
+		fnInit(){
 			if(this.rcsBtnInfo.btnCnt === undefined){
 				this.btnCnt = 1;
 				this.selectBtn = ["urlAction"];
@@ -332,6 +332,10 @@ export default {
 			this.$emit('update:rcsBtnOpen', false)
 		},
 		fnAdd() {
+			var vali = this.validation();
+			if(!vali) 
+				return false;
+
 			var vm = this;
 			var params = new Object();
 			params.btnCnt = this.btnCnt;
@@ -345,6 +349,29 @@ export default {
 
 			vm.$emit('fnAddBtnResult', params);
 			vm.fnClose();
+		},
+		validation() {
+			const { btnNm, contents } = this
+
+			// 버튼 입력 체크
+			if(btnNm && btnNm.length > 0){
+				for(let btn of btnNm){
+					if(btn == null || btn ==""){
+						confirm.fnAlert(this.componentsTitle, "버튼명을 입력해 주세요.");
+						return false;
+					}
+				}
+			}
+			if(contents && contents.length > 0){
+				for(let content of contents){
+					if(content == null || content ==""){
+						confirm.fnAlert(this.componentsTitle, "버튼링크를 입력해 주세요.");
+						return false;
+					}
+				}
+			}
+
+			return true;
 		},
 		// 날자 세팅
 		fnUpdateStartDate(date, n) {
