@@ -182,7 +182,7 @@ export default {
   computed: {
     shortendUrl() {
       let shortendUrl = 'url.msghub-qa.uplus.co.kr'
-      if(location.host === 'msghub.uplus.co.kr')
+      if(location.host.indexOf('msghub.uplus.co.kr') > -1)
         shortendUrl = 'm-hub.kr'
 
       if(this.urlId)
