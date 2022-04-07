@@ -181,10 +181,12 @@ export default {
   props: {},
   computed: {
     shortendUrl() {
-      // PROD : m-hub.kr
-      // QA : url.msghub-qa.uplus.co.kr
+      let shortendUrl = 'url.msghub-qa.uplus.co.kr'
+      if(location.host === 'msghub.uplus.co.kr')
+        shortendUrl = 'm-hub.kr'
+
       if(this.urlId)
-        return `https://m-hub.kr/#URL{${this.urlId}}`
+        return `https://${shortendUrl}/#URL{${this.urlId}}`
       else
         return ''
     },
