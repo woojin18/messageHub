@@ -423,7 +423,7 @@
 			<RcsTemplatePopup :propBrandId.sync="sendData.brandId" :templateRadioBtn.sync="templateRadioBtn" ref="rcsTemplatePop" @fnResult="fnSetTemplate"></RcsTemplatePopup>
 			<RcsMsgPopup :templateRadioBtn.sync="templateRadioBtn" :carouselSmall.sync="carouselSmall" :carouselMedium.sync="carouselMedium" ref="rcsMsgPop" @fnTmpMsgSet="fnTmpMsgSet" ></RcsMsgPopup>
 			<RcsContentPopup :rcsContsOpen.sync="rcsContsOpen" :templateRadioBtn.sync="templateRadioBtn" :contentPopCnt.sync="contentPopCnt" :dataSet.sync="dataSet" :sendData.sync="sendData" ref="rcsContentPop" @fnAddResult="fnSetAddContents"></RcsContentPopup>
-			<RcsBtnPopup :rcsBtnOpen.sync="rcsBtnOpen" :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
+			<RcsBtnPopup :rcsBtnOpen.sync="rcsBtnOpen" :templateRadioBtn.sync="templateRadioBtn" :btnPopCnt.sync="btnPopCnt" :rcsBtnInfo.sync="rcsBtnInfo" ref="rcsBtnPop" @fnAddBtnResult="fnSetAddBtns"></RcsBtnPopup>
 			<RcsSenderPopup :sendData.sync="sendData" :rcsTemplateSenderPopOpen.sync="rcsTemplateSenderPopOpen" ref="rcsSenderPop"></RcsSenderPopup>
 			<RcsSavePopup ref="rcsSavePop"></RcsSavePopup>
 			<ConfirmPopup :newval.sync="newval" :oldval.sync="oldval" ref="confirmPop"></ConfirmPopup>
@@ -588,6 +588,7 @@ export default {
 			nightSendLimitYn : false,
 			rcsContsOpen: false,
 			rcsBtnOpen: false,
+			rcsBtnInfo:{}
     }
   },
   watch : {
@@ -864,6 +865,34 @@ export default {
 
 		this.rcsBtnOpen = !this.rcsBtnOpen;
 		// jQuery("#recipient").modal("show");
+
+		var params = {};
+		if(!this.carouSelType) {
+			if(this.sendData.btnCnt != 0){
+				params.btnCnt = this.sendData.btnCnt;
+				params.selectBtn = this.sendData.selectBtn;
+				params.btnNm = this.sendData.btnNm;
+				params.contents = this.sendData.contents;
+				params.calendarTitle = this.sendData.calendarTitle;
+				params.calendarDes = this.sendData.calendarDes;
+				params.initStartDate = this.sendData.initStartDate;
+				params.initEndDate = this.sendData.initEndDate;
+			}
+		} else {
+			if(this.sendData.carouselObj.btnArr.length > 0 && !(this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1] === undefined)){
+
+				params.btnCnt = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].btnCnt;
+				params.selectBtn = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].selectBtn;
+				params.btnNm = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].btnNm;
+				params.contents = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].contents;
+				params.calendarTitle = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].calendarTitle;
+				params.calendarDes = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].calendarDes;
+				params.initStartDate = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].initStartDate;
+				params.initEndDate = this.sendData.carouselObj.btnArr[this.carouSelTabCnt-1].initEndDate;
+			}
+		}
+		this.rcsBtnInfo = params;
+
 	},
 	
 	fnOpenSenderPop() {
@@ -1258,7 +1287,7 @@ export default {
 					vm.$set(vm.sendData.contents, i, data.contents[i]);
 					vm.$set(vm.sendData.calendarTitle, i, data.calendarTitle[i]);
 					vm.$set(vm.sendData.calendarDes, i, data.calendarDes[i]);
-					vm.$set(vm.sendData.initStartDate, i, data.initStartDate[i]);
+					vm.$set(vm.sendData.initStartDate, i, data.initDate[i]);
 					vm.$set(vm.sendData.initEndDate, i, data.initEndDate[i]);
 				}
 			} else {
@@ -1459,6 +1488,7 @@ export default {
 			freeReceiveNum, callback, senderType,
 			callbackContents, callbackTitle,
 			rplcSendType, recvInfoLst, cuInputType, 
+			btnNm, contents,
 		} = this.sendData
 
 		var templateRadioBtn = this.templateRadioBtn;
@@ -1567,6 +1597,24 @@ export default {
 				var excelFile = this.tempFile[0];
 				if(excelFile == null) {
 					confirm.fnAlert(this.componentsTitle, "수신자를 입력해 주세요.");
+					return false;
+				}
+			}
+		}
+
+		// 버튼 입력 체크
+		if(btnNm && btnNm.length > 0){
+			for(let btn of btnNm){
+				if(btn == null || btn ==""){
+					confirm.fnAlert(this.componentsTitle, "버튼명을 입력해 주세요.");
+					return false;
+				}
+			}
+		}
+		if(contents && contents.length > 0){
+			for(let content of contents){
+				if(content == null || content ==""){
+					confirm.fnAlert(this.componentsTitle, "버튼링크를 입력해 주세요.");
 					return false;
 				}
 			}

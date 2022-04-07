@@ -5,17 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -24,7 +16,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -512,114 +503,126 @@ public class RcsTemplateSendService {
 			ArrayList<String> textContentsArr	= (ArrayList<String>) carouselMap.get("textContents");
 			ArrayList<String> imgUrlArr			= (ArrayList<String>) carouselMap.get("imgUrl");
 			ArrayList<String> fileIdArr			= (ArrayList<String>) carouselMap.get("fileId");
-			ArrayList<Object> btnArr			= (ArrayList<Object>) carouselMap.get("btnArr");
+			ArrayList<Map<String, Object>> btnArr	= (ArrayList<Map<String, Object>>) carouselMap.get("btnArr");
+
+			if(fileIdArr.size() < 6) {
+				for(int i = fileIdArr.size() ; i < 6 ; i++) {
+					fileIdArr.add("");
+				}
+			}
 
 			JSONArray jsonArr = new JSONArray();
 
+			int cnt = 0;
 			// msgBaseInfo 세팅
 			for(int i=0; i<textTitleArr.size(); i++) {
 				// btn세팅
 				JSONObject jsonObj = new JSONObject();
 				JSONArray jsonBtnArr = new JSONArray();
-				Map<String, Object> btnMap = (Map<String, Object>) btnArr.get(i);
-				Map<String, Object> btnObj = new HashMap<String, Object>();
+				if(btnArr.size() > 0 && cnt < btnArr.size()) {
+					Map<String, Object> btnMap = btnArr.get(i);
+					Map<String, Object> btnObj = new HashMap<String, Object>();
 
-				int btnCnt = CommonUtils.getInt(btnMap.get("btnCnt"));
+					if(btnMap != null) {
+						int btnCnt = CommonUtils.getInt(btnMap.get("btnCnt"));
 
-				if(btnCnt>0) {
-					ArrayList<String> selectBtn		= (ArrayList<String>) btnMap.get("selectBtn");
-					ArrayList<String> btnNm			= (ArrayList<String>) btnMap.get("btnNm");
-					ArrayList<String> contents		= (ArrayList<String>) btnMap.get("contents");
-					ArrayList<String> calendarTitle	= (ArrayList<String>) btnMap.get("calendarTitle");
-					ArrayList<String> calendarDes	= (ArrayList<String>) btnMap.get("calendarDes");
-					ArrayList<String> initDate		= (ArrayList<String>) btnMap.get("initDate");
-					ArrayList<String> initEndDate	= (ArrayList<String>) btnMap.get("initEndDate");
+						if(btnCnt>0) {
+							ArrayList<String> selectBtn		= (ArrayList<String>) btnMap.get("selectBtn");
+							ArrayList<String> btnNm			= (ArrayList<String>) btnMap.get("btnNm");
+							ArrayList<String> contents		= (ArrayList<String>) btnMap.get("contents");
+							ArrayList<String> calendarTitle	= (ArrayList<String>) btnMap.get("calendarTitle");
+							ArrayList<String> calendarDes	= (ArrayList<String>) btnMap.get("calendarDes");
+							ArrayList<String> initDate		= (ArrayList<String>) btnMap.get("initDate");
+							ArrayList<String> initEndDate	= (ArrayList<String>) btnMap.get("initEndDate");
 
-					for(int j=0; j<btnCnt; j++) {
-						String selectBtnStr = selectBtn.get(j);
-						if("urlAction".equals(selectBtnStr)) {
-							Map<String, Object> urlActionMap = new HashMap<String, Object>();
-							Map<String, Object> openUrlMap = new HashMap<String, Object>();
-							Map<String, Object> openUrlTextMap = new HashMap<String, Object>();
-							Map<String, Object> postbackMap = new HashMap<String, Object>();
+							for(int j=0; j<btnCnt; j++) {
+								String selectBtnStr = selectBtn.get(j);
+								if("urlAction".equals(selectBtnStr)) {
+									Map<String, Object> urlActionMap = new HashMap<String, Object>();
+									Map<String, Object> openUrlMap = new HashMap<String, Object>();
+									Map<String, Object> openUrlTextMap = new HashMap<String, Object>();
+									Map<String, Object> postbackMap = new HashMap<String, Object>();
 
-							openUrlTextMap.put("url", contents.get(j));
-							openUrlMap.put("openUrl", openUrlTextMap);
-							postbackMap.put("data", "set_by_chatbot_open_url");
+									openUrlTextMap.put("url", contents.get(j));
+									openUrlMap.put("openUrl", openUrlTextMap);
+									postbackMap.put("data", "set_by_chatbot_open_url");
 
-							urlActionMap.put("urlAction", openUrlMap);
-							urlActionMap.put("displayText", btnNm.get(j));
-							urlActionMap.put("postback", postbackMap);
+									urlActionMap.put("urlAction", openUrlMap);
+									urlActionMap.put("displayText", btnNm.get(j));
+									urlActionMap.put("postback", postbackMap);
 
-							btnObj.put("action", urlActionMap);
-						} else if ("clipboardAction".equals(selectBtnStr)) {
-							Map<String, Object> clipboardActionMap = new HashMap<String, Object>();
-							Map<String, Object> copyToClipboardMap = new HashMap<String, Object>();
-							Map<String, Object> copyToClipboardTextMap = new HashMap<String, Object>();
-							Map<String, Object> postbackMap = new HashMap<String, Object>();
+									btnObj.put("action", urlActionMap);
+								} else if ("clipboardAction".equals(selectBtnStr)) {
+									Map<String, Object> clipboardActionMap = new HashMap<String, Object>();
+									Map<String, Object> copyToClipboardMap = new HashMap<String, Object>();
+									Map<String, Object> copyToClipboardTextMap = new HashMap<String, Object>();
+									Map<String, Object> postbackMap = new HashMap<String, Object>();
 
-							copyToClipboardTextMap.put("text", contents.get(j));
-							copyToClipboardMap.put("copyToClipboard", copyToClipboardTextMap);
-							postbackMap.put("data", "set_by_chatbot_copy_to_clipboard");
+									copyToClipboardTextMap.put("text", contents.get(j));
+									copyToClipboardMap.put("copyToClipboard", copyToClipboardTextMap);
+									postbackMap.put("data", "set_by_chatbot_copy_to_clipboard");
 
-							clipboardActionMap.put("clipboardAction", copyToClipboardMap);
-							clipboardActionMap.put("displayText", btnNm.get(j));
-							clipboardActionMap.put("postback", postbackMap);
+									clipboardActionMap.put("clipboardAction", copyToClipboardMap);
+									clipboardActionMap.put("displayText", btnNm.get(j));
+									clipboardActionMap.put("postback", postbackMap);
 
-							btnObj.put("action", clipboardActionMap);
-						} else if ("dialerAction".equals(selectBtnStr)) {
-							Map<String, Object> dialerActionMap = new HashMap<String, Object>();
-							Map<String, Object> dialPhoneNumberMap = new HashMap<String, Object>();
-							Map<String, Object> dialPhoneNumberTextMap = new HashMap<String, Object>();
-							Map<String, Object> postbackMap = new HashMap<String, Object>();
+									btnObj.put("action", clipboardActionMap);
+								} else if ("dialerAction".equals(selectBtnStr)) {
+									Map<String, Object> dialerActionMap = new HashMap<String, Object>();
+									Map<String, Object> dialPhoneNumberMap = new HashMap<String, Object>();
+									Map<String, Object> dialPhoneNumberTextMap = new HashMap<String, Object>();
+									Map<String, Object> postbackMap = new HashMap<String, Object>();
 
-							dialPhoneNumberTextMap.put("phoneNumber", contents.get(j));
-							dialPhoneNumberMap.put("dialPhoneNumber", dialPhoneNumberTextMap);
-							postbackMap.put("data", "set_by_chatbot_dial_phone_number");
+									dialPhoneNumberTextMap.put("phoneNumber", contents.get(j));
+									dialPhoneNumberMap.put("dialPhoneNumber", dialPhoneNumberTextMap);
+									postbackMap.put("data", "set_by_chatbot_dial_phone_number");
 
-							dialerActionMap.put("dialerAction", dialPhoneNumberMap);
-							dialerActionMap.put("displayText", btnNm.get(j));
-							dialerActionMap.put("postback", postbackMap);
+									dialerActionMap.put("dialerAction", dialPhoneNumberMap);
+									dialerActionMap.put("displayText", btnNm.get(j));
+									dialerActionMap.put("postback", postbackMap);
 
-							btnObj.put("action", dialerActionMap);
-						} else if ("calendarAction".equals(selectBtnStr)) {
-							Map<String, Object> calendarActionMap = new HashMap<String, Object>();
-							Map<String, Object> createCalendarEventMap = new HashMap<String, Object>();
-							Map<String, Object> createCalendarEventTextMap = new HashMap<String, Object>();
-							Map<String, Object> postbackMap = new HashMap<String, Object>();
+									btnObj.put("action", dialerActionMap);
+								} else if ("calendarAction".equals(selectBtnStr)) {
+									Map<String, Object> calendarActionMap = new HashMap<String, Object>();
+									Map<String, Object> createCalendarEventMap = new HashMap<String, Object>();
+									Map<String, Object> createCalendarEventTextMap = new HashMap<String, Object>();
+									Map<String, Object> postbackMap = new HashMap<String, Object>();
 
-							createCalendarEventTextMap.put("title", calendarTitle.get(j));
-							createCalendarEventTextMap.put("description", calendarDes.get(j));
-							String startTime = initDate.get(i) + "T00:00:00Z";
-							String endTime = initEndDate.get(i) + "T23:59:59Z";
-							createCalendarEventTextMap.put("startTime", startTime);
-							createCalendarEventTextMap.put("endTime", endTime);
+									createCalendarEventTextMap.put("title", calendarTitle.get(j));
+									createCalendarEventTextMap.put("description", calendarDes.get(j));
+									String startTime = initDate.get(i) + "T00:00:00Z";
+									String endTime = initEndDate.get(i) + "T23:59:59Z";
+									createCalendarEventTextMap.put("startTime", startTime);
+									createCalendarEventTextMap.put("endTime", endTime);
 
-							createCalendarEventMap.put("createCalendarEvent", createCalendarEventTextMap);
-							postbackMap.put("data", "set_by_chatbot_create_calendar_event");
+									createCalendarEventMap.put("createCalendarEvent", createCalendarEventTextMap);
+									postbackMap.put("data", "set_by_chatbot_create_calendar_event");
 
-							calendarActionMap.put("calendarAction", createCalendarEventMap);
-							calendarActionMap.put("displayText", btnNm.get(j));
-							calendarActionMap.put("postback", postbackMap);
+									calendarActionMap.put("calendarAction", createCalendarEventMap);
+									calendarActionMap.put("displayText", btnNm.get(j));
+									calendarActionMap.put("postback", postbackMap);
 
-							btnObj.put("action", calendarActionMap);
-						} else if ("mapAction".equals(selectBtnStr)) {
-							Map<String, Object> mapActionMap = new HashMap<String, Object>();
-							Map<String, Object> requestLocationPushMap = new HashMap<String, Object>();
-							Map<String, Object> postbackMap = new HashMap<String, Object>();
+									btnObj.put("action", calendarActionMap);
+								} else if ("mapAction".equals(selectBtnStr)) {
+									Map<String, Object> mapActionMap = new HashMap<String, Object>();
+									Map<String, Object> requestLocationPushMap = new HashMap<String, Object>();
+									Map<String, Object> postbackMap = new HashMap<String, Object>();
 
-							requestLocationPushMap.put("requestLocationPush", new HashMap<String, Object>());
-							postbackMap.put("data", "set_by_cahtbot_request_location_push");
+									requestLocationPushMap.put("requestLocationPush", new HashMap<String, Object>());
+									postbackMap.put("data", "set_by_cahtbot_request_location_push");
 
-							mapActionMap.put("mapAction", requestLocationPushMap);
-							mapActionMap.put("displayText", btnNm.get(j));
-							mapActionMap.put("postback", postbackMap);
+									mapActionMap.put("mapAction", requestLocationPushMap);
+									mapActionMap.put("displayText", btnNm.get(j));
+									mapActionMap.put("postback", postbackMap);
 
-							btnObj.put("action", mapActionMap);
+									btnObj.put("action", mapActionMap);
+								}
+								jsonBtnArr.add(j, btnObj);
+							}
+
 						}
-						jsonBtnArr.add(j, btnObj);
 					}
-
+					cnt++;
 				}
 
 
@@ -1114,7 +1117,7 @@ public class RcsTemplateSendService {
 		Gson gson = new Gson();
 		String json = gson.toJson(msgMap);
 
-		if(json.contains("#URL{")) {
+		if(json.matches(".*#URL\\{[\\w]{6}\\}.*")) {
 			apiMap.put("clickUrlYn", "Y");
 			msgMap.put("clickUrlYn", "Y");
 		}
@@ -1178,7 +1181,7 @@ public class RcsTemplateSendService {
 		Gson gson = new Gson();
 		String json = gson.toJson(msgMap);
 
-		if(json.contains("#URL{")) {
+		if(json.matches(".*#URL\\{[\\w]{6}\\}.*")) {
 			apiMap.put("clickUrlYn", "Y");
 			msgMap.put("clickUrlYn", "Y");
 		}
@@ -1249,7 +1252,7 @@ public class RcsTemplateSendService {
 		Gson gson = new Gson();
 		String json = gson.toJson(msgMap);
 
-		if(json.contains("#URL{")) {
+		if(json.matches(".*#URL\\{[\\w]{6}\\}.*")) {
 			apiMap.put("clickUrlYn", "Y");
 			msgMap.put("clickUrlYn", "Y");
 		}
@@ -1942,7 +1945,7 @@ public class RcsTemplateSendService {
 				if(imgCnt>0) imgExpCnt++;
 			}
 
-			if(imgExpCnt != fileList.size()) {
+			if(imgExpCnt != CommonUtils.getInt(params.get("carouselSelect"))) {
 				throw new Exception("선택하신 이미지를 사용할 수 없습니다. 이미지를 다시 선택해 주세요.");
 			}
 		} else {

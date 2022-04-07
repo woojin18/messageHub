@@ -268,6 +268,7 @@ import tokenSvc from '@/common/token-service';
 import confirm from "@/modules/commonUtil/service/confirm";
 import homeApi from '@/modules/ucHome/service/api';
 import customereApi from "@/modules/customer/service/customerApi.js";
+import loginApi from '@/modules/login/service/api';
 import NoticeLayer from "@/modules/customer/components/bp-noticeLayer.vue";
 import Calendar from "@/components/Calendar.vue";
 import BarChart from '@/components/Chart.vue';
@@ -382,24 +383,30 @@ export default {
 			}, 1000);	
 		},
 		fnInit() {
+			//alert("TEST");
 			var svcTypeCd = tokenSvc.getToken().principal.svcTypeCd;
-			if (svcTypeCd == 'AC') {
-				let params = {
-					userId: tokenSvc.getToken().principal.userId
-				};
 
-				homeApi.selectProjectList(params).then(response =>{
-					var result = response.data;
-					if (result.success) {
-						if (result.data.length == 0) {
+			let params = {
+				userId: tokenSvc.getToken().principal.userId
+			};
+
+			homeApi.selectProjectList(params).then(response =>{
+				var result = response.data;
+				if (result.success) {
+					if (result.data.length == 0) {
+						if (svcTypeCd == 'AC') {
 							alert("참여되어 있는 프로젝트가 없습니다.");
 							this.$router.replace("/ac/home");
+						} else {
+							alert("참여되어 있는 프로젝트가 없습니다.");
+							this.logout();
 						}
-					} else {
-						confirm.fnAlert(this.componentsTitle, result.message);
 					}
-				});
-			}
+				} else {
+					confirm.fnAlert(this.componentsTitle, result.message);
+				}
+			});
+
 		},
 
 		async fnOpenNoticePopup() {
@@ -870,6 +877,16 @@ export default {
 			}
 
 			return chInfo;
+		},
+		logout() {
+			loginApi.logout().then(response => {
+				if (response.data.success) {
+					//this.navClose();
+					this.$router.push({
+						path: "/login"
+					});
+				}
+			});
 		}
 	}
 };

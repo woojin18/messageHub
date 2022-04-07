@@ -3,10 +3,12 @@ package kr.co.uplus.cm.signUp.service;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import kong.unirest.json.JSONArray;
 import kr.co.uplus.cm.common.consts.DB;
 import kr.co.uplus.cm.common.crypto.AesEncryptor;
 import kr.co.uplus.cm.common.dto.RestResult;
@@ -48,6 +51,7 @@ public class SignUpService {
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
 	public void insertSignUp(Map<String, Object> params) throws Exception{
+		
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		RestResult<Object> rtn = new RestResult<Object>(true);
 		paramMap.putAll(params);
@@ -271,7 +275,9 @@ public class SignUpService {
 					rcsPrice = (double) data.get("avgFee");
 				}
 			}
-			paramMap.put("monthExpAmount", Integer.parseInt(paramMap.get("smsExpCnt").toString()) * smsPrice + Integer.parseInt(paramMap.get("rcsExpCnt").toString()) * rcsPrice + Integer.parseInt(paramMap.get("kkoExpCnt").toString()) * kkoPrice + Integer.parseInt(paramMap.get("pushExpCnt").toString()) * pushPrice);
+			int monthExpAmount = (int) (Integer.parseInt(params.get("smsExpCnt").toString()) * smsPrice + Integer.parseInt(params.get("rcsExpCnt").toString()) * rcsPrice + Integer.parseInt(params.get("kkoExpCnt").toString()) * kkoPrice + Integer.parseInt(params.get("pushExpCnt").toString()) * pushPrice);
+
+			paramMap.put("monthExpAmount", monthExpAmount);
 			
 			AesEncryptor encrypt = new AesEncryptor(); // 암호화
 			if (StringUtils.isNotEmpty((String) paramMap.get("napJumin"))) {
@@ -287,6 +293,7 @@ public class SignUpService {
 				paramMap.put("cardValdEndYymm", encrypt.encrypt((String) paramMap.get("cardValdEndYymm")));
 			}
 			generalDao.insertGernal("signUp.insertBill", paramMap);
+			
 		}
 		
 		// redis update
@@ -499,5 +506,329 @@ public class SignUpService {
 
 		return rtn;
 	}
+	
+	//채널 리스트 조회
+			@SuppressWarnings("unchecked")
+			public RestResult<?> selectStaInformation(Map<String, Object> params) throws Exception {
+				RestResult<Object> rtn = new RestResult<Object>();
+				rtn.setSuccess(true);
+				
+				List<Object> rtnList = generalDao.selectGernalList(DB.QRY_SELECT_STANDARD_INFO, params);
+
+//				System.out.println(rtnList);
+//				List<Object> j_rtnList = new ArrayList<Object>();
+				List<Map<String,String>> newhm = new ArrayList<Map<String,String>>();
+				if(!rtnList.toString().equals("[null]")){
+					for(int i=0; i<rtnList.size(); i++) {		//사실상 1
+						try {
+							HashMap<String,String> hmrtn = (HashMap<String, String>) rtnList.get(i);
+							String rtnStr = hmrtn.get("COMMON_MGR_INFO");
+							kong.unirest.json.JSONObject rtnJo = new kong.unirest.json.JSONObject(rtnStr);
+							String rtnJson = CommonUtils.getString(rtnJo.get("commonLst"));
+							
+//							JSONArray ja = new JSONArray(rtnStr);
+							JSONArray ja = new JSONArray(rtnJson);
+							
+							if(rtnStr != null) {
+								for(int j=0; j<ja.length(); j++) {
+									Map<String, String> joMap = new HashMap<String, String>();
+									Iterator<String> keys = ((kong.unirest.json.JSONObject)ja.get(j)).keySet().iterator();
+									kong.unirest.json.JSONObject jo = (kong.unirest.json.JSONObject) ja.get(j);
+									while(keys.hasNext()) {
+										String key = keys.next();
+										String value = CommonUtils.getString(((kong.unirest.json.JSONObject)ja.get(j)).get(key));
+										joMap.put(key, CommonUtils.getString(value));
+									}
+									newhm.add(joMap);
+								}
+								rtn.setData(newhm);
+							}
+						}catch(Exception e) {
+							rtn.setSuccess(false);
+							rtn.setMessage("조회에 실패했습니다");
+							e.printStackTrace();
+						}		
+					}
+				}
+
+				return rtn;
+			}
+		
+		public String saveBillUcubeInfo(Map<String, Object> params) throws Exception {
+
+				List<Object> rtnList = new ArrayList<>();
+				
+				List<Object> userList = generalDao.selectGernalList(DB.QRY_SELECT_CMUSER_CORPID, params);
+				Map<String,Object> userMap = (Map<String, Object>) userList.get(0);
+				String corpId = userMap.get("CORP_ID").toString();
+				params.put("handleId", userMap.get("REG_ID").toString());
+				
+				params.put("corpId", corpId);
+				
+				int monthExpAmount = (int) generalDao.selectGernalObject(DB.QRY_SELECT_CMBILL_AMOUNT, params);
+				String errMsg ="";
+				if(3000000>monthExpAmount && !"Y".equals(params.get("isUnCertSign").toString())) {
+				
+				rtnList =  generalDao.selectGernalList(DB.QRY_SELECT_BILL_LIST, params);
+				AesEncryptor decrypt = new AesEncryptor();
+
+					Map<String, Object> deParams = new HashMap<>();
+					Map<String, Object> billInfoMap = (Map<String, Object>) rtnList.get(0);
+					deParams.put("NAP_JUMIN", decrypt.decrypt(billInfoMap.get("NAP_JUMIN").toString())); 	// 생년월일_사업자번호
+					deParams.put("BANK_NO",decrypt.decrypt(billInfoMap.get("BANK_NO").toString())); 		// 계좌번호
+					deParams.put("CARD_NO",decrypt.decrypt(billInfoMap.get("CARD_NO").toString()));		// 카드번호
+					deParams.put("CARD_VALD_END_YYMM",decrypt.decrypt(billInfoMap.get("CARD_VALD_END_YYMM").toString())); //카드유효기간
+			
+				String projectIdStr = CommonUtils.getCommonId("PJT", 4);
+				
+				Map<String, Object> joinMap = new HashMap<>();
+				
+				params.put("projectId", projectIdStr);
+				
+				//고객번호 가져오기
+				String custNo 	= CommonUtils.getString(generalDao.selectGernalObject("project.selectCustNoForSaveProject", params));
+				String salesId	= CommonUtils.getString(generalDao.selectGernalObject("project.selectSalesIdForSaveProject", params));
+				
+				Map<String, Object> apiCustomerInfo = (Map<String, Object>) apiInterface
+						.get("/console/v1/ucube/customer/" + custNo, null).get("data");
+				
+				joinMap.put("custNo",		custNo);
+				joinMap.put("logid",		projectIdStr);
+				joinMap.put("indcId",		salesId);
+				joinMap.put("mngrId",		salesId);
+				
+				// 유큐브 서비스 등록
+				Map<String, Object> ucubeBillInfoVo = new HashMap<>();
+
+			
+				ucubeBillInfoVo.put("billAcntNo", 		null); // 청구계정 번호 (등록시엔 공백으로 입력)
+				ucubeBillInfoVo.put("billEmail",		billInfoMap.get("BILL_EMAIL")); // 청구이메일주소 
+				ucubeBillInfoVo.put("billKind",			billInfoMap.get("BILL_KIND")); // 청구서유형코드 Y 이메일 문자 C N 우편
+				ucubeBillInfoVo.put("billRegNo", 		billInfoMap.get("BILL_REG_NO")); // 청구사업자번호
+				ucubeBillInfoVo.put("billZip",			billInfoMap.get("BILL_ZIP")); // 청구우편번호
+				ucubeBillInfoVo.put("billJuso", 		billInfoMap.get("BILL_JUSO")); // 청구주소
+				ucubeBillInfoVo.put("billJuso2", 		billInfoMap.get("BILL_JUSO2")); // 청구주소상세
+
+				
+				Map<String, Object> ucubePymInfoVO = new HashMap<>();
+
+				ucubePymInfoVO.put("napCustKdCd", 		billInfoMap.get("NAP_CUST_KD_CD"));				// 납부자고객구분코드
+				ucubePymInfoVO.put("napCmpNm", 			billInfoMap.get("NAP_CMP_NM"));				 	// 납부자명 
+				ucubePymInfoVO.put("napJumin", 			deParams.get("NAP_JUMIN")); 										// 생년월일/사업자번호 
+				ucubePymInfoVO.put("pymMthdCd",			billInfoMap.get("PAY_MTHD_CD"));					// 납부방법 자동이체 CM 신용카드 CC 지로 GR
+				ucubePymInfoVO.put("cardNo",			deParams.get("CARD_NO"));						// 카드번호
+				ucubePymInfoVO.put("cardValdEndYymm",	deParams.get("CARD_VALD_END_YYMM"));			// 카드유효기간
+				ucubePymInfoVO.put("cardCd",			billInfoMap.get("CARD_CD"));						// 카드코드
+				ucubePymInfoVO.put("cardCmpName",		billInfoMap.get("CARD_NAME"));						// 카드사명
+				ucubePymInfoVO.put("bankNm",			billInfoMap.get("BANK_NAME"));						// 은행명
+				ucubePymInfoVO.put("bankNo",			deParams.get("BANK_NO"));						// 계좌번호
+				ucubePymInfoVO.put("bankCd",			billInfoMap.get("BANK_CD"));						// 은행코드
+				ucubePymInfoVO.put("cmscode",			"00");											// 승인성공코드
+				
+				// 서비스 정보
+				Map<String, Object> serviceInfo = new HashMap<>();
+				
+				Map<String, Object> ownerMap = (Map<String, Object>) generalDao
+						.selectGernalObject("project.selectOwnerForApi", params);
+				
+				serviceInfo.put("cmpNm", 				apiCustomerInfo.get("bizCompNm")); // 가입자(상호)명
+				serviceInfo.put("ceoNm", 				apiCustomerInfo.get("custNm")); // 대표자 성명 (필수)
+				serviceInfo.put("damNm", 				ownerMap.get("damNm")); // 담당자명
+				serviceInfo.put("deptNm",				ownerMap.get("deptNm")); // 담당자부서명
+				serviceInfo.put("phoneNum", 			ownerMap.get("phoneNum")); // 담당자 전화번호
+				serviceInfo.put("cellNum", 				ownerMap.get("cellNum")); // 담당자 핸드폰번호
+				serviceInfo.put("faxNum", 				ownerMap.get("faxNum")); // 담당자FAX번호
+				serviceInfo.put("damEmail", 			ownerMap.get("damEmail")); // 담당자 Email
+
+				// 채널별 단가객체
+				Map<String, Object> cmPriceInfoMap = new HashMap<>();
+				
+				List<Object> priceList = generalDao.selectGernalList("use.selectUseHistProductUnit", params);
+				
+				for( int j = 0; j < priceList.size(); j++ ) {
+					Map<String, Object> priceMap = (Map<String, Object>) priceList.get(j);
+					String productCode = CommonUtils.getString(priceMap.get("productCode"));
+					
+					// 가격정보
+					Map<String, Object> priceInfoMap = new HashMap<>();
+					
+					// 후불제 가격 정보
+					kong.unirest.json.JSONArray postFeeInfoArr = new kong.unirest.json.JSONArray(CommonUtils.getString(priceMap.get("postFeeInfo")));
+					
+//					if( postFeeInfoArr.length() == 1 ) {
+					priceInfoMap.put("unitPrice", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
+					priceInfoMap.put("slideInfo", null);
+//					} else 
+					// 스라이딩인 경우
+					if ( postFeeInfoArr.length() == 3 ) {
+						Map<String, Object> slideInfoMap = new HashMap<>();
+						
+						slideInfoMap.put("cntMore",			postFeeInfoArr.getJSONObject(2).get("FEE_START_CNT"));
+						slideInfoMap.put("cntBeLow",		postFeeInfoArr.getJSONObject(0).get("FEE_END_CNT"));
+						slideInfoMap.put("priceMore",		postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
+						slideInfoMap.put("priceBetween",	postFeeInfoArr.getJSONObject(1).get("POST_FEE"));
+						slideInfoMap.put("priceBeLow",		postFeeInfoArr.getJSONObject(2).get("POST_FEE"));
+						
+						priceInfoMap.put("unitPrice", postFeeInfoArr.getJSONObject(0).get("POST_FEE"));
+						priceInfoMap.put("slideInfo", slideInfoMap);
+					}
+					
+					// 채널
+					if( "PUSH".equals(productCode) ) {
+						// 푸시
+						cmPriceInfoMap.put("push", priceInfoMap);
+					} else if ( "KALT1".equals(productCode) ) {
+						// 알림톡
+						cmPriceInfoMap.put("alimtalk", priceInfoMap);
+					} else if ( "KFRT1".equals(productCode) ) {
+						// 친구톡 TEXT
+						cmPriceInfoMap.put("friendtalkTxt", priceInfoMap);
+					} else if ( "KFRM2".equals(productCode) ) {
+						// 친구톡 이미지
+						cmPriceInfoMap.put("friendtalkImg", priceInfoMap);
+					} else if ( "KFRM3".equals(productCode) ) {
+						// 친구톡 와이드
+						cmPriceInfoMap.put("friendtalkWide", priceInfoMap);
+					} else if ( "RTPL".equals(productCode) ) {
+						// RCS 템플릿
+						cmPriceInfoMap.put("rcsTmplt", priceInfoMap);
+					} else if ( "RSMS".equals(productCode) ) {
+						// RCS SMS
+						cmPriceInfoMap.put("rcsSms", priceInfoMap);
+					} else if ( "RLMS".equals(productCode) ) {
+						// RCS LMS
+						cmPriceInfoMap.put("rcsLms", priceInfoMap);
+					} else if ( "RMMS".equals(productCode) ) {
+						// RCS MMS
+						cmPriceInfoMap.put("rcsMms", priceInfoMap);
+					} else if ( "SMS".equals(productCode) ) {
+						// SMS
+						cmPriceInfoMap.put("sms", priceInfoMap);
+					} else if ( "LMS".equals(productCode) ) {
+						// LMS
+						cmPriceInfoMap.put("lms", priceInfoMap);
+					} else if ( "MMS".equals(productCode) ) {
+						// MMS
+						cmPriceInfoMap.put("mms", priceInfoMap);
+					}
+				}
+
+				joinMap.put("billInfoVo",		ucubeBillInfoVo);
+				joinMap.put("pymInfoVO",		ucubePymInfoVO);
+				joinMap.put("serviceInfo",		serviceInfo);
+				joinMap.put("cmPriceInfo",		cmPriceInfoMap);
+				
+				kong.unirest.json.JSONObject json2222 =  new kong.unirest.json.JSONObject(joinMap);
+				
+				// API 통신처리
+				Map<String, Object> result =  apiInterface.post("/console/v1/ucube/service/join/cm2", joinMap, null);
+//				성공 시
+//				{
+//					"code": "10000",
+//					"message": "성공",
+//					"data": {
+//						"serviceId": "SB1099",
+//						"resultCode": "N0000",
+//						"resultMsg": "Success",
+//						"resultList": [{
+//							"entrNo": "500232358675", (가입번호)
+//							"billAcntNo": "532109196140" (청구계정번호)
+//						}]
+//					}
+//				 }
+
+				String serviceId = "";
+				String billId = "";			
+				
+				
+				if ("10000".equals(result.get("code"))) {
+					Map<String, Object> resultData = (Map<String, Object>) result.get("data");
+					List<Map<String, Object>> resultList = (List<Map<String, Object>>) resultData.get("resultList");
+					
+					serviceId = CommonUtils.getString(resultList.get(0).get("entrNo"));
+					billId = CommonUtils.getString(resultList.get(0).get("billAcntNo"));
+					kong.unirest.json.JSONObject ucubeInfo = new kong.unirest.json.JSONObject(resultData);
+
+					params.put("serviceId", serviceId);
+					params.put("billId", billId);
+					params.put("ucubeInfo", ucubeInfo.toString());
+					params.put("unCertifiedY", "");
+
+					// 유큐브 정보 인서트
+					generalDao.insertGernal("project.insertCmUcube", params);
+
+				} else if ("500100".equals(result.get("code"))) {
+					 errMsg = CommonUtils.getString(result.get("message")) + " : "
+							+ CommonUtils.getString(result.get("data"));
+					throw new Exception(errMsg);
+				} else {
+//					 {code=21400, message=유큐브 연동 오류, data={serviceId=SB1099, resultCode=icm.err.074
+//							, resultMsg=입력한 유치자( juoh )에 해당하는 대리점 정보가 존재하지 않습니다., resultList=null}}
+					 errMsg = CommonUtils.getString(result.get("message"));
+					Map<String, Object> data = (Map<String, Object>) result.get("data");
+					if (data == null) {
+						throw new Exception(errMsg);
+					} else {
+						String msg = CommonUtils.getString(data.get("resultMsg"));
+						throw new Exception(msg);
+					}
+				}		
+
+				
+				
+				RestResult<?> rtn = selectStaInformation(null);
+				List rtnObject = (List) rtn.getData();
+				Map<String,Object> rtnMap =  (Map<String, Object>) rtnObject.get(44);
+				System.out.println(rtnMap.get("fieldValue"));
+				params.put("monthLimitAmount",rtnMap.get("fieldValue"));
+				generalDao.updateGernal("signUp.updateBillStatus", params);	
+
+				if(billInfoMap.get("SALES_MAN") != null) {
+					params.put("phone", billInfoMap.get("SALES_MAN_NUMBER"));
+					params.put("manage","O");			
+					commonService.sendNoti("status", params);
+				}
+				
+				params.put("phone", params.get("phoneCerti"));
+				params.put("manage","X");
+				commonService.sendNoti("status", params);		
+				
+				}
+				return errMsg;
+			}
+		
+		@SuppressWarnings("unchecked")
+		@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = { Exception.class })
+		public void deleteUserSignupInfo(Map<String, Object> params) throws Exception{
+			
+			List<Object> userList = generalDao.selectGernalList(DB.QRY_SELECT_CMUSER_CORPID, params);
+			Map<String,Object> userMap = (Map<String, Object>) userList.get(0);
+			String corpId = userMap.get("CORP_ID").toString();
+			
+			params.put("corpId", corpId);
+			
+			if(!corpId.equals(null) && !corpId.equals("")) {
+				generalDao.deleteGernal("signUp.deleteCmuserCorp", params);
+				generalDao.deleteGernal("signUp.deleteCmbill", params);
+			}
+
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public RestResult<?> selectBillStatus(Map<String, Object> params) throws Exception {
+			
+			List<Object> userList = generalDao.selectGernalList(DB.QRY_SELECT_CMUSER_CORPID, params);
+			Map<String,Object> userMap = (Map<String, Object>) userList.get(0);
+			String corpId = userMap.get("CORP_ID").toString();
+			
+			params.put("corpId", corpId);
+			
+			RestResult<Object>	rtn = new RestResult<Object>();
+			
+			rtn.setData(generalDao.selectGernalList(DB.QRY_SELECT_CMBILL_STATUS, params));
+			
+			return rtn;
+		}	
 	
 }

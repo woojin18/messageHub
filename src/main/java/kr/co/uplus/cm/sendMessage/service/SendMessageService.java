@@ -501,7 +501,7 @@ public class SendMessageService {
             String fbMsgBody = fbMsg;
 
             // 단축URL 여부 체크
-    	    if(fbMsgBody.contains("#URL{"))
+    	    if(fbMsgBody.matches(".*#URL\\{[\\w]{6}\\}.*"))
     	    	pushRequestData.setClickUrlYn("Y");
 
             //광고성일 경우
@@ -529,7 +529,7 @@ public class SendMessageService {
         }
 
         // 단축URL 여부 체크
-	    if(pushContent.contains("#URL{"))
+	    if(pushContent.matches(".*#URL\\{[\\w]{6}\\}.*"))
 	    	pushRequestData.setClickUrlYn("Y");
 
         //유효성 체크
@@ -949,7 +949,7 @@ public class SendMessageService {
         requestData.setMsg(msg);
 
         // 단축URL 여부 체크
-        if(smsContent.contains("#URL{"))
+        if(smsContent.matches(".*#URL\\{[\\w]{6}\\}.*"))
         	requestData.setClickUrlYn("Y");
 
         //유효성 체크
@@ -1231,7 +1231,7 @@ public class SendMessageService {
         }
 
 	    // 단축URL 여부 체크
-	    if(smsContent.contains("#URL{"))
+	    if(smsContent.matches(".*#URL\\{[\\w]{6}\\}.*"))
 	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
@@ -1650,8 +1650,8 @@ public class SendMessageService {
 
                 		// 단축URL 여부 체크
                 	    if(
-                	    	(linkPc != null && linkPc.contains("#URL{")) ||
-                	    	(linkMo != null && linkMo.contains("#URL{"))
+                	    	(linkPc != null && linkPc.matches(".*#URL\\{[\\w]{6}\\}.*")) ||
+                	    	(linkMo != null && linkMo.matches(".*#URL\\{[\\w]{6}\\}.*"))
                 	    )
                 	    	requestData.setClickUrlYn("Y");
                 	}
@@ -1669,7 +1669,7 @@ public class SendMessageService {
             String fbMsgBody = fbMsg;
 
             // 단축URL 여부 체크
-    	    if(fbMsgBody.contains("#URL{"))
+    	    if(fbMsgBody.matches(".*#URL\\{[\\w]{6}\\}.*"))
     	    	requestData.setClickUrlYn("Y");
 
             //광고성일 경우
@@ -2025,13 +2025,22 @@ public class SendMessageService {
             if(CollectionUtils.isNotEmpty(tempList)) {
                 Gson gson = new GsonBuilder().disableHtmlEscaping().create();
                 String json = gson.toJson(tempList);
-
-                // 단축URL 여부 체크
-        	    if(json.contains("#URL{"))
-        	    	requestData.setClickUrlYn("Y");
-
                 List<KkoButtonInfo> buttons = gson.fromJson(json, new TypeToken<List<KkoButtonInfo>>(){}.getType());
                 requestData.setButtons(buttons);
+
+                for(KkoButtonInfo button : buttons) {
+                	if("WL".equals(button.getLinkType())){
+                		String linkPc = button.getLinkPc();
+                		String linkMo = button.getLinkMo();
+
+                		// 단축URL 여부 체크
+                	    if(
+                	    	(linkPc != null && linkPc.matches(".*#URL\\{[\\w]{6}\\}.*")) ||
+                	    	(linkMo != null && linkMo.matches(".*#URL\\{[\\w]{6}\\}.*"))
+                	    )
+                	    	requestData.setClickUrlYn("Y");
+                	}
+                }
             }
         }
 
@@ -2074,7 +2083,7 @@ public class SendMessageService {
             String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
 
             // 단축URL 여부 체크
-    	    if(fbMsg.contains("#URL{"))
+    	    if(fbMsg.matches(".*#URL\\{[\\w]{6}\\}.*"))
     	    	requestData.setClickUrlYn("Y");
 
             FbInfo pushFbInfo = new FbInfo();
@@ -2673,6 +2682,19 @@ public class SendMessageService {
 				}
 			}
 		}
+
+		// 단축URL 사용여부
+		Gson gson = new Gson();
+		for(Map<String, Object> map : tmpltInfoList) {
+			Map<String, Object> data = (Map<String, Object>) map.get("data");
+			String json = gson.toJson(data);
+
+			if(json.matches(".*#URL\\{[\\w]{6}\\}.*")) {
+				requestData.setClickUrlYn("Y");
+				break;
+			}
+		}
+
 		return requestData;
 	}
 

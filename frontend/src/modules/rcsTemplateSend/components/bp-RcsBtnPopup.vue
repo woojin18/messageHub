@@ -84,8 +84,8 @@
 </template>
 
 <script>
-// import confirm from "@/modules/commonUtil/service/confirm.js";
-import Calendar from "@/components/Calendar.vue";
+import confirm from "@/modules/commonUtil/service/confirm.js"
+import Calendar from "@/components/Calendar.vue"
 
 import shortenedUrlListPopup from "@/modules/urlInfo/components/shortenedUrlListPopup"
 import shortenedUrlAddPopup from "@/modules/urlInfo/components/shortenedUrlAddPopup"
@@ -108,10 +108,14 @@ export default {
 				default: 0
 		},
 		rcsBtnOpen: {
-      type: Boolean,
-      require: true,
-      default: false,
-    },
+				type: Boolean,
+				require: true,
+				default: false,
+		},
+		rcsBtnInfo:{
+				type: Object,
+				require: false
+		}
   },
   data() {
     return { 
@@ -129,8 +133,33 @@ export default {
 			selIdx: null,
     }
   },
-
+  watch:{
+		rcsBtnOpen(){
+			if(this.rcsBtnOpen)  this.fnInit();
+		}
+  },
   methods: {
+		fnInit(){
+			if(this.rcsBtnInfo.btnCnt === undefined){
+				this.btnCnt = 1;
+				this.selectBtn = ["urlAction"];
+				this.btnNm = [""];
+				this.contents = [""];
+				this.calendarTitle = [""];
+				this.calendarDes = [""];
+				this.initStartDate = [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()];
+				this.initEndDate = [this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate(),this.$gfnCommonUtils.getCurretDate()];
+			}else{
+				this.btnCnt = this.rcsBtnInfo.btnCnt;
+				this.selectBtn = this.rcsBtnInfo.selectBtn;
+				this.btnNm = this.rcsBtnInfo.btnNm;
+				this.contents = this.rcsBtnInfo.contents;
+				this.calendarTitle = this.rcsBtnInfo.calendarTitle;
+				this.calendarDes = this.rcsBtnInfo.calendarDes;
+				this.initStartDate = this.rcsBtnInfo.initStartDate;
+				this.initEndDate = this.rcsBtnInfo.initEndDate;
+			}
+		},
     // 추가 버튼 클릭 이벤트 처리  
 		fnClickAddBtn() {
 			var vm = this;
@@ -303,6 +332,10 @@ export default {
 			this.$emit('update:rcsBtnOpen', false)
 		},
 		fnAdd() {
+			var vali = this.validation();
+			if(!vali) 
+				return false;
+
 			var vm = this;
 			var params = new Object();
 			params.btnCnt = this.btnCnt;
@@ -316,6 +349,29 @@ export default {
 
 			vm.$emit('fnAddBtnResult', params);
 			vm.fnClose();
+		},
+		validation() {
+			const { btnNm, contents } = this
+
+			// 버튼 입력 체크
+			if(btnNm && btnNm.length > 0){
+				for(let btn of btnNm){
+					if(btn == null || btn ==""){
+						confirm.fnAlert(this.componentsTitle, "버튼명을 입력해 주세요.");
+						return false;
+					}
+				}
+			}
+			if(contents && contents.length > 0){
+				for(let content of contents){
+					if(content == null || content ==""){
+						confirm.fnAlert(this.componentsTitle, "버튼링크를 입력해 주세요.");
+						return false;
+					}
+				}
+			}
+
+			return true;
 		},
 		// 날자 세팅
 		fnUpdateStartDate(date, n) {

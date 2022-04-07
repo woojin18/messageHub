@@ -7,16 +7,16 @@
             <div v-if="templateRadioBtn!='text' && templateRadioBtn!='SS000000' && templateRadioBtn!='SL000000'" class="of_h consolMarginTop">
 							<div class="float-left" style="width:15%"><h5>이미지선택</h5></div>
 							<div class="float-left" style="width:85%">
-                <div class="float-left" style="width:24%;margin-left: 25px;"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" title="이미지 선택">이미지선택</a></div>
-                  <ul class="float-right attachList" style="width: 61%; margin: 0px 25px 0px 0px;padding: 5px 15px; height: 30px;">
+                <div class="float-left" style="width:24%;margin-left: 25px;"><a @click="fnOpenImageManagePopUp" class="btnStyle1 backLightGray width100_" style="margin-left: 27px;" title="이미지 선택">이미지선택</a></div>
+                  <ul class="float-right attachList" style="width: 61%; margin: 0px 0px 0px 0px;padding: 5px 15px; height: 30px;">
                     <li v-if="imgUrl">
-                      <a @click="fnDelImg">{{fnSubString(imgUrl, 0, 40)}} <i class="fal fa-times"></i></a>
+                      <a @click="fnDelImg">{{fnSubString(imgUrl, 0, 35)}} <i class="fal fa-times"></i></a>
                     </li>
                   </ul>
               </div>
 						</div>
             <div v-if="templateRadioBtn!='text' && templateRadioBtn!='SS000000'" class="of_h consolMarginTop">
-							<div class="float-left" style="width:20%"><h5>제목</h5></div>
+							<div class="float-left" style="width:25%"><h5>제목</h5></div>
 							<div class="float-left" style="width:75%">
 								<input v-model="title" type="text" class="inputStyle" placeholder="타이틀 입력 (최대 30자)" title="제목 입력란">
 							</div>							

@@ -229,7 +229,10 @@ public class SignUpController implements Serializable{
 		paramMap.put("vatExmptKdCd", "N");
 		try {
 			signUpSvc.insertSignUp(paramMap);
+			signUpSvc.saveBillUcubeInfo(paramMap);
+			rtn =	(RestResult<Object>) signUpSvc.selectBillStatus(paramMap);
 		} catch (Exception e) {
+			signUpSvc.deleteUserSignupInfo(paramMap);
 			rtn.setSuccess(false);
 			rtn.setMessage(e.getMessage());
 //			rtn.setMessage("회원 가입에 실패하였습니다.");
