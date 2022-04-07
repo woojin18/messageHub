@@ -218,7 +218,11 @@ public class DB {
 	public final static String QRY_CHK_MAIL_CERTIFY_BY_AUTHKEY = "signUp.checkMailCertifyByAuthKey";
 	public final static String QRY_INSERT_MAIL_CERTIFY = "signUp.insertCmMailCertify";
 	public final static String QRY_SELECT_EXISTS_CUSTNO = "signUp.selectIsExistCustNo";
-
+	public final static String QRY_SELECT_STANDARD_INFO = "signUp.selectStandardInfo";
+	public final static String QRY_SELECT_BILL_LIST = "signUp.selectBillList";
+	public final static String QRY_SELECT_CMUSER_CORPID = "signUp.selectCmuserCorpId";
+	public final static String QRY_SELECT_CMBILL_AMOUNT = "signUp.selectCmbillAmount";
+	
 	// 사용자 등록
 	public final static String QRY_SELECT_USER_LIST = "user.selectUserList";
 	public final static String QRY_SELECT_USER_LIST_CNT = "user.selectUserListCnt";

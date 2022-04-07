@@ -957,7 +957,33 @@ public class CommonService {
 
             apiMap.put("recvInfoLst", recvInfoLst);
             apiMap.put("sendChLst", sendChLst);
-        }
+        }else if("status".equals(type)) {
+        	LinkedHashMap<String, Object> rcvMap = new LinkedHashMap<String, Object>();
+			// 승인 상태 처리
+			
+			// 수신자 설정
+			rcvMap.put("phone", params.get("phone"));
+			recvInfoLst.add(rcvMap);
+			
+			// 메일 내용 설정
+			ArrayList<Map<String, Object>> sendChLst = new ArrayList<Map<String,Object>>();
+			LinkedHashMap<String, Object> smsMap = new LinkedHashMap<String, Object>();
+			
+			smsMap.put("ch", "SMS");
+			if("O".equals(params.get("manage")))
+			{
+				smsMap.put("contents","담당하시는 "+ params.get("userNm") +" 님의 후불사용 요청이 승인 처리되었습니다.");
+			}else {
+				smsMap.put("contents", "후불사용 요청이 승인 처리되었습니다.");
+			}
+			
+			smsMap.put("callback", ApiConfig.API_WATCH_CALLBACK);
+			
+			sendChLst.add(smsMap);
+			
+			apiMap.put("recvInfoLst", recvInfoLst);
+			apiMap.put("sendChLst", sendChLst);			
+		}
 
         Map<String, Object> headerMap = new HashMap<String, Object>();
         headerMap.put("X-API-KEY", ApiConfig.API_WATCH_NOTI_KEY);

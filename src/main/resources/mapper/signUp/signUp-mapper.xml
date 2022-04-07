@@ -191,7 +191,7 @@
 	
 	<insert id="insertBill">
         /* signUp.insertBill - 청구정보 등록 */
-        INSERT INTO CM_BILL (
+        INSERT INTO cm_console.CM_BILL (
             CORP_ID
           , BILL_ID
           , BILL_REG_NO
@@ -264,7 +264,7 @@
 	
 	<update id="updateBill">
         /* signUp.updateBill - 청구정보 수정 */
-        UPDATE CM_BILL
+        UPDATE cm_console.CM_BILL
            SET BILL_REG_NO        = #{billRegNo}        
              , BILL_TYPE          = #{billType}            
              , BILL_NAME          = #{billName}       
@@ -299,4 +299,125 @@
          WHERE CORP_ID            = #{corpId}
            AND BILL_ID            = #{billId}  
 	</update>
+	
+	<select id="selectStandardInfo" parameterType="string" resultType="hashmap">
+	/* signUp.selectStandardInfo */
+		SELECT	COMMON_MGR_INFO
+		FROM	cm.CM_COMMON
+		WHERE	1=1
+	</select>	
+	
+		<select id="selectBillList" resultType="hashMap">
+		/* signUp.selectBillList */
+		select	FORMAT(cb.SMS_EXP_CNT, 0) AS SMS_EXP_CNT
+		,		FORMAT(cb.RCS_EXP_CNT, 0) AS RCS_EXP_CNT
+		,		FORMAT(cb.KKO_EXP_CNT, 0) AS KKO_EXP_CNT
+		,		FORMAT(cb.PUSH_EXP_CNT, 0) AS PUSH_EXP_CNT
+		,		FORMAT(cb.MONTH_EXP_AMOUNT, 0) AS MONTH_EXP_AMOUNT
+		,		cb.HANDLE_REASON AS HANDLE_REASON
+		,		cb.BILL_NAME AS BILL_NAME
+		,		cb.BILL_KIND AS BILL_KIND
+		,		cb.BILL_REG_NO AS BILL_REG_NO
+		,		cb.BILL_EMAIL AS BILL_EMAIL
+		,		cb.BILL_ZIP AS BILL_ZIP
+		,		cb.BILL_JUSO AS BILL_JUSO
+		,		cb.BILL_JUSO2 AS BILL_JUSO2
+		,		nap_cust.CODE_NAME_1 AS NAP_CUST_NAME
+		,		cb.PAY_MTHD_CD AS PAY_MTHD_CD
+		,		cb.PAY_DT AS PAY_DT
+		,		cb.NAP_CMP_NM AS NAP_CMP_NM
+		,		cb.NAP_JUMIN AS NAP_JUMIN
+		,		(select bank.CODE_NAME_1 FROM cm_console.CM_BILL cb  
+				INNER JOIN cm_bo.CM_CODE bank
+ 				ON  bank.CODE_TYPE_CD = 'BANK'
+ 				AND bank.CODE_VAL_1 = cb.BANK_CD
+ 				WHERE cb.CORP_ID = #{corpId}
+ 				AND cb.BILL_TYPE ='PROJECT') AS BANK_NAME
+		,		cb.BANK_NO AS BANK_NO
+		,		(select card.CODE_NAME_1 FROM cm_console.CM_BILL cb  
+				INNER JOIN cm_bo.CM_CODE card
+ 				ON  card.CODE_TYPE_CD = 'CARD'
+ 				AND card.CODE_VAL_1 = cb.CARD_CD
+ 				WHERE cb.CORP_ID = #{corpId}
+ 				AND cb.BILL_TYPE ='PROJECT') AS CARD_NAME
+		,		cb.CARD_NO AS CARD_NO
+		,		cb.CARD_VALD_END_YYMM AS CARD_VALD_END_YYMM
+		,		cc.CORP_NAME AS CORP_NAME
+		,		FORMAT(cc.MON_SENDER_LIMIT_AMOUNT, 0) AS MON_SENDER_LIMIT_AMOUNT	
+		,		cb.NAP_CUST_KD_CD AS NAP_CUST_KD_CD
+		,		cb.CARD_CD AS CARD_CD 
+		,		cb.BANK_CD AS BANK_CD 
+		,		CASE WHEN cb.BILL_ID = 0 THEN '' ELSE cb.BILL_ID END AS BILL_ID
+		<if test="salesMan != '' and salesMan != null">
+		,		REPLACE( cbcc.CODE_VAL_4,'-','') AS SALES_MAN_NUMBER 
+		,		cbcc.CODE_NAME_1 AS SALES_MAN
+		</if>
+		from 	cm_console.CM_BILL cb 
+		INNER JOIN cm_console.CM_CORP cc 
+ 		ON   	cc.CORP_ID = cb.CORP_ID
+ 		INNER JOIN cm_bo.CM_CODE nap_cust
+ 		ON  	nap_cust.CODE_TYPE_CD = 'NAP_CUST_KD'
+ 		AND 	nap_cust.CODE_VAL_1 = cb.NAP_CUST_KD_CD 
+ 		<if test="salesMan != '' and salesMan != null">
+ 		INNER JOIN cm_bo.CM_CODE cbcc 
+ 		ON   cbcc.CODE_TYPE_CD = 'SALES_MAN'
+   		AND   cbcc.CODE_VAL_1  = cc.SALES_ID 
+ 		</if>
+		WHERE 	cb.CORP_ID = #{corpId}
+		AND 	cb.BILL_TYPE ='PROJECT'
+	</select>
+	
+	<update id="updateBillStatus">
+		/* signUp.updateBillStatus */
+		UPDATE	cm_console.CM_BILL cb 
+		INNER 	JOIN cm_console.CM_CORP cc
+		ON 		cb.CORP_ID = cc.CORP_ID 
+		, 		cm.CM_CMD ccc 
+		SET 	cb.BILL_ID = #{billId}
+		,		cb.SERVICE_ID = #{serviceId}
+		,		cb.BILL_STATUS = 'APP'
+		, 		cb.HANDLE_REASON = '예상 한도 금액 300만원 미만 시 승인 처리 '
+		, 		cc.MON_SENDER_LIMIT_AMOUNT = 3000000
+		, 		cb.HANDLE_ID = #{handleId}
+		, 		cb.HANDLE_DT = NOW()
+		,		cb.UNCERTIFIED_Y = #{isUnCertSign}
+		,		cc.UPD_DT  = NOW()
+		,		ccc.UPD_DT = NOW()
+		WHERE 	cb.CORP_ID = #{corpId}
+		AND 	cb.BILL_TYPE = 'PROJECT'		
+		AND 	ccc.CMD_TGT ='CM_CORP'	
+	</update>
+	
+	
+	<select id="selectCmuserCorpId" resultType="hashMap">
+		/* signUp.selectCmuserCorpId */
+		SELECT 	CORP_ID
+		, 		REG_ID
+		 FROM cm_console.CM_USER
+		WHERE LOGIN_ID = #{loginId}
+	</select>
+	
+	<select id="selectCmbillAmount" resultType="int">
+		/* signUp.selectCmbillAmount */
+		SELECT MONTH_EXP_AMOUNT  FROM cm_console.CM_BILL 
+		WHERE CORP_ID = #{corpId}
+		AND BILL_TYPE ='PROJECT'
+	</select>
+	
+	
+	
+	<delete id="deleteCmuserCorp">
+		/* signUp.deleteCmuserCorp */
+		DELETE	FROM cm_console.CM_USER
+		WHERE LOGIN_ID = #{loginId}
+	</delete>
+
+	<delete id="deleteCmbill">
+		/* signUp.deleteCmbill */
+		DELETE	FROM cm_console.CM_BILL 
+		WHERE CORP_ID = #{corpId}
+		AND BILL_TYPE ='PROJECT'
+	</delete>
+
+
 </mapper>
