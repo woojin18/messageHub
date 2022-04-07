@@ -760,7 +760,14 @@ export default {
 				confirm.fnAlert("", result.message);
 				} else {
 					eventBus.$on('callbackEventBus', this.fnEmitLoginPage);
-     				confirm.fnConfirm( "", "가입완료하였습니다. 확인 창을 누르면 로그인 창으로 이동합니다.", "확인");
+					const status =  result.data.data
+					console.log(result)
+					 if(status == 'REQ'){
+					 	confirm.fnConfirm( "", "가입완료하였습니다. \n현재 후불청구에 대한 승인요청 중입니다 \n\n 후불 청구 승인 전까지 메시지허브 기능에 제한이 있을 수 있습니다.\n승인처리는 1~3일 소요됩니다.", "확인");	
+					 }else{
+					 	confirm.fnConfirm( "", "가입완료하였습니다. 확인 창을 누르면 로그인 창으로 이동합니다.", "확인");
+					 }
+     				//confirm.fnConfirm( "", "가입완료하였습니다. 확인 창을 누르면 로그인 창으로 이동합니다.", "확인");
 				}
 			}).catch(function () {
 				confirm.fnAlert("", result.message);
