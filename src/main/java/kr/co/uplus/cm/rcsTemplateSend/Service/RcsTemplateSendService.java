@@ -1945,7 +1945,7 @@ public class RcsTemplateSendService {
 				if(imgCnt>0) imgExpCnt++;
 			}
 
-			if(imgExpCnt != fileList.size()) {
+			if(imgExpCnt != CommonUtils.getInt(params.get("carouselSelect"))) {
 				throw new Exception("선택하신 이미지를 사용할 수 없습니다. 이미지를 다시 선택해 주세요.");
 			}
 		} else {
