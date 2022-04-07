@@ -760,8 +760,7 @@ export default {
 				confirm.fnAlert("", result.message);
 				} else {
 					eventBus.$on('callbackEventBus', this.fnEmitLoginPage);
-					const status =  result.data.data
-					console.log(result)
+					const status =  result.data[0]
 					 if(status == 'REQ'){
 					 	confirm.fnConfirm( "", "가입완료하였습니다. \n현재 후불청구에 대한 승인요청 중입니다 \n\n 후불 청구 승인 전까지 메시지허브 기능에 제한이 있을 수 있습니다.\n승인처리는 1~3일 소요됩니다.", "확인");	
 					 }else{
