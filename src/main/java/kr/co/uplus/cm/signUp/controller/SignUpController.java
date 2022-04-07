@@ -230,6 +230,7 @@ public class SignUpController implements Serializable{
 		try {
 			signUpSvc.insertSignUp(paramMap);
 			signUpSvc.saveBillUcubeInfo(paramMap);
+			rtn =	(RestResult<Object>) signUpSvc.selectBillStatus(paramMap);
 		} catch (Exception e) {
 			signUpSvc.deleteUserSignupInfo(paramMap);
 			rtn.setSuccess(false);

@@ -222,6 +222,8 @@ public class DB {
 	public final static String QRY_SELECT_BILL_LIST = "signUp.selectBillList";
 	public final static String QRY_SELECT_CMUSER_CORPID = "signUp.selectCmuserCorpId";
 	public final static String QRY_SELECT_CMBILL_AMOUNT = "signUp.selectCmbillAmount";
+	public final static String QRY_SELECT_CMBILL_STATUS = "signUp.selectCmbillStatus";
+	
 	
 	// 사용자 등록
 	public final static String QRY_SELECT_USER_LIST = "user.selectUserList";
