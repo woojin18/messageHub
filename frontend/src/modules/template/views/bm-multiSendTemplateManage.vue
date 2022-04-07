@@ -3083,82 +3083,96 @@ export default {
 		},
 		// 유효성 체크
 		fnIsValid(){
-			if (!this.rowData.tmpltTitle) {
+			const {
+				tmpltTitle, msgType, msgKind, //otherProjectUseYn,
+				checkedChannel, 
+				pushSend, pushTitle, pushContent, pushHowToDenyReceipt, pushImgInfo, pushAppId,
+				brandNm, rcs0Title, rcs0Content, callback, rcsBlockNumber, rcsCShortImgInfoList, rcsCTallImgInfoList,
+				rcsSMSButtons, rcsLMSButtons, rcsShortButtons, rcsTallButtons,
+				friendTalkSenderKey, friendTalkContent, friendTalkButtons,
+				smsTitle, smsContent, smsRcvblcNumber, 
+			} = this.rowData
+
+			if (!tmpltTitle) {
 				confirm.fnAlert(this.detailTitle, '템플릿명을 입력해주세요.');
 				return false;
 			}
-			if (!this.rowData.msgType) {
+			if (!msgType) {
 				confirm.fnAlert(this.detailTitle, '메시지타입을 선택해주세요.');
 				return false;
 			}
-			if (!this.rowData.msgKind) {
+			if (!msgKind) {
 				confirm.fnAlert(this.detailTitle, '메시지구분을 선택해주세요.');
 				return false;
 			}
-			// if (!this.rowData.otherProjectUseYn) {
+			// if (!otherProjectUseYn) {
 			// 	confirm.fnAlert(this.detailTitle, '타 프로젝트 사용여부를 선택해주세요.');
 			// 	return false;
 			// }
 
-			if (this.rowData.checkedChannel.length == 0) {
+			if (checkedChannel.length == 0) {
 				confirm.fnAlert(this.detailTitle, '채널을 선택해주세요.');
 				return false;
 			} else {
-				if (this.rowData.checkedChannel.includes('PUSH')) {
-					if (!this.rowData.pushSend) {
+				// Push
+				if (checkedChannel.includes('PUSH')) {
+					if (!pushSend) {
 						confirm.fnAlert(this.detailTitle, 'Push 발송타입을 선택해주세요.');
 						return false;
 					}
-					if (!this.rowData.pushTitle) {
+					if (!pushTitle) {
 						confirm.fnAlert(this.detailTitle, 'Push 제목을 입력해주세요.');
 						return false;
 					}
-					if (!this.rowData.pushContent) {
+					if (!pushContent) {
 						confirm.fnAlert(this.detailTitle, 'Push 메시지를 입력해주세요.');
 						return false;
 					}
-					if (this.rowData.msgKind == 'A' && !this.rowData.pushHowToDenyReceipt) {
+					if (msgKind == 'A' && !pushHowToDenyReceipt) {
 						confirm.fnAlert(this.detailTitle, 'Push 수신거부 방법을 입력해주세요.');
 						return false;
 					}
-					if (this.rowData.msgType == 'IMAGE' && !this.rowData.pushImgInfo.imgUrl) {
+					if (msgType == 'IMAGE' && !pushImgInfo.imgUrl) {
 						confirm.fnAlert(this.detailTitle, 'Push 이미지를 선택해주세요.');
 						return false;
 					}
-					if (this.rowData.msgType == 'IMAGE' && !this.rowData.pushImgInfo.fileId) {
+					if (msgType == 'IMAGE' && !pushImgInfo.fileId) {
 						confirm.fnAlert(this.detailTitle, 'Push 이미지 정보가 잘못되었습니다. 다시 이미지를 선택해주세요.');
 						return false;
 					}
-					if (!this.rowData.pushAppId) {
+					if (!pushAppId) {
 						confirm.fnAlert(this.detailTitle, 'Push APP ID를 선택해주세요.');
 						return false;
 					}
 				}
 
-				if (this.rowData.checkedChannel.includes('RCS')) {
-					if (this.rcsTemplateTable === 0) {  //FREE
-						if (!this.rowData.brandNm) {
+				// RCS
+				if (checkedChannel.includes('RCS')) {
+					// RCS FREE
+					if (this.rcsTemplateTable === 0) {
+						if (!brandNm) {
 							confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 브랜드명을 선택해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcs0Content) { 
+						if (!rcs0Content) { 
 							confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 내용을 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.callback) { 
+						if (!callback) { 
 							confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
-						if (this.rowData.msgKind == 'A') {
-							if (!this.rowData.rcsBlockNumber) { 
+						if (msgKind == 'A') {
+							if (!rcsBlockNumber) { 
 								confirm.fnAlert(this.detailTitle, 'RCS FREE 템플릿 수신거부번호를 입력해주세요.');
 								return false;
 							}
 						}
 					}
 
-					if (this.rcsTemplateTable === 1) {  //DESCRIPTION
-						if (!this.rowData.brandNm) {
+					// RCS 승인 서술형
+					if (this.rcsTemplateTable === 1) {
+						if (!brandNm) {
 							confirm.fnAlert(this.detailTitle, 'RCS 승인 서술형 템플릿 브랜드명을 선택해주세요.');
 							return false;
 						}
@@ -3166,241 +3180,308 @@ export default {
 							confirm.fnAlert(this.detailTitle, 'RCS 승인 서술형 템플릿을 팝업을 통해 선택해 주세요.');
 							return false;
 						}
-						if (!this.rowData.callback) { 
+						if (!callback) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 서술형 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
 					}
 
-					if (this.rcsTemplateTable === 2) {  //CELL
+					// RCS 승인 스타일
+					if (this.rcsTemplateTable === 2) {
 						if (!this.selectedRcsStyTemplate) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 승인 스타일 템플릿을 팝업을 통해 선택해 주세요.');
 							return false;
 						}
 					}
 	
-					if (this.rcsTemplateTable === 3) {  //SMS
-						if (!this.rowData.brandNm) {
+					// RCS SMS
+					if (this.rcsTemplateTable === 3) {
+						if (!brandNm) {
 							confirm.fnAlert(this.detailTitle, 'RCS SMS 템플릿 브랜드명을 선택해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcs0Content) { 
+						if (!rcs0Content) { 
 							confirm.fnAlert(this.detailTitle, 'RCS SMS 템플릿 내용을 입력해주세요.');
 							return false;
 						}
-						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
+						if (msgKind == 'A' && !rcsBlockNumber) { 
 							confirm.fnAlert(this.detailTitle, 'RCS SMS 템플릿 무료수신거부 정보를 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.callback) { 
+						if (!callback) { 
 							confirm.fnAlert(this.detailTitle, 'RCS SMS 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
+
+						// 버튼 입력 체크
+						if(rcsSMSButtons && rcsSMSButtons.length > 0){
+							for(let buttonInfo of rcsSMSButtons){
+								if(!buttonInfo.action.displayText || buttonInfo.action.displayText === ""){
+									confirm.fnAlert(this.detailTitle, "버튼명을 입력해 주세요.");
+									return false;
+								}
+
+								if(!buttonInfo.action.urlAction.openUrl.url || buttonInfo.action.urlAction.openUrl.url === ""){
+									confirm.fnAlert(this.detailTitle, "버튼링크를 입력해 주세요.");
+									return false;
+								}
+							}
+						}
 					}
 
-					if (this.rcsTemplateTable === 4) {  //LMS
-						if (!this.rowData.brandNm) {
+					// RCS LMS
+					if (this.rcsTemplateTable === 4) {
+						if (!brandNm) {
 							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 브랜드명을 선택해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcs0Title) { 
+						if (!rcs0Title) { 
 							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 제목을 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcs0Content) { 
+						if (!rcs0Content) { 
 							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 내용을 입력해주세요.');
 							return false;
 						}
-						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
+						if (msgKind == 'A' && !rcsBlockNumber) { 
 							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 무료수신거부 정보를 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.callback) { 
+						if (!callback) { 
 							confirm.fnAlert(this.detailTitle, 'RCS LMS 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
+
+						// 버튼 입력 체크
+						if(rcsLMSButtons && rcsLMSButtons.length > 0){
+							for(let buttonInfo of rcsLMSButtons){
+								if(!buttonInfo.action.displayText || buttonInfo.action.displayText === ""){
+									confirm.fnAlert(this.detailTitle, "버튼명을 입력해 주세요.");
+									return false;
+								}
+
+								if(!buttonInfo.action.urlAction.openUrl.url || buttonInfo.action.urlAction.openUrl.url === ""){
+									confirm.fnAlert(this.detailTitle, "버튼링크를 입력해 주세요.");
+									return false;
+								}
+							}
+						}
 					}
 
-					if (this.rcsTemplateTable === 5) {  //SHORT
-						if (!this.rowData.brandNm) {
+					// RCS 세로형(SHORT)
+					if (this.rcsTemplateTable === 5) {
+						if (!brandNm) {
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(SHORT) 템플릿 브랜드명을 선택해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcs0Title) { 
+						if (!rcs0Title) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(SHORT) 제목을 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcs0Content) { 
+						if (!rcs0Content) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(SHORT) 내용을 입력해주세요.');
 							return false;
 						}
-						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
+						if (msgKind == 'A' && !rcsBlockNumber) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(SHORT) 무료수신거부 정보를 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.callback) { 
+						if (!callback) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(SHORT) 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
+
+						// 버튼 입력 체크
+						if(rcsShortButtons && rcsShortButtons.length > 0){
+							for(let buttonInfo of rcsShortButtons){
+								if(!buttonInfo.action.displayText || buttonInfo.action.displayText === ""){
+									confirm.fnAlert(this.detailTitle, "버튼명을 입력해 주세요.");
+									return false;
+								}
+
+								if(!buttonInfo.action.urlAction.openUrl.url || buttonInfo.action.urlAction.openUrl.url === ""){
+									confirm.fnAlert(this.detailTitle, "버튼링크를 입력해 주세요.");
+									return false;
+								}
+							}
+						}
 					}
 
-					if (this.rcsTemplateTable === 6) {  //TALL
-						if (!this.rowData.brandNm) {
+					// RCS 세로형(TALL)
+					if (this.rcsTemplateTable === 6) {
+						if (!brandNm) {
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(TALL) 템플릿 브랜드명을 선택해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcs0Title) { 
+						if (!rcs0Title) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(TALL) 제목을 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.rcs0Content) { 
+						if (!rcs0Content) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(TALL) 내용을 입력해주세요.');
 							return false;
 						}
-						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
+						if (msgKind == 'A' && !rcsBlockNumber) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(TALL) 무료수신거부 정보를 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.callback) { 
+						if (!callback) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 세로형(TALL) 템플릿 발신번호를 선택해주세요.');
 							return false;
 						}
+
+						// 버튼 입력 체크
+						if(rcsTallButtons && rcsTallButtons.length > 0){
+							for(let buttonInfo of rcsTallButtons){
+								if(!buttonInfo.action.displayText || buttonInfo.action.displayText === ""){
+									confirm.fnAlert(this.detailTitle, "버튼명을 입력해 주세요.");
+									return false;
+								}
+
+								if(!buttonInfo.action.urlAction.openUrl.url || buttonInfo.action.urlAction.openUrl.url === ""){
+									confirm.fnAlert(this.detailTitle, "버튼링크를 입력해 주세요.");
+									return false;
+								}
+							}
+						}
 					}
 
-					if (this.rcsTemplateTable === 9) {  //CSHORT
-						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
+					// RCS 캐러셀형(SHORT)
+					if (this.rcsTemplateTable === 9) {
+						if (msgKind == 'A' && !rcsBlockNumber) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 무료수신거부 정보를 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.callback) { 
+						if (!callback) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 발신번호를 선택해주세요.');
 							return false;
 						}
 						if (this.rcs9CardCount >= 3) {
-							if (!this.rowData.rcsCShortImgInfoList[0].rcsTitle) { 
+							if (!rcsCShortImgInfoList[0].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드1의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCShortImgInfoList[0].rcsContent) { 
+							if (!rcsCShortImgInfoList[0].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드1의 내용을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCShortImgInfoList[1].rcsTitle) { 
+							if (!rcsCShortImgInfoList[1].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드2의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCShortImgInfoList[1].rcsContent) { 
+							if (!rcsCShortImgInfoList[1].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드2의 내용을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCShortImgInfoList[2].rcsTitle) { 
+							if (!rcsCShortImgInfoList[2].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드3의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCShortImgInfoList[2].rcsContent) { 
+							if (!rcsCShortImgInfoList[2].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드3의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs9CardCount >= 4) {
-							if (!this.rowData.rcsCShortImgInfoList[3].rcsTitle) { 
+							if (!rcsCShortImgInfoList[3].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드4의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCShortImgInfoList[3].rcsContent) { 
+							if (!rcsCShortImgInfoList[3].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드4의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs9CardCount >= 5) {
-							if (!this.rowData.rcsCShortImgInfoList[4].rcsTitle) {
+							if (!rcsCShortImgInfoList[4].rcsTitle) {
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드5의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCShortImgInfoList[4].rcsContent) { 
+							if (!rcsCShortImgInfoList[4].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드5의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs9CardCount >= 6) {
-							if (!this.rowData.rcsCShortImgInfoList[5].rcsTitle) {
+							if (!rcsCShortImgInfoList[5].rcsTitle) {
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드6의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCShortImgInfoList[5].rcsContent) { 
+							if (!rcsCShortImgInfoList[5].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(SHORT) 카드6의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 					}
 
-					if (this.rcsTemplateTable === 10) {  //CTALL
-						if (this.rowData.msgKind == 'A' && !this.rowData.rcsBlockNumber) { 
+					// RCS 캐러셀형(TALL)
+					if (this.rcsTemplateTable === 10) {
+						if (msgKind == 'A' && !rcsBlockNumber) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 무료수신거부 정보를 입력해주세요.');
 							return false;
 						}
-						if (!this.rowData.callback) { 
+						if (!callback) { 
 							confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 발신번호를 선택해주세요.');
 							return false;
 						}
 						if (this.rcs10CardCount >= 3) {
-							if (!this.rowData.rcsCTallImgInfoList[0].rcsTitle) { 
+							if (!rcsCTallImgInfoList[0].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드1의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCTallImgInfoList[0].rcsContent) { 
+							if (!rcsCTallImgInfoList[0].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드1의 내용을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCTallImgInfoList[1].rcsTitle) { 
+							if (!rcsCTallImgInfoList[1].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드2의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCTallImgInfoList[1].rcsContent) { 
+							if (!rcsCTallImgInfoList[1].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드2의 내용을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCTallImgInfoList[2].rcsTitle) { 
+							if (!rcsCTallImgInfoList[2].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드3의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCTallImgInfoList[2].rcsContent) { 
+							if (!rcsCTallImgInfoList[2].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드3의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs10CardCount >= 4) {
-							if (!this.rowData.rcsCTallImgInfoList[3].rcsTitle) { 
+							if (!rcsCTallImgInfoList[3].rcsTitle) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드4의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCTallImgInfoList[3].rcsContent) { 
+							if (!rcsCTallImgInfoList[3].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드4의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs10CardCount >= 5) {
-							if (!this.rowData.rcsCTallImgInfoList[4].rcsTitle) {
+							if (!rcsCTallImgInfoList[4].rcsTitle) {
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드5의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCTallImgInfoList[4].rcsContent) { 
+							if (!rcsCTallImgInfoList[4].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드5의 내용을 입력해주세요.');
 								return false;
 							}
 						}
 
 						if (this.rcs10CardCount >= 6) {
-							if (!this.rowData.rcsCTallImgInfoList[5].rcsTitle) {
+							if (!rcsCTallImgInfoList[5].rcsTitle) {
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드6의 제목을 입력해주세요.');
 								return false;
 							}
-							if (!this.rowData.rcsCTallImgInfoList[5].rcsContent) { 
+							if (!rcsCTallImgInfoList[5].rcsContent) { 
 								confirm.fnAlert(this.detailTitle, 'RCS 캐러셀형(TALL) 카드6의 내용을 입력해주세요.');
 								return false;
 							}
@@ -3409,7 +3490,7 @@ export default {
 
 					var callbackChk = false;
 					for(var i=0; i<this.rcsCallbackList.length; i++) {
-						if(this.rcsCallbackList[i].callback == this.rowData.callback) {
+						if(this.rcsCallbackList[i].callback == callback) {
 							callbackChk = true;
 							break;
 						}
@@ -3418,16 +3499,17 @@ export default {
 						confirm.fnAlert(this.detailTitle, '발신번호를 선택해주세요.');
 						return false;
 					}
-
 				}
 
-				if (this.rowData.checkedChannel.includes('KAKAO')) {
-					if (this.kakaoTemplateTable === 0) { //FRIENDTALK
-						if (!this.rowData.friendTalkSenderKey) {
+				// 카카오톡
+				if (checkedChannel.includes('KAKAO')) {
+					// 친구톡
+					if (this.kakaoTemplateTable === 0) {
+						if (!friendTalkSenderKey) {
 							confirm.fnAlert(this.detailTitle, '친구톡 카카오 채널을 선택해주세요.');
 							return false;
 						}
-						if (!this.rowData.friendTalkContent) {
+						if (!friendTalkContent) {
 							confirm.fnAlert(this.detailTitle, '친구톡 내용을 입력해주세요.');
 							return false;
 						}
@@ -3436,9 +3518,25 @@ export default {
 							confirm.fnAlert(this.componentsTitle, alertMsg);
 							return false;
 						}
+
+						// 버튼 입력 체크
+						if(friendTalkButtons && friendTalkButtons.length > 0){
+							for(let btn of friendTalkButtons){
+								if(!btn.name || btn.name === ""){
+									confirm.fnAlert(this.detailTitle, "버튼명을 입력해 주세요.");
+									return false;
+								}
+
+								if(!btn.linkUrl1 || btn.linkUrl1 === "" || !btn.linkUrl2 || btn.linkUrl2 === ""){
+									confirm.fnAlert(this.detailTitle, "버튼링크를 입력해 주세요.");
+									return false;
+								}
+							}
+						}
 					}
 
-					if (this.kakaoTemplateTable === 1) { //ALIMTALK
+					// 알림톡
+					if (this.kakaoTemplateTable === 1) {
 						if (!this.selectedAlimTalkTemplate) {
 							confirm.fnAlert(this.detailTitle, '알림톡 템플릿을 선택해주세요.');
 							return false;
@@ -3446,14 +3544,15 @@ export default {
 					}
 				}
 
-				if (this.rowData.checkedChannel.includes('문자')) {
-					if (this.smsTemplateTable === 0) { //SMS
-						if (!this.rowData.smsContent) {
+				if (checkedChannel.includes('문자')) {
+					// SMS
+					if (this.smsTemplateTable === 0) {
+						if (!smsContent) {
 							confirm.fnAlert(this.detailTitle, 'sms 내용을 입력해주세요.');
 							return false;
 						}
-						if (this.rowData.msgKind == 'A') {
-							if (!this.rowData.smsRcvblcNumber) {
+						if (msgKind == 'A') {
+							if (!smsRcvblcNumber) {
 								confirm.fnAlert(this.detailTitle, '광고성메시지 수선거부번호를 입력해주세요.');
 								return false;
 							}
@@ -3464,24 +3563,25 @@ export default {
 						}
 					}
 
-					if (this.smsTemplateTable === 1) { //MMS
-						if (!this.rowData.smsTitle) {
+					// MMS
+					if (this.smsTemplateTable === 1) {
+						if (!smsTitle) {
 							confirm.fnAlert(this.detailTitle, 'MMS 제목을 입력해주세요.');
 							return false;
 						}
-						let title = this.$gfnCommonUtils.defaultIfEmpty(this.rowData.smsTitle, '');
+						let title = this.$gfnCommonUtils.defaultIfEmpty(smsTitle, '');
 						let titleCurrByte = this.getByte(title);
 						if(this.titleSmsLimitByte < titleCurrByte){
 							const alertMsg = '제목이 '+this.titleSmsLimitByte+'byte를 넘지 않아야됩니다.\n(현재 : '+titleCurrByte+'byte)';
 							confirm.fnAlert(this.detailTitle, alertMsg);
 							return false;
 						}
-						if (!this.rowData.smsContent) {
+						if (!smsContent) {
 							confirm.fnAlert(this.detailTitle, 'MMS 내용을 입력해주세요.');
 							return false;
 						}
-						if (this.rowData.msgKind == 'A') {
-							if (!this.rowData.smsRcvblcNumber) {
+						if (msgKind == 'A') {
+							if (!smsRcvblcNumber) {
 								confirm.fnAlert(this.detailTitle, '광고성메시지 수선거부번호를 입력해주세요.');
 								return false;
 							}
@@ -3491,8 +3591,8 @@ export default {
 							return false;
 						}						
 						//제목 혹은 내용에 '광고' 단어 필수
-						if(this.rowData.msgKind == 'A'){
-							if(this.rowData.smsTitle.indexOf("광고") == -1 && this.rowData.smsContent.indexOf("광고") == -1 ){
+						if(msgKind == 'A'){
+							if(smsTitle.indexOf("광고") == -1 && smsContent.indexOf("광고") == -1 ){
 								confirm.fnAlert(this.detailTitle, "광고성 메시지는 제목 또는 내용에 광고문구를 표기해야 합니다.");
 								return false;
 							}
