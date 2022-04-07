@@ -501,7 +501,7 @@ public class SendMessageService {
             String fbMsgBody = fbMsg;
 
             // 단축URL 여부 체크
-    	    if(fbMsgBody.matches(".*#URL\\{[\\w]{6}\\}.*"))
+    	    if(fbMsgBody.contains("#URL{"))
     	    	pushRequestData.setClickUrlYn("Y");
 
             //광고성일 경우
@@ -529,7 +529,7 @@ public class SendMessageService {
         }
 
         // 단축URL 여부 체크
-	    if(pushContent.matches(".*#URL\\{[\\w]{6}\\}.*"))
+	    if(pushContent.contains("#URL{"))
 	    	pushRequestData.setClickUrlYn("Y");
 
         //유효성 체크
@@ -949,7 +949,7 @@ public class SendMessageService {
         requestData.setMsg(msg);
 
         // 단축URL 여부 체크
-        if(smsContent.matches(".*#URL\\{[\\w]{6}\\}.*"))
+        if(smsContent.contains("#URL{"))
         	requestData.setClickUrlYn("Y");
 
         //유효성 체크
@@ -1231,7 +1231,7 @@ public class SendMessageService {
         }
 
 	    // 단축URL 여부 체크
-	    if(smsContent.matches(".*#URL\\{[\\w]{6}\\}.*"))
+	    if(smsContent.contains("#URL{"))
 	    	requestData.setClickUrlYn("Y");
 
         //유효성 체크
@@ -1650,8 +1650,8 @@ public class SendMessageService {
 
                 		// 단축URL 여부 체크
                 	    if(
-                	    	(linkPc != null && linkPc.matches(".*#URL\\{[\\w]{6}\\}.*")) ||
-                	    	(linkMo != null && linkMo.matches(".*#URL\\{[\\w]{6}\\}.*"))
+                	    	(linkPc != null && linkPc.contains("#URL{")) ||
+                	    	(linkMo != null && linkMo.contains("#URL{"))
                 	    )
                 	    	requestData.setClickUrlYn("Y");
                 	}
@@ -1669,7 +1669,7 @@ public class SendMessageService {
             String fbMsgBody = fbMsg;
 
             // 단축URL 여부 체크
-    	    if(fbMsgBody.matches(".*#URL\\{[\\w]{6}\\}.*"))
+    	    if(fbMsgBody.contains("#URL{"))
     	    	requestData.setClickUrlYn("Y");
 
             //광고성일 경우
@@ -2035,8 +2035,8 @@ public class SendMessageService {
 
                 		// 단축URL 여부 체크
                 	    if(
-                	    	(linkPc != null && linkPc.matches(".*#URL\\{[\\w]{6}\\}.*")) ||
-                	    	(linkMo != null && linkMo.matches(".*#URL\\{[\\w]{6}\\}.*"))
+                	    	(linkPc != null && linkPc.contains("#URL{")) ||
+                	    	(linkMo != null && linkMo.contains("#URL{"))
                 	    )
                 	    	requestData.setClickUrlYn("Y");
                 	}
@@ -2083,7 +2083,7 @@ public class SendMessageService {
             String fbMsg = CommonUtils.getStrValue(fbInfo, "msg");
 
             // 단축URL 여부 체크
-    	    if(fbMsg.matches(".*#URL\\{[\\w]{6}\\}.*"))
+    	    if(fbMsg.contains("#URL{"))
     	    	requestData.setClickUrlYn("Y");
 
             FbInfo pushFbInfo = new FbInfo();
@@ -2689,7 +2689,7 @@ public class SendMessageService {
 			Map<String, Object> data = (Map<String, Object>) map.get("data");
 			String json = gson.toJson(data);
 
-			if(json.matches(".*#URL\\{[\\w]{6}\\}.*")) {
+			if(json.contains("#URL{")) {
 				requestData.setClickUrlYn("Y");
 				break;
 			}

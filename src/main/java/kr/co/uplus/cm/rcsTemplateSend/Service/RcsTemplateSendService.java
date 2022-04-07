@@ -1117,7 +1117,7 @@ public class RcsTemplateSendService {
 		Gson gson = new Gson();
 		String json = gson.toJson(msgMap);
 
-		if(json.matches(".*#URL\\{[\\w]{6}\\}.*")) {
+		if(json.contains("#URL{")) {
 			apiMap.put("clickUrlYn", "Y");
 			msgMap.put("clickUrlYn", "Y");
 		}
@@ -1181,7 +1181,7 @@ public class RcsTemplateSendService {
 		Gson gson = new Gson();
 		String json = gson.toJson(msgMap);
 
-		if(json.matches(".*#URL\\{[\\w]{6}\\}.*")) {
+		if(json.contains("#URL{")) {
 			apiMap.put("clickUrlYn", "Y");
 			msgMap.put("clickUrlYn", "Y");
 		}
@@ -1252,7 +1252,7 @@ public class RcsTemplateSendService {
 		Gson gson = new Gson();
 		String json = gson.toJson(msgMap);
 
-		if(json.matches(".*#URL\\{[\\w]{6}\\}.*")) {
+		if(json.contains("#URL{")) {
 			apiMap.put("clickUrlYn", "Y");
 			msgMap.put("clickUrlYn", "Y");
 		}
