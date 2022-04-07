@@ -419,5 +419,13 @@
 		AND BILL_TYPE ='PROJECT'
 	</delete>
 
+	<select id="selectCmbillStatus" resultType="String">
+		/* signUp.selectCmbillStatus */
+		SELECT BILL_STATUS FROM cm_console.CM_BILL 
+		WHERE CORP_ID = #{corpId}
+		AND BILL_TYPE ='PROJECT'
+	</select>
+	
+
 
 </mapper>

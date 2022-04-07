@@ -567,7 +567,7 @@ public class SignUpService {
 				
 				int monthExpAmount = (int) generalDao.selectGernalObject(DB.QRY_SELECT_CMBILL_AMOUNT, params);
 				String errMsg ="";
-				if(3000000>monthExpAmount) {
+				if(3000000>monthExpAmount && !"Y".equals(params.get("isUnCertSign").toString())) {
 				
 				rtnList =  generalDao.selectGernalList(DB.QRY_SELECT_BILL_LIST, params);
 				AesEncryptor decrypt = new AesEncryptor();
@@ -813,5 +813,22 @@ public class SignUpService {
 			}
 
 		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public RestResult<?> selectBillStatus(Map<String, Object> params) throws Exception {
+			
+			List<Object> userList = generalDao.selectGernalList(DB.QRY_SELECT_CMUSER_CORPID, params);
+			Map<String,Object> userMap = (Map<String, Object>) userList.get(0);
+			String corpId = userMap.get("CORP_ID").toString();
+			
+			params.put("corpId", corpId);
+			
+			RestResult<Object>	rtn = new RestResult<Object>();
+			
+			rtn.setData(generalDao.selectGernalList(DB.QRY_SELECT_CMBILL_STATUS, params));
+			
+			return rtn;
+		}	
 	
 }
