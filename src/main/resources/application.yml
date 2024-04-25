@@ -38,12 +38,12 @@ datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     #jdbc-url: jdbc:log4jdbc:mariadb://sandbox.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
     #jdbc-url: jdbc:log4jdbc:mariadb://sandbox.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-    #jdbc-url: jdbc:log4jdbc:mysql://mysql.ums-dev.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-    #username: cm_bo
-    #password: ENC(YrccTPRMqk+u5utdFupqFIM3y2Nx+THl)
-    jdbc-url: jdbc:log4jdbc:mysql://mysql.ums-qa.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
-    username: cm_console
-    password: ENC(Yb4RUow+7uw9BCzOckrD2N2Fo4S1YQk2)
+    jdbc-url: jdbc:log4jdbc:mysql://mysql.msghub-dev.uplus.co.kr:43306/cm?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&ssl=false&useSSL=false&allowMasterDownConnection=true&cacheServerConfiguration=false&enableClusterAwareFailover=false
+    username: cm
+    password: ENC(u4b9rCQqwR9HL6sq2+8zW2LBc8hMXy5q) # test1234
+    #jdbc-url: jdbc:log4jdbc:mysql://mysql.ums-qa.uplus.co.kr:43306/cm_console?autoReconnect=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+    #username: cm_console
+    #password: ENC(Yb4RUow+7uw9BCzOckrD2N2Fo4S1YQk2)
     pool-name: hikari-cp
     maximum-pool-size: 30
     minimum-idle: 5

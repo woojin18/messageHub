@@ -87,6 +87,16 @@ dependencies {
 
 	//commons-text
 	compile group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	// com.sun.xml.bind
+	implementation 'com.sun.xml.bind:jaxb-impl:4.0.1'
+	implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
+	// javax.xml.bind
+	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+
 }
 
 ext['springCloudVersion'] = 'Greenwich.SR3'

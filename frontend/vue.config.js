@@ -16,10 +16,6 @@ module.exports = {
                 target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
                 changeOrigin: true
             },
-            '^/uc': {
-                target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
-                changeOrigin: true
-            },
             '^/listCtl': {
                 target: process.env.VUE_APP_TARGET_URL || 'http://localhost:7070',
                 changeOrigin: true
